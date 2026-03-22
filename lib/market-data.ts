@@ -29,6 +29,7 @@ import {
   watchlistBarEntries,
   watchlistSymbols,
 } from "@/lib/mock-data";
+import { percentToRatio } from "@/lib/formatters";
 
 function portfolioHoldingsWithValues(): PortfolioHolding[] {
   const enriched = portfolioHoldings
@@ -165,7 +166,7 @@ export async function getSearchUniverse(): Promise<SearchResult[]> {
     exchange: stock.exchange,
     sector: stock.sector,
     price: stock.price,
-    changePercent: stock.changePercent,
+    changePercent: percentToRatio(stock.changePercent),
   }));
 }
 

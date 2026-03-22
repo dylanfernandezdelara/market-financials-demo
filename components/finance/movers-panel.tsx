@@ -18,7 +18,7 @@ type MoversPanelProps = {
 export function MoversPanel({ movers }: MoversPanelProps) {
   const [tab, setTab] = useState<(typeof tabs)[number]["key"]>("gainers");
 
-  const rows: ListMover[] = movers[tab];
+  const rows: ListMover[] = movers[tab].slice(1);
 
   return (
     <section id="screener" className="scroll-mt-28" aria-labelledby="movers-heading">

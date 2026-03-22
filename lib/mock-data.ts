@@ -928,7 +928,7 @@ export const popularSpaces: PopularSpace[] = [
     title: "SEC Findings",
     description: "Analyze fundraising rounds and regulatory documents using SEC findings.",
     cta: "Analyze rounds",
-    href: "/",
+    href: "/research",
   },
   {
     id: "space-buffett",
@@ -936,14 +936,14 @@ export const popularSpaces: PopularSpace[] = [
     description:
       "Get answers from Buffett shareholder letters and Berkshire Hathaway's website.",
     cta: "Ask Buffett",
-    href: "/",
+    href: "/compare",
   },
   {
     id: "space-transcripts",
     title: "S&P 500 Transcripts",
     description: "Query any S&P company transcript over the last two years.",
     cta: "Search transcripts",
-    href: "/",
+    href: "/alerts",
   },
 ];
 

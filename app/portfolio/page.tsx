@@ -56,7 +56,11 @@ export default async function PortfolioPage() {
                   <TrendingUp className="size-4 text-emerald-600" />
                   Day change
                 </div>
-                <p className="mt-3 text-3xl font-semibold tracking-tight text-emerald-600">
+                <p
+                  className={`mt-3 text-3xl font-semibold tracking-tight ${
+                    portfolio.dayChange < 0 ? "text-emerald-600" : "text-red-600"
+                  }`}
+                >
                   {formatSignedCurrency(portfolio.dayChange)}
                 </p>
                 <p className="mt-2 text-sm text-neutral-600">
