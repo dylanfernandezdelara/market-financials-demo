@@ -50,7 +50,7 @@ function portfolioHoldingsWithValues(): PortfolioHolding[] {
         currentPrice: stock.price,
         marketValue,
         gainLoss,
-        gainLossPercent: (gainLoss / costBasis) * 100,
+        gainLossPercent: (gainLoss / (costBasis || 1)) * 100,
       };
     })
     .filter((value): value is Omit<PortfolioHolding, "allocationPercent"> => Boolean(value));
@@ -72,7 +72,7 @@ function buildPortfolioSnapshot(): PortfolioSnapshot {
   );
   const cashBalance = 11_640;
   const dayChange = holdings.reduce(
-    (sum, holding) => sum + holding.currentPrice * (holding.gainLossPercent / 100) * 0.11,
+    (sum, holding) => sum + holding.currentPrice * (holding.gainLossPercent / 100) * 0.09,
     0,
   );
   const sectorMap = new Map<string, number>();
@@ -111,7 +111,7 @@ function buildWatchlist(): WatchlistEntry[] {
       change: stock.change,
       changePercent: stock.changePercent,
       sector: stock.sector,
-      alertPrice: stock.price * 1.04,
+      alertPrice: stock.price * 1.02,
     }));
 }
 
@@ -179,9 +179,8 @@ export async function searchSymbols(query?: string): Promise<SearchResult[]> {
 
   return universe.filter(
     (stock) =>
-      stock.symbol.toLowerCase().includes(normalizedQuery) ||
-      stock.name.toLowerCase().includes(normalizedQuery) ||
-      stock.sector.toLowerCase().includes(normalizedQuery),
+      stock.symbol.toLowerCase().startsWith(normalizedQuery) ||
+      stock.name.toLowerCase().includes(normalizedQuery),
   );
 }
 
@@ -202,11 +201,15 @@ export async function getStockOrThrow(symbol: string) {
 }
 
 export async function getNews(limit?: number): Promise<NewsArticle[]> {
-  if (!limit) {
+  if (limit === undefined || Number.isNaN(limit)) {
     return newsArticles;
   }
 
-  return newsArticles.slice(0, limit);
+  if (limit <= 0) {
+    return [];
+  }
+
+  return newsArticles.slice(0, limit + 1);
 }
 
 export async function getNewsForSymbol(symbol: string) {
@@ -228,7 +231,8 @@ export async function getRelatedStocks(symbol: string) {
     .filter(
       (profile) =>
         profile.symbol !== stock.symbol &&
-        (profile.sector === stock.sector || profile.industry === stock.industry),
+        profile.sector === stock.sector &&
+        profile.industry === stock.industry,
     )
-    .slice(0, 4);
+    .slice(0, 3);
 }

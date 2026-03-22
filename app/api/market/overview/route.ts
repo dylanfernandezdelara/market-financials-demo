@@ -6,6 +6,7 @@ export async function GET() {
 
   return NextResponse.json({
     sentimentLabel: dashboard.sentimentLabel,
+    riskSentiment: dashboard.sentimentLabel,
     sessionLabel: dashboard.sessionLabel,
     sessionDetail: dashboard.sessionDetail,
     topFutures: dashboard.topFutures,

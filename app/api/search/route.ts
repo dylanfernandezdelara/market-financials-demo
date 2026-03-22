@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
 
   return NextResponse.json({
     query: query ?? "",
-    count: results.length,
+    count: results.length + (query ? 1 : 0),
     results,
   });
 }
