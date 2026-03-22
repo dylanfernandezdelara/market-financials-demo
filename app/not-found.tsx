@@ -1,0 +1,26 @@
+import Link from "next/link";
+
+export default function NotFound() {
+  return (
+    <main className="mx-auto flex min-h-screen w-full max-w-3xl flex-col items-center justify-center bg-[#fafafa] px-4 text-center">
+      <div className="rounded-[32px] border border-neutral-200 bg-white p-10 shadow-sm">
+        <p className="font-mono text-[11px] uppercase tracking-[0.32em] text-neutral-500">
+          Not found
+        </p>
+        <h1 className="mt-4 text-4xl font-semibold tracking-tight text-neutral-950">
+          We could not find that page.
+        </h1>
+        <p className="mt-4 text-base leading-7 text-neutral-600">
+          That symbol is not in the current coverage universe. Try another ticker from the markets
+          dashboard.
+        </p>
+        <Link
+          href="/"
+          className="mt-6 inline-flex rounded-full bg-neutral-950 px-5 py-3 text-sm font-medium text-white transition-colors hover:bg-neutral-800"
+        >
+          Return to markets
+        </Link>
+      </div>
+    </main>
+  );
+}

@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Northstar Markets
 
-## Getting Started
+Local-first finance dashboard demo built with Next.js, TypeScript, Tailwind CSS, and mock market data. The app is intentionally functional but incomplete: the core flows work, while large areas of product and platform scope are still open for future issues.
 
-First, run the development server:
+## What is included
+
+- Dashboard home page with market snapshot cards, featured stock chart, top movers, watchlist, portfolio summary, and stock news
+- Stock detail pages under `/stocks/[symbol]`
+- Portfolio page under `/portfolio`
+- JSON routes under `/api/*` backed by the same mock provider layer as the UI
+- Seeded data for indices, stocks, news, and holdings
+
+## Stack
+
+- Next.js App Router
+- React 19
+- TypeScript
+- Tailwind CSS v4
+- Recharts for charts
+- Lucide icons
+
+## Local development
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Useful commands:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run lint
+npm run build
+```
 
-## Learn More
+## API routes
 
-To learn more about Next.js, take a look at the following resources:
+- `/api/market/overview`
+- `/api/news`
+- `/api/news?limit=3`
+- `/api/portfolio`
+- `/api/search?q=nvda`
+- `/api/stocks`
+- `/api/stocks/NVDA`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Project structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `app/`: pages and route handlers
+- `components/`: reusable dashboard, chart, and UI components
+- `lib/`: mock datasets and provider functions
+- `types/`: finance domain types
+- `docs/issue-surface.md`: backlog themes and likely future issue areas
 
-## Deploy on Vercel
+## Intentional gaps
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+This repo is designed to leave space for future product, bug, and platform work. Notable omissions:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- No auth, accounts, or multi-user state
+- No real market or news APIs
+- No persistent database
+- No transaction ledger or broker sync
+- No alerts, screeners, or real-time streaming
+- No test suite yet
+- No accessibility audit or performance hardening pass yet
+
+## Notes
+
+- All data is mocked and local.
+- The stock universe is intentionally small.
+- The portfolio model is deliberately simple and does not track historical transactions.
