@@ -1,0 +1,12 @@
+import { NextRequest, NextResponse } from "next/server";
+
+export async function GET() {
+  return NextResponse.json({
+    lists: [{ id: "primary", name: "Primary", symbols: ["AAPL", "MSFT"] }],
+  });
+}
+
+export async function POST(request: NextRequest) {
+  await request.json().catch(() => ({}));
+  return NextResponse.json({ ok: true }, { status: 200 });
+}
