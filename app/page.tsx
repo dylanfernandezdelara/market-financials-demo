@@ -9,6 +9,7 @@ import { RecentDevelopments } from "@/components/finance/recent-developments";
 import { StandoutsSection } from "@/components/finance/standouts-section";
 import { TopFutures } from "@/components/finance/top-futures";
 import { WatchlistStrip } from "@/components/finance/watchlist-strip";
+import { QuickLinksRow } from "@/components/explore/quick-links";
 import { getDashboardData, getSearchUniverse } from "@/lib/market-data";
 
 export default async function Home() {
@@ -30,6 +31,7 @@ export default async function Home() {
         <EquitySectors sectors={dashboard.equitySectors} />
         <CryptoRow quotes={dashboard.cryptocurrencies} />
         <FixedIncomeRow rows={dashboard.fixedIncome} />
+        <QuickLinksRow />
       </div>
     </FinanceShell>
   );
