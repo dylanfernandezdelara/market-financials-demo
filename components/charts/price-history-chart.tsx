@@ -67,8 +67,8 @@ export function PriceHistoryChart({
           tickFormatter={(value: number) => `$${value}`}
           width={56}
           domain={[
-            (dataMin: number) => Math.floor(dataMin * 0.985),
-            (dataMax: number) => Math.ceil(dataMax * 1.015),
+            (dataMin: number) => Math.floor(dataMin * 0.998),
+            (dataMax: number) => Math.ceil(dataMax * 1.002),
           ]}
         />
         <Tooltip

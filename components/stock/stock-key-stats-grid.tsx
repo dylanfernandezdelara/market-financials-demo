@@ -25,7 +25,7 @@ export function StockKeyStatsGrid({ stock, chart }: StockKeyStatsGridProps) {
   const pc = prevClose(stock);
   const { low: dayLow, high: dayHigh } = dayRangeFromChart(chart);
   const eps = epsFromPe(stock);
-  const open = chart[0]?.price ?? stock.price;
+  const open = chart[chart.length - 1]?.price ?? stock.price;
   const mcap = formatCompactTraded(stock.marketCap);
 
   return (
