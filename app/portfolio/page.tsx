@@ -5,6 +5,7 @@ import { ChangePill } from "@/components/ui/change-pill";
 import { SectionHeader } from "@/components/ui/section-header";
 import { SurfaceCard } from "@/components/ui/surface-card";
 import { SiteHeader } from "@/components/site-header";
+import { ImportCsvPanel } from "@/components/features/import-csv";
 import { getPortfolioSnapshot, getSearchUniverse } from "@/lib/market-data";
 import {
   formatCompactCurrency,
@@ -106,6 +107,9 @@ export default async function PortfolioPage() {
         </section>
 
         <SurfaceCard>
+          <div className="mb-6">
+            <ImportCsvPanel />
+          </div>
           <SectionHeader
             eyebrow="Holdings"
             title="Current positions"

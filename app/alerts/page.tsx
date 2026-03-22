@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PriceAlertDialog } from "@/components/features/price-alert-dialog";
 
 export default function AlertsPage() {
   return (
@@ -7,6 +8,9 @@ export default function AlertsPage() {
       <p className="mt-2 text-sm text-neutral-600">
         Create rules for price crosses, volume spikes, and headline keywords.
       </p>
+      <div className="mt-4">
+        <PriceAlertDialog />
+      </div>
       <ul className="mt-6 space-y-2 text-sm text-neutral-500">
         <li>No active alerts</li>
       </ul>

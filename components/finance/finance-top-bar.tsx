@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Share2 } from "lucide-react";
+import { NotificationBell } from "@/components/features/notification-bell";
 import { SymbolSearch } from "@/components/symbol-search";
 import type { SearchResult } from "@/types/finance";
 
@@ -20,6 +21,7 @@ export function FinanceTopBar({ searchOptions }: FinanceTopBarProps) {
           </div>
         </div>
         <div className="flex items-center justify-end gap-2 lg:justify-end">
+          <NotificationBell />
           <button
             type="button"
             className="inline-flex items-center gap-1.5 rounded-lg border border-[#e5e5e5] bg-white px-3 py-2 text-[13px] font-medium text-neutral-700 shadow-sm transition-colors hover:bg-neutral-50"
