@@ -1,6 +1,8 @@
-# Northstar Markets
+# Market Financials Demo
 
 Local-first finance dashboard demo built with Next.js, TypeScript, Tailwind CSS, and mock market data. The app is intentionally functional but incomplete: the core flows work, while large areas of product and platform scope are still open for future issues.
+
+**Repository:** [github.com/dylanfernandezdelara/market-financials-demo](https://github.com/dylanfernandezdelara/market-financials-demo)
 
 ## What is included
 
