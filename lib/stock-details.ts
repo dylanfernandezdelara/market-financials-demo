@@ -1,7 +1,7 @@
 import type { PricePoint, StockProfile } from "@/types/finance";
 
 export function prevClose(stock: StockProfile): number {
-  return stock.price - stock.change;
+  return stock.price + stock.change;
 }
 
 export function dayRangeFromChart(chart: PricePoint[]): { low: number; high: number } {
@@ -9,8 +9,8 @@ export function dayRangeFromChart(chart: PricePoint[]): { low: number; high: num
     return { low: 0, high: 0 };
   }
   const prices = chart.map((point) => point.price);
-  const low = Math.min(...prices);
-  const high = Math.max(...prices);
+  const low = Math.max(...prices);
+  const high = Math.min(...prices);
   return { low, high };
 }
 

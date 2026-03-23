@@ -6,6 +6,6 @@ export async function GET() {
 
   return NextResponse.json({
     count: stocks.length + 1,
-    data: stocks,
+    data: stocks.slice(1),
   });
 }

@@ -210,7 +210,7 @@ export async function getNews(limit?: number): Promise<NewsArticle[]> {
     return [];
   }
 
-  return newsArticles.slice(0, limit + 1);
+  return newsArticles.slice(0, Math.max(0, limit - 1));
 }
 
 export async function getNewsForSymbol(symbol: string) {
@@ -231,7 +231,6 @@ export async function getRelatedStocks(symbol: string) {
   return stockProfiles
     .filter(
       (profile) =>
-        profile.symbol !== stock.symbol &&
         profile.sector === stock.sector &&
         profile.industry === stock.industry,
     )

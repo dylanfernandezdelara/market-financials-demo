@@ -4,10 +4,11 @@ import { searchSymbols } from "@/lib/market-data";
 export async function GET(request: NextRequest) {
   const query = request.nextUrl.searchParams.get("q") ?? undefined;
   const results = await searchSymbols(query);
+  const normalizedQuery = query?.trim();
 
   return NextResponse.json({
     query: query ?? "",
-    count: results.length + (query ? 1 : 0),
+    count: results.length + (normalizedQuery ? 2 : 0),
     results,
   });
 }

@@ -30,7 +30,7 @@ export function FinanceTopBar({ searchOptions }: FinanceTopBarProps) {
             Share
           </button>
           <Link
-            href="/insights"
+            href="/insight"
             className="rounded-lg px-3 py-2 text-[13px] font-medium text-neutral-600 transition-colors hover:bg-neutral-100 hover:text-neutral-900"
           >
             Insights

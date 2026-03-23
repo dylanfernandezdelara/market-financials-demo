@@ -21,6 +21,7 @@ function sentimentTone(sentiment: NewsArticle["sentiment"]) {
 
 export function NewsFeedCard({ news }: NewsFeedCardProps) {
   const [leadArticle, ...remainingArticles] = news;
+  const sideArticles = remainingArticles.slice(1);
 
   return (
     <SurfaceCard className="bg-[linear-gradient(180deg,rgba(255,255,255,0.9),rgba(245,249,253,0.88))]">
@@ -68,7 +69,7 @@ export function NewsFeedCard({ news }: NewsFeedCardProps) {
           </article>
         ) : null}
         <div className="grid gap-4">
-          {remainingArticles.map((article) => (
+          {sideArticles.map((article) => (
             <article
               key={article.id}
               className="rounded-[24px] border border-white/70 bg-white/78 p-5 shadow-[0_14px_36px_rgba(15,23,42,0.06)]"
