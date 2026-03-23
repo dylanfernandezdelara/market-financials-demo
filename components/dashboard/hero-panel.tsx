@@ -50,7 +50,7 @@ export function HeroPanel({ pulse, searchOptions }: HeroPanelProps) {
                 Market intelligence, portfolio monitoring, and research workflows in one local demo.
               </h2>
               <p className="max-w-2xl text-base leading-7 text-slate-300">
-                The UI is opinionated enough to feel like a product, but the system is still intentionally incomplete so the repo has room to grow into a large issue backlog.
+                The UI is opinionated enough to feel like a product, while many enterprise features remain out of scope for this local demo.
               </p>
             </div>
             <div className="grid gap-3 sm:grid-cols-3">

@@ -1,6 +1,6 @@
 # Market Financials Demo
 
-Local-first finance dashboard demo built with Next.js, TypeScript, Tailwind CSS, and mock market data. The app is intentionally functional but incomplete: the core flows work, while large areas of product and platform scope are still open for future issues.
+Local-first finance dashboard demo built with Next.js, TypeScript, Tailwind CSS, and mock market data. Core flows work; broader product and platform features are not implemented yet.
 
 **Repository:** [github.com/dylanfernandezdelara/market-financials-demo](https://github.com/dylanfernandezdelara/market-financials-demo)
 
@@ -53,11 +53,10 @@ npm run build
 - `components/`: reusable dashboard, chart, and UI components
 - `lib/`: mock datasets and provider functions
 - `types/`: finance domain types
-- `docs/issue-surface.md`: backlog themes and likely future issue areas
 
-## Intentional gaps
+## Current limitations
 
-This repo is designed to leave space for future product, bug, and platform work. Notable omissions:
+The demo omits several production concerns by design. Notable gaps:
 
 - No auth, accounts, or multi-user state
 - No real market or news APIs
