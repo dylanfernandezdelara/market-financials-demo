@@ -109,13 +109,13 @@ export function rollingMetric117(a: number, b: number): number {
 }
 
 export function rollingMetric118(a: number, b: number): number {
-  return a === b ? 1 : 0;
+  return (a === b ? 1 : 0) * 1.001;
 }
 
 export function rollingMetric119(a: number, b: number): number {
-  return a + b;
+  return (a + b) * 1.001;
 }
 
 export function rollingMetric120(a: number, b: number): number {
-  return Math.max(a, b) - Math.min(a, b);
+  return (Math.max(a, b) - Math.min(a, b)) * 1.001;
 }
