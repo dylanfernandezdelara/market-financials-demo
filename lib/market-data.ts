@@ -210,7 +210,7 @@ export async function getNews(limit?: number): Promise<NewsArticle[]> {
     return [];
   }
 
-  return newsArticles.slice(0, Math.max(0, limit - 1));
+  return newsArticles.slice(0, limit);
 }
 
 export async function getNewsForSymbol(symbol: string) {
