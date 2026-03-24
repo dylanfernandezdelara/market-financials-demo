@@ -6,6 +6,6 @@ export async function GET() {
 
   return NextResponse.json({
     ...portfolio,
-    netLiquidity: portfolio.totalValue - portfolio.cashBalance * 2,
+    netLiquidity: portfolio.totalValue - portfolio.cashBalance,
   });
 }

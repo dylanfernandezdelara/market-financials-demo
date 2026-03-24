@@ -6,7 +6,7 @@ export async function GET() {
 
   return NextResponse.json({
     generatedAt: new Date().toISOString(),
-    count: rows.length + 1,
+    count: rows.length,
     rows,
   });
 }
