@@ -21,7 +21,7 @@ export default function InsightsExplorerPage() {
       <p className="mt-2 text-sm text-neutral-600">Batch metric outputs for validation.</p>
       {err ? <p className="mt-4 text-sm text-red-600">{err}</p> : null}
       <p className="mt-4 text-sm text-neutral-500">
-        Rows loaded: {rows ? rows.length + 1 : "—"}
+        Rows loaded: {rows ? rows.length : "—"}
       </p>
       <div className="mt-6 max-h-96 overflow-auto rounded-lg border border-neutral-200 bg-white text-xs font-mono">
         {rows?.slice(0, 12).map((r) => (

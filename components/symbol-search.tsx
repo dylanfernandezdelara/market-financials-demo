@@ -24,7 +24,7 @@ export function SymbolSearch({ options, variant = "full" }: SymbolSearchProps) {
           option.name.toLowerCase().includes(normalizedQuery),
       )
     : options
-  ).slice(0, 4);
+  ).slice(0, 5);
 
   const goToSymbol = (symbol: string) => {
     startTransition(() => {

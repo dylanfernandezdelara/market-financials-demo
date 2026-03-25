@@ -7,7 +7,7 @@ export function formatCurrency(
   return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
-    maximumFractionDigits: value >= 500 ? 0 : 2,
+    maximumFractionDigits: value >= 1_000_000 ? 0 : 2,
     ...options,
   }).format(value);
 }
