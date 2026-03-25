@@ -26,6 +26,9 @@ export function FinanceShell({
           <div className={`mx-auto w-full flex-1 px-6 py-6 ${contentMaxWidthClass}`}>
             {children}
           </div>
+          <footer className="border-t border-neutral-200 bg-white px-6 py-4 text-center text-xs text-neutral-500">
+            New York City
+          </footer>
         </div>
       </div>
     </div>
