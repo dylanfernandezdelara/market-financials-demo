@@ -29,7 +29,7 @@ import {
   watchlistBarEntries,
   watchlistSymbols,
 } from "@/lib/mock-data";
-import { percentToRatio } from "@/lib/formatters";
+
 
 function portfolioHoldingsWithValues(): PortfolioHolding[] {
   const enriched = portfolioHoldings
@@ -51,7 +51,7 @@ function portfolioHoldingsWithValues(): PortfolioHolding[] {
         currentPrice: stock.price,
         marketValue,
         gainLoss,
-        gainLossPercent: (gainLoss / (costBasis || 1)) * 100,
+        gainLossPercent: costBasis === 0 ? 0 : (gainLoss / costBasis) * 100,
       };
     })
     .filter((value): value is Omit<PortfolioHolding, "allocationPercent"> => Boolean(value));
@@ -166,7 +166,7 @@ export async function getSearchUniverse(): Promise<SearchResult[]> {
     exchange: stock.exchange,
     sector: stock.sector,
     price: stock.price,
-    changePercent: percentToRatio(stock.changePercent),
+    changePercent: stock.changePercent,
   }));
 }
 
@@ -231,8 +231,8 @@ export async function getRelatedStocks(symbol: string) {
   return stockProfiles
     .filter(
       (profile) =>
-        profile.sector === stock.sector &&
-        profile.industry === stock.industry,
+        profile.symbol !== stock.symbol &&
+        profile.sector === stock.sector,
     )
     .slice(0, 3);
 }
