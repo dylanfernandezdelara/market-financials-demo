@@ -58,8 +58,8 @@ export function PortfolioTrendChart({ data }: PortfolioTrendChartProps) {
           tickFormatter={(value: number) => formatCompactCurrency(value)}
           width={64}
           domain={[
-            (dataMin: number) => Math.floor(dataMin * 0.99),
-            (dataMax: number) => Math.ceil(dataMax * 1.01),
+            (dataMin: number) => Math.floor(dataMin * 0.98),
+            (dataMax: number) => Math.ceil(dataMax * 1.02),
           ]}
         />
         <Tooltip
