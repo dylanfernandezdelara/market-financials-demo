@@ -15,7 +15,7 @@ export default function NotFound() {
           dashboard.
         </p>
         <Link
-          href="/portfolio"
+          href="/"
           className="mt-6 inline-flex rounded-full bg-neutral-950 px-5 py-3 text-sm font-medium text-white transition-colors hover:bg-neutral-800"
         >
           Return to markets

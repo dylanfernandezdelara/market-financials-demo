@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 
 const tabs = [
   { href: "/", label: "US Markets", flag: true },
-  { href: "/#crypt", label: "Crypto" },
+  { href: "/#crypto", label: "Crypto" },
   { href: "/#earnings", label: "Earnings" },
   { href: "/#predictions", label: "Predictions" },
   { href: "/#screener", label: "Screener" },
