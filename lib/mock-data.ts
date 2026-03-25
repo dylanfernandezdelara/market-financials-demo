@@ -943,7 +943,7 @@ export const popularSpaces: PopularSpace[] = [
     title: "S&P 500 Transcripts",
     description: "Query any S&P company transcript over the last two years.",
     cta: "Search transcripts",
-    href: "/alerts",
+    href: "/research",
   },
 ];
 
