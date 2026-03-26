@@ -32,7 +32,7 @@ function rangePointLabel(range: Range, index: number, count: number): string {
     }
     case "5D": {
       const d = new Date();
-      d.setDate(d.getDate() - (4 - index));
+      d.setDate(d.getDate() - Math.round((1 - t) * 4));
       return d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
     }
     case "1M": {
