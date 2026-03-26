@@ -35,9 +35,10 @@ export async function GET(request: NextRequest) {
   }
 
   if (type === "research") {
-    const symbol = request.nextUrl.searchParams.get("symbol") ?? "";
+    const rawSymbol = request.nextUrl.searchParams.get("symbol") ?? "";
+    const sanitizedSymbol = rawSymbol.toUpperCase().replace(/[^A-Z0-9._-]/g, "");
     const data = {
-      symbol: symbol.toUpperCase(),
+      symbol: sanitizedSymbol,
       bullets: [] as string[],
       asOf: new Date().toISOString(),
     };
