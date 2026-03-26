@@ -30,10 +30,15 @@ export async function POST(request: Request) {
   const errors: string[] = [];
 
   for (let i = 0; i < body.length; i++) {
-    const row = body[i] as Record<string, unknown>;
-    const symbol = typeof row.symbol === "string" ? row.symbol.trim().toUpperCase() : "";
-    const shares = Number(row.shares);
-    const averageCost = Number(row.averageCost);
+    const row = body[i];
+    if (row === null || typeof row !== "object" || Array.isArray(row)) {
+      errors.push(`Row ${i + 1}: must be a JSON object`);
+      continue;
+    }
+    const record = row as Record<string, unknown>;
+    const symbol = typeof record.symbol === "string" ? record.symbol.trim().toUpperCase() : "";
+    const shares = Number(record.shares);
+    const averageCost = Number(record.averageCost);
 
     if (!symbol) {
       errors.push(`Row ${i + 1}: missing or empty symbol`);
