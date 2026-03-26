@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { PriceAlertDialog } from "@/components/features/price-alert-dialog";
+import { EmptyState } from "@/components/ui/empty-state";
 
 export default function AlertsPage() {
   return (
@@ -11,9 +12,7 @@ export default function AlertsPage() {
       <div className="mt-4">
         <PriceAlertDialog />
       </div>
-      <ul className="mt-6 space-y-2 text-sm text-neutral-500">
-        <li>No active alerts</li>
-      </ul>
+      <EmptyState message="No active alerts" className="mt-6" />
       <Link href="/stocks/NVDA" className="mt-6 inline-block text-sm text-neutral-900 underline">
         Open a symbol
       </Link>

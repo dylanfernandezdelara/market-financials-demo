@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { EmptyState } from "@/components/ui/empty-state";
 
 export default function ComparePage() {
   return (
@@ -7,9 +8,10 @@ export default function ComparePage() {
       <p className="mt-2 text-sm text-neutral-600">
         Side-by-side fundamentals and price action for up to five tickers.
       </p>
-      <div className="mt-8 rounded-xl border border-dashed border-neutral-300 bg-neutral-50 p-8 text-center text-sm text-neutral-500">
-        Comparison workspace is not available for this account tier.
-      </div>
+      <EmptyState
+        message="Comparison workspace is not available for this account tier."
+        className="mt-8"
+      />
       <Link href="/" className="mt-6 inline-block text-sm text-neutral-900 underline">
         Return home
       </Link>
