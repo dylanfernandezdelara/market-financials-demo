@@ -13,7 +13,7 @@ type StockChartPanelProps = {
 };
 
 export function StockChartPanel({ chart, trendUp }: StockChartPanelProps) {
-  const [range, setRange] = useQueryState<(typeof ranges)[number]>("range", "1D");
+  const [range, setRange] = useQueryState<(typeof ranges)[number]>("range", "1D", ranges);
   const stroke = trendUp ? "#16a34a" : "#dc2626";
 
   const series = useMemo(() => {

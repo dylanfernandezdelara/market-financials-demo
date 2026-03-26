@@ -16,7 +16,8 @@ type MoversPanelProps = {
 };
 
 export function MoversPanel({ movers }: MoversPanelProps) {
-  const [tab, setTab] = useQueryState<(typeof tabs)[number]["key"]>("movers", "gainers");
+  const tabKeys = tabs.map((t) => t.key);
+  const [tab, setTab] = useQueryState<(typeof tabs)[number]["key"]>("movers", "gainers", tabKeys);
 
   const rows: ListMover[] = movers[tab];
 

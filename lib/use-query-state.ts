@@ -15,12 +15,17 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 export function useQueryState<T extends string>(
   key: string,
   defaultValue: T,
+  validValues?: readonly T[],
 ): [T, (value: T) => void] {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
 
-  const value = (searchParams.get(key) as T) ?? defaultValue;
+  const raw = searchParams.get(key);
+  const value =
+    raw !== null && (!validValues || validValues.includes(raw as T))
+      ? (raw as T)
+      : defaultValue;
 
   const setValue = useCallback(
     (next: T) => {
