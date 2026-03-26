@@ -9,7 +9,9 @@ export function proxy(request: NextRequest) {
   const response = NextResponse.next({
     request: {
       headers: new Headers([
-        ...Array.from(request.headers.entries()),
+        ...Array.from(request.headers.entries()).filter(
+          ([k]) => k.toLowerCase() !== "x-request-id",
+        ),
         ["x-request-id", requestId],
       ]),
     },
