@@ -9,9 +9,17 @@ type WatchlistStripProps = {
 export function WatchlistStrip({ entries }: WatchlistStripProps) {
   return (
     <section id="watchlist" className="scroll-mt-28" aria-labelledby="watchlist-heading">
-      <h2 id="watchlist-heading" className="mb-3 text-[17px] font-semibold text-neutral-900">
-        Create Watchlist
-      </h2>
+      <div className="mb-3 flex flex-wrap items-center justify-between gap-4">
+        <h2 id="watchlist-heading" className="text-[17px] font-semibold text-neutral-900">
+          Watchlist
+        </h2>
+        <Link
+          href="/watchlist/manage"
+          className="text-[13px] font-medium text-emerald-700 hover:text-emerald-800"
+        >
+          Create or manage watchlist →
+        </Link>
+      </div>
       <div className="flex flex-wrap gap-2">
         {entries.map((entry) => (
           <Link
