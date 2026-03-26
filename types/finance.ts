@@ -208,6 +208,28 @@ export type MarketMovers = {
   active: ListMover[];
 };
 
+export type SyncStatus = "pending" | "syncing" | "completed" | "failed";
+
+export type SyncProviderError = {
+  provider: string;
+  code: string;
+  message: string;
+  retryable: boolean;
+};
+
+export type SyncRateLimitInfo = {
+  limit: number;
+  remaining: number;
+  resetAt: string;
+};
+
+export type SyncResponse = {
+  status: SyncStatus;
+  lastSync: string | null;
+  rateLimit: SyncRateLimitInfo;
+  providerErrors: SyncProviderError[];
+};
+
 export type DashboardData = {
   sentimentLabel: string;
   sessionLabel: string;
