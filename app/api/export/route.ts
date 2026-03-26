@@ -61,6 +61,10 @@ export async function POST(request: NextRequest) {
     recordCount: 0,
   };
   exportHistory.unshift(record);
+  // Cap history to prevent unbounded memory growth
+  if (exportHistory.length > 100) {
+    exportHistory.length = 100;
+  }
 
   // FDL-706 – return artifact metadata instead of a self-referential URL
   // FDL-860 – include a non-production demo warning
