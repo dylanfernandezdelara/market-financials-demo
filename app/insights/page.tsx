@@ -11,7 +11,7 @@ export default function InsightsExplorerPage() {
   useEffect(() => {
     fetch("/api/insights")
       .then((r) => r.json())
-      .then((j) => setRows(j.rows as Row[]))
+      .then((j) => setRows(j.data as Row[]))
       .catch(() => setErr("Unable to load"));
   }, []);
 
