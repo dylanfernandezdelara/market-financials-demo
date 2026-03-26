@@ -1,4 +1,5 @@
-import { TrendingUp, Wallet } from "lucide-react";
+import Link from "next/link";
+import { Download, FileText, TrendingUp, Wallet } from "lucide-react";
 import { AllocationDonutChart } from "@/components/charts/allocation-donut-chart";
 import { PortfolioTrendChart } from "@/components/charts/portfolio-trend-chart";
 import { ChangePill } from "@/components/ui/change-pill";
@@ -40,6 +41,22 @@ export default async function PortfolioPage() {
                 <p className="max-w-2xl text-base leading-7 text-neutral-600">
                   Track positions, sector exposure, and recent performance in one place.
                 </p>
+              </div>
+              <div className="flex flex-wrap gap-2 pt-2">
+                <Link
+                  href="/reports"
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-200 bg-neutral-50 px-3 py-2 text-[13px] font-medium text-neutral-700 transition-colors hover:bg-neutral-100"
+                >
+                  <FileText className="size-3.5 text-neutral-500" />
+                  Reports
+                </Link>
+                <Link
+                  href="/export"
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-200 bg-neutral-50 px-3 py-2 text-[13px] font-medium text-neutral-700 transition-colors hover:bg-neutral-100"
+                >
+                  <Download className="size-3.5 text-neutral-500" />
+                  Export
+                </Link>
               </div>
             </div>
             <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
