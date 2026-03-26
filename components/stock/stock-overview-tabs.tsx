@@ -16,11 +16,11 @@ export type StockDetailTab = (typeof STOCK_DETAIL_TABS)[number];
 
 /* FDL-679 / SD16 – Compute a simple consensus from stock data */
 function computeConsensus(stock?: StockProfile) {
-  if (!stock) return { bullish: 34, hold: 33, bearish: 33, label: "N/A" };
+  if (!stock) return { bullish: 34, hold: 33, bearish: 33, label: "N/A", badgeClass: "bg-neutral-100 text-neutral-600" };
   const score = stock.changePercent + (stock.peRatio > 0 ? 10 : -5) + (stock.dividendYield > 0 ? 5 : 0);
-  if (score > 10) return { bullish: 65, hold: 25, bearish: 10, label: "Buy lean" };
-  if (score > 0) return { bullish: 45, hold: 35, bearish: 20, label: "Hold" };
-  return { bullish: 20, hold: 30, bearish: 50, label: "Sell lean" };
+  if (score > 10) return { bullish: 65, hold: 25, bearish: 10, label: "Buy lean", badgeClass: "bg-emerald-50 text-emerald-800" };
+  if (score > 0) return { bullish: 45, hold: 35, bearish: 20, label: "Hold", badgeClass: "bg-amber-50 text-amber-800" };
+  return { bullish: 20, hold: 30, bearish: 50, label: "Sell lean", badgeClass: "bg-red-50 text-red-800" };
 }
 
 /* FDL-607 / SD11 – Check if a metric is applicable */
@@ -71,7 +71,7 @@ export function StockOverviewTabs({ stock, peApplicable = true, dividendApplicab
           <h3 className="text-[15px] font-semibold text-heading">Analyst consensus</h3>
           <p className="mt-1 text-[12px] text-neutral-500">Computed from available metrics</p>
           <div className="mt-4 flex items-center gap-2">
-            <span className="rounded-md bg-emerald-50 px-2 py-1 text-[11px] font-semibold uppercase tracking-wide text-emerald-800">
+            <span className={`rounded-md px-2 py-1 text-[11px] font-semibold uppercase tracking-wide ${consensus.badgeClass}`}>
               {consensus.label}
             </span>
           </div>

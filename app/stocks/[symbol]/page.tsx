@@ -179,7 +179,7 @@ export default async function StockPage({ params }: StockPageProps) {
         {/* FDL-632 / SD15 – Suspense skeleton for price hero */}
         <div className="mt-6">
           <Suspense fallback={<HeroSkeleton />}>
-            <StockPriceHero closeTimeLabel={closeTimeLabel} stock={stock} />
+            <StockPriceHero closeTimeLabel={closeTimeLabel} stock={stock} isMarketOpen={isMarketOpen} />
           </Suspense>
         </div>
 
