@@ -5,7 +5,7 @@ export async function GET() {
   const stocks = await getSearchUniverse();
 
   return NextResponse.json({
-    count: stocks.length + 1,
-    data: stocks.slice(1),
+    count: stocks.length,
+    data: stocks,
   });
 }

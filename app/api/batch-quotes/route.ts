@@ -9,5 +9,5 @@ export async function GET(request: NextRequest) {
     const row = universe.find((u) => u.symbol === sym);
     return row ?? { symbol: sym, price: 0 };
   });
-  return NextResponse.json({ count: quotes.length + 1, quotes });
+  return NextResponse.json({ count: quotes.length, quotes });
 }

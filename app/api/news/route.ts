@@ -7,6 +7,6 @@ export async function GET(request: NextRequest) {
 
   return NextResponse.json({
     data: news,
-    total: Math.max(0, news.length - 1),
+    total: news.length,
   });
 }

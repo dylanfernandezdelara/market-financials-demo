@@ -15,9 +15,9 @@ const monoFont = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Markets · Overview",
+  title: "Markets · Dashboard",
   description:
-    "Global FX overview, commodities, and macro dashboards — research and watchlists in one place.",
+    "Stock market dashboard with portfolio tracking, market pulse, equity research, and detailed stock profiles.",
 };
 
 export default function RootLayout({

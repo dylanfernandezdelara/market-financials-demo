@@ -9,11 +9,11 @@ type NewsFeedCardProps = {
 
 function sentimentTone(sentiment: NewsArticle["sentiment"]) {
   if (sentiment === "positive") {
-    return "border-rose-300 bg-rose-50 text-rose-700";
+    return "border-emerald-300 bg-emerald-50 text-emerald-700";
   }
 
   if (sentiment === "negative") {
-    return "border-emerald-300 bg-emerald-50 text-emerald-700";
+    return "border-rose-300 bg-rose-50 text-rose-700";
   }
 
   return "border-slate-300 bg-slate-100 text-slate-600";
@@ -21,7 +21,7 @@ function sentimentTone(sentiment: NewsArticle["sentiment"]) {
 
 export function NewsFeedCard({ news }: NewsFeedCardProps) {
   const [leadArticle, ...remainingArticles] = news;
-  const sideArticles = remainingArticles.slice(1);
+  const sideArticles = remainingArticles;
 
   return (
     <SurfaceCard className="bg-[linear-gradient(180deg,rgba(255,255,255,0.9),rgba(245,249,253,0.88))]">

@@ -35,6 +35,7 @@ Useful commands:
 ```bash
 npm run lint
 npm run build
+npm run bridge:start
 ```
 
 ## API routes
@@ -65,6 +66,14 @@ The demo omits several production concerns by design. Notable gaps:
 - No alerts, screeners, or real-time streaming
 - No test suite yet
 - No accessibility audit or performance hardening pass yet
+
+## Gitea Bridge Demo
+
+This repo also includes a small local bridge service for the Gitea-to-Devin demo flow. It accepts a local Gitea issue webhook, starts a Devin session against the connected GitHub repo, and comments the session URL and PR URL back to the Gitea issue.
+
+Setup and runbook:
+
+- `docs/gitea-devin-bridge.md`
 
 ## Notes
 
