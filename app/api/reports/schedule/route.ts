@@ -2,8 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getReportSchedule, getReportSchedules } from "@/lib/report-scheduling";
 
 export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url);
-  const id = searchParams.get("id");
+  const id = request.nextUrl.searchParams.get("id");
 
   if (id) {
     const schedule = await getReportSchedule(id);
@@ -31,8 +30,7 @@ export async function PUT(request: NextRequest) {
 }
 
 export async function DELETE(request: NextRequest) {
-  const { searchParams } = new URL(request.url);
-  const id = searchParams.get("id");
+  const id = request.nextUrl.searchParams.get("id");
 
   if (!id) {
     return NextResponse.json({ error: "missing id" }, { status: 400 });
