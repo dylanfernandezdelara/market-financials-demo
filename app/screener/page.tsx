@@ -79,9 +79,11 @@ export default async function ScreenerPage() {
                                 100,
                                 Math.max(
                                   0,
-                                  ((stock.price - stock.week52Low) /
-                                    (stock.week52High - stock.week52Low)) *
-                                    100,
+                                  stock.week52High === stock.week52Low
+                                    ? 0
+                                    : ((stock.price - stock.week52Low) /
+                                        (stock.week52High - stock.week52Low)) *
+                                        100,
                                 ),
                               )}%`,
                             }}
