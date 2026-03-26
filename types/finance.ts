@@ -208,6 +208,20 @@ export type MarketMovers = {
   active: ListMover[];
 };
 
+export type ScreenerResult = {
+  symbol: string;
+  name: string;
+  sector: string;
+  industry: string;
+  exchange: string;
+  price: number;
+  changePercent: number;
+  marketCap: number;
+  peRatio: number;
+  dividendYield: number;
+  volume: number;
+};
+
 export type DashboardData = {
   sentimentLabel: string;
   sessionLabel: string;

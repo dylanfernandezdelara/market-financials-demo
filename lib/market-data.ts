@@ -4,6 +4,7 @@ import {
   NewsArticle,
   PortfolioHolding,
   PortfolioSnapshot,
+  ScreenerResult,
   SearchResult,
   StockProfile,
   WatchlistEntry,
@@ -219,6 +220,49 @@ export async function getNewsForSymbol(symbol: string) {
       (relatedSymbol) => relatedSymbol.toLowerCase() === symbol.trim().toLowerCase(),
     ),
   );
+}
+
+/** Screener-eligible sectors (excludes derivatives / indices). */
+const screenerSectors = new Set([
+  "Technology",
+  "Consumer Cyclical",
+  "Communication Services",
+  "Financial Services",
+  "Healthcare",
+  "Real Estate",
+  "Utilities",
+  "Basic Materials",
+]);
+
+export async function getScreenerResults(
+  sector?: string,
+): Promise<ScreenerResult[]> {
+  const eligible = stockProfiles.filter((s) => screenerSectors.has(s.sector));
+
+  const filtered =
+    sector && sector !== "any"
+      ? eligible.filter(
+          (s) => s.sector.toLowerCase() === sector.toLowerCase(),
+        )
+      : eligible;
+
+  return filtered.map((s) => ({
+    symbol: s.symbol,
+    name: s.name,
+    sector: s.sector,
+    industry: s.industry,
+    exchange: s.exchange,
+    price: s.price,
+    changePercent: s.changePercent,
+    marketCap: s.marketCap,
+    peRatio: s.peRatio,
+    dividendYield: s.dividendYield,
+    volume: s.volume,
+  }));
+}
+
+export function getScreenerSectors(): string[] {
+  return Array.from(screenerSectors).sort();
 }
 
 export async function getRelatedStocks(symbol: string) {

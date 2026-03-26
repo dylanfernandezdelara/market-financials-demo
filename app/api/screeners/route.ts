@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getScreenerResults, getScreenerSectors } from "@/lib/market-data";
 
 export async function GET(request: NextRequest) {
   const sector = request.nextUrl.searchParams.get("sector") ?? "any";
-  return NextResponse.json({ sector, results: [], total: 0 });
+  const results = await getScreenerResults(sector === "any" ? undefined : sector);
+  const sectors = getScreenerSectors();
+  return NextResponse.json({ sector, results, total: results.length, sectors });
 }
 
 export async function POST(request: NextRequest) {

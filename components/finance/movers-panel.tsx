@@ -21,7 +21,7 @@ export function MoversPanel({ movers }: MoversPanelProps) {
   const rows: ListMover[] = movers[tab];
 
   return (
-    <section id="screener" className="scroll-mt-28" aria-labelledby="movers-heading">
+    <section id="movers" className="scroll-mt-28" aria-labelledby="movers-heading">
       <div className="mb-3 flex flex-wrap items-center justify-between gap-4">
         <h2 id="movers-heading" className="text-[17px] font-semibold text-neutral-900">
           Movers

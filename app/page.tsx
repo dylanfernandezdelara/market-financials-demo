@@ -4,18 +4,21 @@ import { FinanceShell } from "@/components/finance/finance-shell";
 import { FixedIncomeRow } from "@/components/finance/fixed-income-row";
 import { MarketSummaryAccordion } from "@/components/finance/market-summary-accordion";
 import { MoversPanel } from "@/components/finance/movers-panel";
+import { ScreenerPanel } from "@/components/finance/screener-panel";
 import { PopularSpaces } from "@/components/finance/popular-spaces";
 import { RecentDevelopments } from "@/components/finance/recent-developments";
 import { StandoutsSection } from "@/components/finance/standouts-section";
 import { TopFutures } from "@/components/finance/top-futures";
 import { WatchlistStrip } from "@/components/finance/watchlist-strip";
 import { QuickLinksRow } from "@/components/explore/quick-links";
-import { getDashboardData, getSearchUniverse } from "@/lib/market-data";
+import { getDashboardData, getScreenerResults, getScreenerSectors, getSearchUniverse } from "@/lib/market-data";
 
 export default async function Home() {
-  const [dashboard, searchOptions] = await Promise.all([
+  const [dashboard, searchOptions, screenerResults, screenerSectors] = await Promise.all([
     getDashboardData(),
     getSearchUniverse(),
+    getScreenerResults(),
+    getScreenerSectors(),
   ]);
 
   return (
@@ -27,6 +30,7 @@ export default async function Home() {
         <PopularSpaces spaces={dashboard.popularSpaces} />
         <StandoutsSection standouts={dashboard.standouts} />
         <WatchlistStrip entries={dashboard.watchlistBar} />
+        <ScreenerPanel results={screenerResults} sectors={screenerSectors} />
         <MoversPanel movers={dashboard.movers} />
         <EquitySectors sectors={dashboard.equitySectors} />
         <CryptoRow quotes={dashboard.cryptocurrencies} />
