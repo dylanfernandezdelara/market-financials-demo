@@ -38,7 +38,7 @@ export async function POST(request: Request) {
   const retryCount =
     retry && existing?.status === "failed"
       ? existing.retryCount + 1
-      : (existing?.retryCount ?? 0);
+      : 0;
 
   // FDL-758: Simulate sync lifecycle — randomly succeed or fail
   const willSucceed = Math.random() > 0.2;
