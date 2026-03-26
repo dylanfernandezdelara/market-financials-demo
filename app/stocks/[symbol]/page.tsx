@@ -183,9 +183,9 @@ export default async function StockPage({ params }: StockPageProps) {
           </p>
           <div className="mt-2 flex items-center gap-3 text-[12px] tabular-nums text-neutral-600">
             <span>{formatCurrency(stock.week52Low, { maximumFractionDigits: 0 })}</span>
-            <div className="relative h-2 flex-1 overflow-hidden rounded-full bg-neutral-100">
+            <div className="relative h-2 flex-1 rounded-full bg-neutral-100">
               <div
-                className="absolute inset-y-0 left-0 rounded-full bg-emerald-500"
+                className="absolute inset-y-0 left-0 overflow-hidden rounded-full bg-emerald-500"
                 style={{ width: `${week52Position}%` }}
               />
               <div
