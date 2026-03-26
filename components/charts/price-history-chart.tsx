@@ -1,22 +1,26 @@
 "use client";
 
-import { useId } from "react";
+import { useId, useMemo } from "react";
 import {
   Area,
   AreaChart,
   CartesianGrid,
+  Line,
   ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
 } from "recharts";
-import { PricePoint } from "@/types/finance";
+import type { BenchmarkSeries, PricePoint } from "@/types/finance";
 import { formatCurrency, formatCompactNumber } from "@/lib/utils";
+
+const BENCHMARK_COLORS = ["#6366f1", "#f59e0b", "#ec4899"] as const;
 
 type PriceHistoryChartProps = {
   data: PricePoint[];
   color?: string;
   height?: number;
+  benchmarks?: BenchmarkSeries[];
 };
 
 function toNumericValue(
@@ -41,12 +45,34 @@ export function PriceHistoryChart({
   data,
   color = "#0f766e",
   height = 320,
+  benchmarks = [],
 }: PriceHistoryChartProps) {
   const gradientId = useId().replace(/:/g, "");
 
+  const merged = useMemo(() => {
+    if (benchmarks.length === 0) return data;
+
+    const basePrice = data[0]?.price ?? 1;
+
+    return data.map((point, i) => {
+      const record: Record<string, number | string> = {
+        label: point.label,
+        price: point.price,
+        volume: point.volume,
+      };
+
+      for (const bm of benchmarks) {
+        const pct = bm.series[i]?.pctChange ?? 0;
+        record[bm.symbol] = basePrice * (1 + pct / 100);
+      }
+
+      return record;
+    });
+  }, [data, benchmarks]);
+
   return (
     <ResponsiveContainer width="100%" height={height}>
-      <AreaChart data={data} margin={{ top: 8, right: 12, left: -20, bottom: 0 }}>
+      <AreaChart data={merged} margin={{ top: 8, right: 12, left: -20, bottom: 0 }}>
         <defs>
           <linearGradient id={gradientId} x1="0" x2="0" y1="0" y2="1">
             <stop offset="5%" stopColor={color} stopOpacity={0.32} />
@@ -81,9 +107,16 @@ export function PriceHistoryChart({
           formatter={(value, name) => {
             const numericValue = toNumericValue(value);
 
-            return name === "price"
-              ? [formatCurrency(numericValue), "Price"]
-              : [formatCompactNumber(numericValue), "Volume"];
+            if (name === "price") {
+              return [formatCurrency(numericValue), "Price"];
+            }
+
+            const bm = benchmarks.find((b) => b.symbol === name);
+            if (bm) {
+              return [formatCurrency(numericValue), bm.name];
+            }
+
+            return [formatCompactNumber(numericValue), "Volume"];
           }}
         />
         <Area
@@ -93,6 +126,17 @@ export function PriceHistoryChart({
           fill={`url(#${gradientId})`}
           type="monotone"
         />
+        {benchmarks.map((bm, idx) => (
+          <Line
+            key={bm.symbol}
+            dataKey={bm.symbol}
+            stroke={BENCHMARK_COLORS[idx % BENCHMARK_COLORS.length]}
+            strokeWidth={1.5}
+            strokeDasharray="6 3"
+            dot={false}
+            type="monotone"
+          />
+        ))}
       </AreaChart>
     </ResponsiveContainer>
   );

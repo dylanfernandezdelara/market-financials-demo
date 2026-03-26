@@ -9,6 +9,7 @@ import { StockNotableTimeline } from "@/components/stock/stock-notable-timeline"
 import { StockOverviewTabs } from "@/components/stock/stock-overview-tabs";
 import { SiteHeader } from "@/components/site-header";
 import {
+  getBenchmarks,
   getNewsForSymbol,
   getRelatedStocks,
   getSearchUniverse,
@@ -45,6 +46,9 @@ export default async function StockPage({ params }: StockPageProps) {
     getRelatedStocks(symbol),
     getSearchUniverse(),
   ]);
+
+  const labels = stock.chart.map((p) => p.label);
+  const benchmarks = await getBenchmarks(labels);
 
   const closeTimeLabel = `At close: ${new Intl.DateTimeFormat("en-US", {
     month: "short",
@@ -97,7 +101,7 @@ export default async function StockPage({ params }: StockPageProps) {
 
         <div className="mt-8 grid gap-8 xl:grid-cols-[1fr_340px] xl:items-start">
           <div className="space-y-8">
-            <StockChartPanel chart={stock.chart} trendUp={trendUp} />
+            <StockChartPanel chart={stock.chart} trendUp={trendUp} benchmarks={benchmarks} />
             <StockKeyStatsGrid chart={stock.chart} stock={stock} />
             <StockNotableTimeline articles={news} />
 

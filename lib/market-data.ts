@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import {
+  BenchmarkSeries,
   DashboardData,
   NewsArticle,
   PortfolioHolding,
@@ -219,6 +220,23 @@ export async function getNewsForSymbol(symbol: string) {
       (relatedSymbol) => relatedSymbol.toLowerCase() === symbol.trim().toLowerCase(),
     ),
   );
+}
+
+export async function getBenchmarks(labels: string[]): Promise<BenchmarkSeries[]> {
+  const indices = [
+    { symbol: "SPX", name: "S&P 500", drift: 0.0006 },
+    { symbol: "NDX", name: "Nasdaq 100", drift: -0.0003 },
+    { symbol: "DJI", name: "Dow Jones", drift: 0.0004 },
+  ];
+
+  return indices.map(({ symbol: sym, name, drift }) => ({
+    symbol: sym,
+    name,
+    series: labels.map((label, i) => ({
+      label,
+      pctChange: Number(((i - (labels.length - 1) / 2) * drift * 100).toFixed(4)),
+    })),
+  }));
 }
 
 export async function getRelatedStocks(symbol: string) {

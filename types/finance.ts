@@ -208,6 +208,13 @@ export type MarketMovers = {
   active: ListMover[];
 };
 
+export type BenchmarkSeries = {
+  symbol: string;
+  name: string;
+  /** Normalized percentage-change series aligned to the stock's chart labels. */
+  series: { label: string; pctChange: number }[];
+};
+
 export type DashboardData = {
   sentimentLabel: string;
   sessionLabel: string;
