@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { FinanceMarketTabs } from "@/components/finance/finance-market-tabs";
 import { FinanceTopBar } from "@/components/finance/finance-top-bar";
+import { CommandPalette } from "@/components/features/command-palette";
 import type { SearchResult } from "@/types/finance";
 
 type FinanceShellProps = {
@@ -28,6 +29,7 @@ export function FinanceShell({
           </div>
         </div>
       </div>
+      <CommandPalette options={searchOptions} />
     </div>
   );
 }

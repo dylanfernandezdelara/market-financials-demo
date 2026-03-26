@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Share2 } from "lucide-react";
 import { NotificationBell } from "@/components/features/notification-bell";
+import { CommandPaletteTrigger } from "@/components/features/command-palette-trigger";
 import { SymbolSearch } from "@/components/symbol-search";
 import type { SearchResult } from "@/types/finance";
 
@@ -21,6 +22,7 @@ export function FinanceTopBar({ searchOptions }: FinanceTopBarProps) {
           </div>
         </div>
         <div className="flex items-center justify-end gap-2 lg:justify-end">
+          <CommandPaletteTrigger />
           <NotificationBell />
           <button
             type="button"
