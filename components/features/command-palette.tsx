@@ -123,10 +123,10 @@ export function CommandPalette({ options }: CommandPaletteProps) {
   function handleKeyNavigation(event: React.KeyboardEvent) {
     if (event.key === "ArrowDown") {
       event.preventDefault();
-      setActiveIndex((prev) => (prev + 1) % totalResults);
+      setActiveIndex((prev) => totalResults === 0 ? 0 : (prev + 1) % totalResults);
     } else if (event.key === "ArrowUp") {
       event.preventDefault();
-      setActiveIndex((prev) => (prev - 1 + totalResults) % totalResults);
+      setActiveIndex((prev) => totalResults === 0 ? 0 : (prev - 1 + totalResults) % totalResults);
     } else if (event.key === "Enter") {
       event.preventDefault();
       if (activeIndex < pageMatches.length) {
