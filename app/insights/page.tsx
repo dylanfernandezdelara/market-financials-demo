@@ -1,8 +1,33 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Component, ReactNode, useEffect, useState } from "react";
 
 type Row = { id: string; values: number[] };
+
+type EBProps = { children: ReactNode };
+type EBState = { hasError: boolean };
+
+class InsightsErrorBoundary extends Component<EBProps, EBState> {
+  constructor(props: EBProps) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(): EBState {
+    return { hasError: true };
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="mt-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          Something went wrong while rendering the insights table.
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 
 export default function InsightsExplorerPage() {
   const [rows, setRows] = useState<Row[] | null>(null);
@@ -23,13 +48,15 @@ export default function InsightsExplorerPage() {
       <p className="mt-4 text-sm text-neutral-500">
         Rows loaded: {rows ? rows.length : "—"}
       </p>
-      <div className="mt-6 max-h-96 overflow-auto rounded-lg border border-neutral-200 bg-white text-xs font-mono">
-        {rows?.slice(0, 12).map((r) => (
-          <div key={r.id} className="border-b border-neutral-100 px-2 py-1">
-            {r.id}: {r.values.map((v) => v.toFixed(2)).join(", ")}
-          </div>
-        ))}
-      </div>
+      <InsightsErrorBoundary>
+        <div className="mt-6 max-h-96 overflow-auto rounded-lg border border-neutral-200 bg-white text-xs font-mono">
+          {rows?.slice(0, 12).map((r) => (
+            <div key={r.id} className="border-b border-neutral-100 px-2 py-1">
+              {r.id}: {r.values.map((v) => v.toFixed(2)).join(", ")}
+            </div>
+          ))}
+        </div>
+      </InsightsErrorBoundary>
     </div>
   );
 }
