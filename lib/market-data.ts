@@ -221,6 +221,10 @@ export async function getNewsForSymbol(symbol: string) {
   );
 }
 
+export async function buildWatchlistEntries() {
+  return buildWatchlist();
+}
+
 export async function getRelatedStocks(symbol: string) {
   const stock = await getStockProfile(symbol);
 
