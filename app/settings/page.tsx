@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PreferencesForm } from "@/components/features/preferences-form";
 
 export default function SettingsPage() {
   return (
@@ -23,6 +24,7 @@ export default function SettingsPage() {
           Save changes
         </button>
       </form>
+      <PreferencesForm />
       <p className="mt-6 text-sm text-neutral-500">
         <Link href="/portfolio" className="text-neutral-900 underline">
           Back to portfolio
