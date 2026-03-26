@@ -14,7 +14,10 @@ export default function ResearchHubPage() {
 
   useEffect(() => {
     fetch("/api/research/summary")
-      .then((r) => r.json())
+      .then((r) => {
+        if (!r.ok) throw new Error(r.statusText);
+        return r.json();
+      })
       .then((j) => setSummary(j as ResearchSummary))
       .catch(() => setErr("Unable to load research summary"));
   }, []);
