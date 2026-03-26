@@ -8,6 +8,9 @@ const countryByExchange: Record<string, string> = {
   NASDAQ: "United States",
   NYSE: "United States",
   ARCA: "United States",
+  CME: "United States",
+  CBOT: "United States",
+  CBOE: "United States",
   CRYPTO: "Global",
 };
 
