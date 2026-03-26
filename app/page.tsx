@@ -10,6 +10,7 @@ import { StandoutsSection } from "@/components/finance/standouts-section";
 import { TopFutures } from "@/components/finance/top-futures";
 import { WatchlistStrip } from "@/components/finance/watchlist-strip";
 import { QuickLinksRow } from "@/components/explore/quick-links";
+import { OnboardingBanner } from "@/components/features/onboarding-banner";
 import { getDashboardData, getSearchUniverse } from "@/lib/market-data";
 
 export default async function Home() {
@@ -21,6 +22,7 @@ export default async function Home() {
   return (
     <FinanceShell searchOptions={searchOptions}>
       <div className="space-y-8">
+        <OnboardingBanner />
         <TopFutures futures={dashboard.topFutures} sentimentLabel={dashboard.sentimentLabel} />
         <MarketSummaryAccordion summary={dashboard.marketSummary} />
         <RecentDevelopments developments={dashboard.recentDevelopments} />
