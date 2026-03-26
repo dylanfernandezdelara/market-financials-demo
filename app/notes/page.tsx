@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import Link from "next/link";
 
 interface Note {
@@ -34,14 +34,15 @@ export default function NotesPage() {
   });
   const [saveStatus, setSaveStatus] = useState<string | null>(null);
   const [symbolFilter, setSymbolFilter] = useState("");
+  const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const persist = useCallback(
     (next: Note[]) => {
       setNotes(next);
       saveNotes(next);
       setSaveStatus("Saved");
-      const timer = setTimeout(() => setSaveStatus(null), 1500);
-      return () => clearTimeout(timer);
+      if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+      saveTimerRef.current = setTimeout(() => setSaveStatus(null), 1500);
     },
     [],
   );
