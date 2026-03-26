@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Mono, Inter } from "next/font/google";
+import { DemoBanner } from "@/components/ui/demo-banner";
 import "./globals.css";
 
 const inter = Inter({
@@ -27,7 +28,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} ${monoFont.variable} h-full antialiased`}>
-      <body className="min-h-full bg-[#fafafa] text-neutral-900 antialiased">{children}</body>
+      <body className="min-h-full bg-[#fafafa] text-neutral-900 antialiased">
+        <DemoBanner />
+        {children}
+      </body>
     </html>
   );
 }
