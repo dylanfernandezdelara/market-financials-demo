@@ -16,7 +16,7 @@ const countryByExchange: Record<string, string> = {
 
 function analystCoverage(price: number, week52Low: number, week52High: number) {
   const range = week52High - week52Low;
-  const analystCount = Math.round(14 + (range / price) * 40);
+  const analystCount = price === 0 ? 0 : Math.round(14 + (range / price) * 40);
   const targetLow = +(week52Low + range * 0.25).toFixed(2);
   const targetHigh = +(week52High + range * 0.1).toFixed(2);
   const targetMean = +((targetLow + targetHigh) / 2).toFixed(2);
