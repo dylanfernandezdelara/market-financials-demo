@@ -8,6 +8,8 @@ type AllocationDonutChartProps = {
     label: string;
     value: number;
   }[];
+  activeLabel?: string | null;
+  onHoverLabel?: (label: string | null) => void;
 };
 
 const palette = ["#0f172a", "#0f766e", "#eab308", "#dc2626", "#2563eb", "#9333ea"];
@@ -30,10 +32,14 @@ function toNumericValue(
   return 0;
 }
 
-export function AllocationDonutChart({ data }: AllocationDonutChartProps) {
+export { palette as allocationPalette };
+
+export function AllocationDonutChart({ data, activeLabel, onHoverLabel }: AllocationDonutChartProps) {
   return (
     <ResponsiveContainer width="100%" height={220}>
-      <PieChart>
+      <PieChart
+        onMouseLeave={() => onHoverLabel?.(null)}
+      >
         <Pie
           data={data}
           dataKey="value"
@@ -41,9 +47,16 @@ export function AllocationDonutChart({ data }: AllocationDonutChartProps) {
           innerRadius={54}
           outerRadius={82}
           paddingAngle={3}
+          onMouseEnter={(_, index) => onHoverLabel?.(data[index]?.label ?? null)}
+          onMouseLeave={() => onHoverLabel?.(null)}
         >
           {data.map((entry, index) => (
-            <Cell key={entry.label} fill={palette[index % palette.length]} />
+            <Cell
+              key={entry.label}
+              fill={palette[index % palette.length]}
+              opacity={activeLabel != null && activeLabel !== entry.label ? 0.3 : 1}
+              style={{ transition: "opacity 150ms" }}
+            />
           ))}
         </Pie>
         <Tooltip
