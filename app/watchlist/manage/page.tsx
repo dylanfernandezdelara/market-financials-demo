@@ -143,9 +143,7 @@ export default function WatchlistManagePage() {
   const persist = useCallback(
     (updated: WatchlistList[]) => {
       setLists(updated);
-      startTransition(() => {
-        persistWatchlist(updated);
-      });
+      startTransition(() => persistWatchlist(updated));
     },
     [],
   );
@@ -185,7 +183,7 @@ export default function WatchlistManagePage() {
   function removeEntry(listId: string, symbol: string) {
     const updated = lists.map((list) => {
       if (list.id !== listId) return list;
-      return { ...list, symbols: list.symbols.filter((s) => s !== symbol) };
+      return { ...list, symbols: list.symbols.filter((s) => s.toUpperCase() !== symbol.toUpperCase()) };
     });
     persist(updated);
   }
