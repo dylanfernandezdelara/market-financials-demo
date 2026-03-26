@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import {
+  BillingData,
   DashboardData,
   NewsArticle,
   PortfolioHolding,
@@ -12,8 +13,10 @@ import {
   cryptoQuotes,
   equitySectorEtfs,
   fixedIncomeRows,
+  invoices,
   marketMoversLists,
   marketSummaryBlock,
+  paymentMethods,
   popularSpaces,
   recentDevelopments,
   marketIndices,
@@ -219,6 +222,13 @@ export async function getNewsForSymbol(symbol: string) {
       (relatedSymbol) => relatedSymbol.toLowerCase() === symbol.trim().toLowerCase(),
     ),
   );
+}
+
+export async function getBillingData(): Promise<BillingData> {
+  return {
+    invoices,
+    paymentMethods,
+  };
 }
 
 export async function getRelatedStocks(symbol: string) {

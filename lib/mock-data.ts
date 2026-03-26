@@ -17,6 +17,8 @@ import {
   type SectorEtfRow,
   type StandoutStock,
   type WatchlistBarEntry,
+  type Invoice,
+  type PaymentMethod,
 } from "@/types/finance";
 
 function series(values: number[]): PricePoint[] {
@@ -1075,4 +1077,54 @@ export const fixedIncomeRows: FixedIncomeRow[] = [
   { name: "Convertibles", symbol: "CWB", price: 91.98, changePercent: -2.26 },
   { name: "High Yield", symbol: "HYG", price: 78.92, changePercent: -0.93 },
   { name: "High Grade", symbol: "LQD", price: 107.85, changePercent: -1.23 },
+];
+
+export const invoices: Invoice[] = [
+  {
+    id: "INV-2024-001",
+    date: "2024-06-01",
+    description: "Pro Plan — June 2024",
+    amount: 49.99,
+    status: "paid",
+  },
+  {
+    id: "INV-2024-002",
+    date: "2024-07-01",
+    description: "Pro Plan — July 2024",
+    amount: 49.99,
+    status: "paid",
+  },
+  {
+    id: "INV-2024-003",
+    date: "2024-08-01",
+    description: "Pro Plan — August 2024",
+    amount: 49.99,
+    status: "paid",
+  },
+  {
+    id: "INV-2024-004",
+    date: "2024-09-01",
+    description: "Pro Plan — September 2024",
+    amount: 49.99,
+    status: "pending",
+  },
+];
+
+export const paymentMethods: PaymentMethod[] = [
+  {
+    id: "pm-1",
+    type: "visa",
+    label: "Visa",
+    last4: "4242",
+    expiry: "09/26",
+    isDefault: true,
+  },
+  {
+    id: "pm-2",
+    type: "mastercard",
+    label: "Mastercard",
+    last4: "8831",
+    expiry: "03/27",
+    isDefault: false,
+  },
 ];

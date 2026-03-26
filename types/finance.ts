@@ -208,6 +208,28 @@ export type MarketMovers = {
   active: ListMover[];
 };
 
+export type Invoice = {
+  id: string;
+  date: string;
+  description: string;
+  amount: number;
+  status: "paid" | "pending" | "overdue";
+};
+
+export type PaymentMethod = {
+  id: string;
+  type: "visa" | "mastercard" | "amex" | "bank";
+  label: string;
+  last4: string;
+  expiry: string;
+  isDefault: boolean;
+};
+
+export type BillingData = {
+  invoices: Invoice[];
+  paymentMethods: PaymentMethod[];
+};
+
 export type DashboardData = {
   sentimentLabel: string;
   sessionLabel: string;
