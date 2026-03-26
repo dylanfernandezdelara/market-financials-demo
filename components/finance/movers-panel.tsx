@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { changeTextClass, formatCurrency, formatPercent } from "@/lib/utils";
+import { SegmentedControl } from "@/components/ui/segmented-control";
 import type { ListMover, MarketMovers } from "@/types/finance";
 
 const tabs = [
@@ -26,22 +27,7 @@ export function MoversPanel({ movers }: MoversPanelProps) {
         <h2 id="movers-heading" className="text-[17px] font-semibold text-neutral-900">
           Movers
         </h2>
-        <div className="inline-flex rounded-full border border-neutral-200 bg-neutral-100/80 p-0.5">
-          {tabs.map((item) => (
-            <button
-              key={item.key}
-              type="button"
-              onClick={() => setTab(item.key)}
-              className={`rounded-full px-3 py-1.5 text-[13px] font-medium transition-colors ${
-                tab === item.key
-                  ? "bg-white text-neutral-900 shadow-sm"
-                  : "text-neutral-600 hover:text-neutral-900"
-              }`}
-            >
-              {item.label}
-            </button>
-          ))}
-        </div>
+        <SegmentedControl items={tabs} value={tab} onValueChange={setTab} ariaLabel="Mover category" />
       </div>
       <div className="flex flex-col gap-1.5">
         {rows.map((row) => (
