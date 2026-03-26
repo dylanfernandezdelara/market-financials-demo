@@ -27,13 +27,13 @@ export type StockProfile = {
   sector: string;
   industry: string;
   exchange: string;
-  peRatio: number;
-  dividendYield: number;
+  peRatio: number | null;
+  dividendYield: number | null;
   week52Low: number;
   week52High: number;
   volume: number;
   averageVolume: number;
-  beta: number;
+  beta: number | null;
   description: string;
   thesis: string;
   chart: PricePoint[];
@@ -54,7 +54,7 @@ export type NewsArticle = {
   source: string;
   publishedAt: string;
   summary: string;
-  url: string;
+  url: string | null;
   relatedSymbols: string[];
   sentiment: NewsSentiment;
 };

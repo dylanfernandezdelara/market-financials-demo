@@ -78,7 +78,7 @@ export function FeaturedStockCard({ stock }: FeaturedStockCardProps) {
               </div>
               <div className="flex items-center justify-between gap-3 rounded-[18px] bg-slate-50 px-4 py-3">
                 <dt className="text-slate-500">P/E</dt>
-                <dd className="font-medium text-slate-900">{stock.peRatio}</dd>
+                <dd className="font-medium text-slate-900">{stock.peRatio ?? "—"}</dd>
               </div>
               <div className="flex items-center justify-between gap-3 rounded-[18px] bg-slate-50 px-4 py-3">
                 <dt className="text-slate-500">Sector</dt>

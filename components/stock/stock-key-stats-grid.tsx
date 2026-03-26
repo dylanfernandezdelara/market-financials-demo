@@ -32,7 +32,7 @@ export function StockKeyStatsGrid({ stock, chart }: StockKeyStatsGridProps) {
     <div className="grid gap-4 sm:grid-cols-3">
       <dl className="grid gap-0 divide-y divide-[#f0f0f0] rounded-xl border border-[#ebebeb] bg-white px-4 py-1 sm:divide-y-0 sm:py-4">
         <Stat label="Prev close" value={formatCurrency(pc)} />
-        <Stat label="P/E ratio" value={stock.peRatio.toFixed(2)} />
+        <Stat label="P/E ratio" value={stock.peRatio === null ? "—" : stock.peRatio.toFixed(2)} />
         <Stat
           label="52W range"
           value={`${formatCurrency(stock.week52Low, { maximumFractionDigits: 2 })} – ${formatCurrency(stock.week52High, { maximumFractionDigits: 2 })}`}
@@ -48,7 +48,7 @@ export function StockKeyStatsGrid({ stock, chart }: StockKeyStatsGridProps) {
       </dl>
       <dl className="grid gap-0 divide-y divide-[#f0f0f0] rounded-xl border border-[#ebebeb] bg-white px-4 py-1 sm:divide-y-0 sm:py-4">
         <Stat label="Open" value={formatCurrency(open)} />
-        <Stat label="Dividend yield" value={`${stock.dividendYield.toFixed(2)}%`} />
+        <Stat label="Dividend yield" value={stock.dividendYield === null ? "—" : `${stock.dividendYield.toFixed(2)}%`} />
         <Stat label="Volume" value={formatCompactNumber(stock.volume)} />
       </dl>
     </div>
