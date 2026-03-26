@@ -26,9 +26,10 @@ import {
   stockProfiles,
   topFutures,
   topMovers,
-  watchlistBarEntries,
   watchlistSymbols,
 } from "@/lib/mock-data";
+import { getAllWatchlists } from "@/lib/watchlist-store";
+import type { WatchlistBarEntry } from "@/types/finance";
 
 
 function portfolioHoldingsWithValues(): PortfolioHolding[] {
@@ -116,6 +117,23 @@ function buildWatchlist(): WatchlistEntry[] {
     }));
 }
 
+function buildWatchlistBar(): WatchlistBarEntry[] {
+  const lists = getAllWatchlists();
+  const symbols = lists.flatMap((list) => list.symbols);
+  const unique = [...new Set(symbols)];
+
+  return unique
+    .map((sym) => stockProfiles.find((p) => p.symbol === sym))
+    .filter((stock): stock is StockProfile => Boolean(stock))
+    .map((stock) => ({
+      symbol: stock.symbol,
+      name: stock.name,
+      price: stock.price,
+      changePercent: stock.changePercent,
+      exchange: stock.exchange,
+    }));
+}
+
 function sessionClock(): string {
   return new Intl.DateTimeFormat("en-US", {
     weekday: "short",
@@ -139,7 +157,7 @@ export async function getDashboardData(): Promise<DashboardData> {
     recentDevelopments,
     popularSpaces,
     standouts,
-    watchlistBar: watchlistBarEntries,
+    watchlistBar: buildWatchlistBar(),
     movers: marketMoversLists,
     equitySectors: equitySectorEtfs,
     cryptocurrencies: cryptoQuotes,
