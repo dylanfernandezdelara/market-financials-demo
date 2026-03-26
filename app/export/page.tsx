@@ -15,6 +15,7 @@ export default function ExportPage() {
   const [format, setFormat] = useState<Format>("csv");
   const [state, setState] = useState<ExportState>({ phase: "idle" });
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const mountedRef = useRef(true);
 
   const clearPoll = useCallback(() => {
     if (pollRef.current) {
@@ -23,7 +24,13 @@ export default function ExportPage() {
     }
   }, []);
 
-  useEffect(() => clearPoll, [clearPoll]);
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+      clearPoll();
+    };
+  }, [clearPoll]);
 
   const startExport = async () => {
     setState({ phase: "queued" });
@@ -32,6 +39,8 @@ export default function ExportPage() {
       const res = await fetch(`/api/export?format=${format}`, {
         method: "POST",
       });
+
+      if (!mountedRef.current) return;
 
       if (res.status === 501) {
         const body = (await res.json()) as { error?: string };
@@ -57,6 +66,7 @@ export default function ExportPage() {
         return;
       }
 
+      if (!mountedRef.current) return;
       setState({ phase: "polling" });
 
       clearPoll();
