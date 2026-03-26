@@ -9,9 +9,14 @@ type StandoutsSectionProps = {
 export function StandoutsSection({ standouts }: StandoutsSectionProps) {
   return (
     <section id="earnings" className="scroll-mt-28" aria-labelledby="standouts-heading">
-      <h2 id="standouts-heading" className="mb-3 text-[17px] font-semibold text-neutral-900">
-        Standouts
-      </h2>
+      <div className="mb-3">
+        <h2 id="standouts-heading" className="text-[17px] font-semibold text-neutral-900">
+          Standouts
+        </h2>
+        <p className="mt-1 text-xs text-neutral-500">
+          Ranked by unusual volume, significant price movement, and major news catalysts.
+        </p>
+      </div>
       <div className="flex flex-col gap-2">
         {standouts.map((stock) => (
           <Link
