@@ -58,57 +58,60 @@ const INITIAL_LAYOUTS: SavedLayout[] = [
   { id: "layout-3", name: "Financials", isDefault: false },
 ];
 
-/* ── date helpers ──────────────────────────────────────────────────── */
+/* ── date helpers (all string-based to avoid browser-tz drift) ──────── */
 
-function startOfWeek(date: Date): Date {
-  const d = new Date(date);
-  const day = d.getDay();
-  d.setDate(d.getDate() - day);
-  d.setHours(0, 0, 0, 0);
-  return d;
+function todayIso(tz: string): string {
+  return new Intl.DateTimeFormat("en-CA", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    timeZone: tz,
+  }).format(new Date());
 }
 
-function addDays(date: Date, days: number): Date {
-  const d = new Date(date);
-  d.setDate(d.getDate() + days);
-  return d;
+function toUtcNoon(iso: string): Date {
+  return new Date(iso + "T12:00:00Z");
 }
 
-function formatDateRange(weekStart: Date, tz: string): string {
+function addDaysIso(iso: string, days: number): string {
+  const d = toUtcNoon(iso);
+  d.setUTCDate(d.getUTCDate() + days);
+  const y = d.getUTCFullYear();
+  const m = String(d.getUTCMonth() + 1).padStart(2, "0");
+  const dd = String(d.getUTCDate()).padStart(2, "0");
+  return `${y}-${m}-${dd}`;
+}
+
+function startOfWeekIso(iso: string): string {
+  const dow = toUtcNoon(iso).getUTCDay();
+  return addDaysIso(iso, -dow);
+}
+
+function formatDateRange(weekStartIso: string, weekEndIso: string, tz: string): string {
   const fmt = new Intl.DateTimeFormat("en-US", {
     month: "short",
     day: "numeric",
     timeZone: tz,
   });
-  const end = addDays(weekStart, 6);
-  return `${fmt.format(weekStart)} \u2013 ${fmt.format(end)}`;
-}
-
-function isoDateInTz(date: Date, tz: string): string {
-  const parts = new Intl.DateTimeFormat("en-CA", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    timeZone: tz,
-  }).format(date);
-  return parts;
+  return `${fmt.format(toUtcNoon(weekStartIso))} \u2013 ${fmt.format(toUtcNoon(weekEndIso))}`;
 }
 
 function formatEventDate(dateStr: string, tz: string): string {
-  const d = new Date(dateStr + "T12:00:00Z");
   return new Intl.DateTimeFormat("en-US", {
     weekday: "short",
     month: "short",
     day: "numeric",
     timeZone: tz,
-  }).format(d);
+  }).format(toUtcNoon(dateStr));
 }
 
 /* ── page component ────────────────────────────────────────────────── */
 
 export default function EarningsCalendarPage() {
-  const [weekStart, setWeekStart] = useState(() => startOfWeek(new Date()));
   const [timezone, setTimezone] = useState("America/New_York");
+  const [weekStartISO, setWeekStartISO] = useState(() =>
+    startOfWeekIso(todayIso("America/New_York")),
+  );
   const [layouts, setLayouts] = useState<SavedLayout[]>(INITIAL_LAYOUTS);
   const [renamingId, setRenamingId] = useState<string | null>(null);
   const [renameValue, setRenameValue] = useState("");
@@ -116,18 +119,16 @@ export default function EarningsCalendarPage() {
 
   /* ── date navigation ── */
 
-  const goToPrevWeek = () => setWeekStart((prev) => addDays(prev, -7));
-  const goToNextWeek = () => setWeekStart((prev) => addDays(prev, 7));
-  const goToToday = () => setWeekStart(startOfWeek(new Date()));
+  const goToPrevWeek = () => setWeekStartISO((prev) => addDaysIso(prev, -7));
+  const goToNextWeek = () => setWeekStartISO((prev) => addDaysIso(prev, 7));
+  const goToToday = () => setWeekStartISO(startOfWeekIso(todayIso(timezone)));
 
   /* ── filter events to current week ── */
 
-  const weekEnd = addDays(weekStart, 6);
-  const weekStartISO = isoDateInTz(weekStart, timezone);
-  const weekEndISO = isoDateInTz(weekEnd, timezone);
+  const weekEndISO = addDaysIso(weekStartISO, 6);
 
   const visibleEvents = EARNINGS_EVENTS.filter(
-    (e) => e.date >= weekStartISO && e.date <= weekEndISO,
+    (ev) => ev.date >= weekStartISO && ev.date <= weekEndISO,
   ).sort((a, b) => a.date.localeCompare(b.date));
 
   /* ── layout actions ── */
@@ -193,7 +194,7 @@ export default function EarningsCalendarPage() {
         </div>
 
         <span className="text-sm font-medium text-neutral-800">
-          {formatDateRange(weekStart, timezone)}
+          {formatDateRange(weekStartISO, weekEndISO, timezone)}
         </span>
 
         <button
