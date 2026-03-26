@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import {
   DashboardData,
+  IntegrationStatus,
   NewsArticle,
   PortfolioHolding,
   PortfolioSnapshot,
@@ -12,6 +13,7 @@ import {
   cryptoQuotes,
   equitySectorEtfs,
   fixedIncomeRows,
+  integrationStatuses,
   marketMoversLists,
   marketSummaryBlock,
   popularSpaces,
@@ -219,6 +221,24 @@ export async function getNewsForSymbol(symbol: string) {
       (relatedSymbol) => relatedSymbol.toLowerCase() === symbol.trim().toLowerCase(),
     ),
   );
+}
+
+/** Threshold in milliseconds — syncs older than this are considered stale (24 h). */
+const STALE_THRESHOLD_MS = 24 * 60 * 60 * 1000;
+
+export async function getIntegrationStatuses(): Promise<IntegrationStatus[]> {
+  return integrationStatuses;
+}
+
+export async function getStaleIntegrations(): Promise<IntegrationStatus[]> {
+  const statuses = await getIntegrationStatuses();
+  const now = Date.now();
+
+  return statuses.filter((integration) => {
+    if (!integration.connected) return true;
+    if (!integration.lastSyncedAt) return true;
+    return now - new Date(integration.lastSyncedAt).getTime() > STALE_THRESHOLD_MS;
+  });
 }
 
 export async function getRelatedStocks(symbol: string) {

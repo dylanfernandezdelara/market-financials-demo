@@ -10,6 +10,7 @@ import {
   type CryptoQuote,
   type FixedIncomeRow,
   type FuturesAsset,
+  type IntegrationStatus,
   type MarketMovers,
   type MarketSummaryBlock,
   type PopularSpace,
@@ -1075,4 +1076,9 @@ export const fixedIncomeRows: FixedIncomeRow[] = [
   { name: "Convertibles", symbol: "CWB", price: 91.98, changePercent: -2.26 },
   { name: "High Yield", symbol: "HYG", price: 78.92, changePercent: -0.93 },
   { name: "High Grade", symbol: "LQD", price: 107.85, changePercent: -1.23 },
+];
+
+export const integrationStatuses: IntegrationStatus[] = [
+  { id: "broker-sync", name: "Broker sync", connected: false, lastSyncedAt: null },
+  { id: "news-wire", name: "News wire", connected: false, lastSyncedAt: null },
 ];
