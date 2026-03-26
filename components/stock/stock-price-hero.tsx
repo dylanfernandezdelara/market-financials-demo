@@ -37,7 +37,17 @@ function lastSessionCloseLabel(): string {
     daysBack = weekday === "Mon" ? 3 : 1;
   }
 
-  const closeDate = new Date(now.getTime() - daysBack * 86_400_000);
+  const dateParts = new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/New_York",
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+  }).formatToParts(now);
+  const y = Number(dateParts.find((p) => p.type === "year")?.value ?? "0");
+  const m = Number(dateParts.find((p) => p.type === "month")?.value ?? "1");
+  const d = Number(dateParts.find((p) => p.type === "day")?.value ?? "1");
+  // Date.UTC handles day underflow correctly (e.g. day=0 → last day of prev month)
+  const closeDate = new Date(Date.UTC(y, m - 1, d - daysBack, 17, 0, 0));
 
   const dateLabel = new Intl.DateTimeFormat("en-US", {
     month: "short",
