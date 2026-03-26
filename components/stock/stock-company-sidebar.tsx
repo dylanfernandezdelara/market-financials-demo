@@ -1,4 +1,5 @@
 import type { StockProfile } from "@/types/finance";
+import { formatCurrency } from "@/lib/utils";
 
 type StockCompanySidebarProps = {
   stock: StockProfile;
@@ -58,8 +59,8 @@ export function StockCompanySidebar({ stock }: StockCompanySidebarProps) {
         <div className="mt-4 rounded-lg bg-[#fafafa] px-3 py-3 text-[12px] text-neutral-600">
           <p className="font-medium text-[#1a1a1a]">Price context</p>
           <p className="mt-1 tabular-nums">
-            Current {stock.price.toFixed(2)} vs. range {stock.week52Low.toFixed(0)} –{" "}
-            {stock.week52High.toFixed(0)}
+            Current {formatCurrency(stock.price)} vs. range {formatCurrency(stock.week52Low, { maximumFractionDigits: 0 })} –{" "}
+            {formatCurrency(stock.week52High, { maximumFractionDigits: 0 })}
           </p>
         </div>
       </section>

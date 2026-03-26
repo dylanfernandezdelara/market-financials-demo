@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { formatCompactCurrency, formatCompactNumber } from "@/lib/utils";
+import { formatCompactCurrency, formatCompactNumber, formatNumber } from "@/lib/utils";
 import type { StandoutStock } from "@/types/finance";
 
 type StandoutsSectionProps = {
@@ -42,7 +42,7 @@ export function StandoutsSection({ standouts }: StandoutsSectionProps) {
                   <div>
                     <dt className="text-neutral-500">P/E Ratio</dt>
                     <dd className="tabular-nums text-neutral-800">
-                      {stock.peRatio === null ? "—" : stock.peRatio.toFixed(2)}
+                      {stock.peRatio === null ? "—" : formatNumber(stock.peRatio)}
                     </dd>
                   </div>
                   <div>
@@ -50,7 +50,7 @@ export function StandoutsSection({ standouts }: StandoutsSectionProps) {
                     <dd className="tabular-nums text-neutral-800">
                       {stock.dividendYield === null
                         ? "N/A"
-                        : `${stock.dividendYield.toFixed(2)}%`}
+                        : `${formatNumber(stock.dividendYield)}%`}
                     </dd>
                   </div>
                 </dl>

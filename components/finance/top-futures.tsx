@@ -4,6 +4,7 @@ import { FuturesMiniSparkline } from "@/components/finance/futures-mini-sparklin
 import {
   changeTextClass,
   formatCurrency,
+  formatNumber,
   formatPercent,
   formatSignedCurrency,
 } from "@/lib/utils";
@@ -56,14 +57,14 @@ export function TopFutures({ futures, sentimentLabel }: TopFuturesProps) {
                   </p>
                   <p className="text-[11px] font-medium tabular-nums text-neutral-500">
                     {item.symbol === "VIX"
-                      ? `${item.change >= 0 ? "+" : ""}${item.change.toFixed(2)}`
+                      ? `${item.change >= 0 ? "+" : ""}${formatNumber(item.change)}`
                       : formatSignedCurrency(item.change)}
                   </p>
                 </div>
               </div>
               <p className="mt-2 text-lg font-semibold tabular-nums text-[#1a1a1a]">
                 {item.symbol === "VIX"
-                  ? item.price.toFixed(2)
+                  ? formatNumber(item.price)
                   : formatCurrency(item.price)}
               </p>
               <div className="mt-3 -mx-1">

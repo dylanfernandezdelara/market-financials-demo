@@ -5,6 +5,7 @@ import { AllocationDonutChart } from "@/components/charts/allocation-donut-chart
 import {
   formatCompactCurrency,
   formatCurrency,
+  formatNumber,
   formatPercent,
   formatSignedCurrency,
 } from "@/lib/utils";
@@ -52,7 +53,7 @@ export function PortfolioSnapshotCard({ portfolio }: PortfolioSnapshotCardProps)
               >
                 <span className="font-medium text-slate-900">{holding.symbol}</span>
                 <span className="text-slate-500">
-                  {holding.allocationPercent.toFixed(1)}%
+                  {formatNumber(holding.allocationPercent, { maximumFractionDigits: 1 })}%
                 </span>
               </div>
             ))}

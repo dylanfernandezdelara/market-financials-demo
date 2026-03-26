@@ -10,6 +10,7 @@ import { getPortfolioSnapshot, getSearchUniverse } from "@/lib/market-data";
 import {
   formatCompactCurrency,
   formatCurrency,
+  formatNumber,
   formatPercent,
   formatSignedCurrency,
 } from "@/lib/utils";
@@ -156,7 +157,7 @@ export default async function PortfolioPage() {
                       </div>
                     </td>
                     <td className="px-4 py-4 text-neutral-600">
-                      {holding.allocationPercent.toFixed(1)}%
+                      {formatNumber(holding.allocationPercent, { maximumFractionDigits: 1 })}%
                     </td>
                   </tr>
                 ))}
