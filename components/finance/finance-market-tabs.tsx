@@ -73,14 +73,30 @@ export function FinanceMarketTabs() {
   }, [isHome]);
 
   // ── IntersectionObserver – update active tab on scroll ──────────────
+  const visibleSections = useRef(new Set<string>());
+
   const handleIntersect = useCallback(
     (entries: IntersectionObserverEntry[]) => {
       if (scrollLock.current) return;
 
       for (const entry of entries) {
         if (entry.isIntersecting) {
-          setActiveHash(entry.target.id);
-          return;
+          visibleSections.current.add(entry.target.id);
+        } else {
+          visibleSections.current.delete(entry.target.id);
+        }
+      }
+
+      if (visibleSections.current.size === 0) {
+        // No tracked section is in view — fall back to "US Markets".
+        setActiveHash("");
+      } else {
+        // Activate the first visible section in document order.
+        for (const id of sectionIds) {
+          if (visibleSections.current.has(id)) {
+            setActiveHash(id);
+            break;
+          }
         }
       }
     },
