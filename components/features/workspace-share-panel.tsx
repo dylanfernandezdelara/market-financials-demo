@@ -27,8 +27,10 @@ export function WorkspaceSharePanel({ resourceType }: WorkspaceSharePanelProps) 
   const [copied, setCopied] = useState(false);
 
   const handleCopyLink = () => {
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
   };
 
   const handleInvite = () => {
