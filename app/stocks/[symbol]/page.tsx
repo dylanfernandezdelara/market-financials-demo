@@ -88,69 +88,69 @@ export default async function StockPage({ params }: StockPageProps) {
         </div>
 
         <div className="mt-6">
-          <StockOverviewTabs />
-        </div>
+          <StockOverviewTabs>
+            <div className="mt-6">
+              <StockPriceHero closeTimeLabel={closeTimeLabel} stock={stock} />
+            </div>
 
-        <div className="mt-6">
-          <StockPriceHero closeTimeLabel={closeTimeLabel} stock={stock} />
-        </div>
+            <div className="mt-8 grid gap-8 xl:grid-cols-[1fr_340px] xl:items-start">
+              <div className="space-y-8">
+                <StockChartPanel chart={stock.chart} trendUp={trendUp} />
+                <StockKeyStatsGrid chart={stock.chart} stock={stock} />
+                <StockNotableTimeline articles={news} />
 
-        <div className="mt-8 grid gap-8 xl:grid-cols-[1fr_340px] xl:items-start">
-          <div className="space-y-8">
-            <StockChartPanel chart={stock.chart} trendUp={trendUp} />
-            <StockKeyStatsGrid chart={stock.chart} stock={stock} />
-            <StockNotableTimeline articles={news} />
+                <section>
+                  <h2 className="text-[17px] font-semibold text-[#1a1a1a]">Stories &amp; analysis</h2>
+                  <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                    {news.slice(0, 4).map((article) => (
+                      <article
+                        key={article.id}
+                        className="rounded-xl border border-[#ebebeb] bg-white p-4 shadow-sm"
+                      >
+                        <p className="text-[11px] font-medium uppercase tracking-wide text-neutral-400">
+                          {article.source}
+                        </p>
+                        <h3 className="mt-2 text-[15px] font-semibold leading-snug text-[#1a1a1a]">
+                          {article.headline}
+                        </h3>
+                        <p className="mt-2 line-clamp-3 text-[13px] leading-relaxed text-neutral-600">
+                          {article.summary}
+                        </p>
+                        <p className="mt-3 text-[11px] text-neutral-400">{article.publishedAt}</p>
+                      </article>
+                    ))}
+                  </div>
+                </section>
 
-            <section>
-              <h2 className="text-[17px] font-semibold text-[#1a1a1a]">Stories &amp; analysis</h2>
-              <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                {news.slice(0, 4).map((article) => (
-                  <article
-                    key={article.id}
-                    className="rounded-xl border border-[#ebebeb] bg-white p-4 shadow-sm"
-                  >
-                    <p className="text-[11px] font-medium uppercase tracking-wide text-neutral-400">
-                      {article.source}
-                    </p>
-                    <h3 className="mt-2 text-[15px] font-semibold leading-snug text-[#1a1a1a]">
-                      {article.headline}
-                    </h3>
-                    <p className="mt-2 line-clamp-3 text-[13px] leading-relaxed text-neutral-600">
-                      {article.summary}
-                    </p>
-                    <p className="mt-3 text-[11px] text-neutral-400">{article.publishedAt}</p>
-                  </article>
-                ))}
+                <section>
+                  <h2 className="text-[17px] font-semibold text-[#1a1a1a]">Related companies</h2>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {relatedStocks.map((related) => (
+                      <Link
+                        key={related.symbol}
+                        href={`/stocks/${related.symbol}`}
+                        className="inline-flex items-center gap-2 rounded-full border border-[#ebebeb] bg-[#fafafa] px-3 py-2 text-[13px] font-medium text-neutral-800 transition-colors hover:border-neutral-300 hover:bg-white"
+                      >
+                        <span className="font-semibold text-[#1a1a1a]">{related.symbol}</span>
+                        <span className="text-neutral-500">{formatCurrency(related.price)}</span>
+                        <span
+                          className={
+                            related.changePercent >= 0 ? "text-emerald-600" : "text-red-600"
+                          }
+                        >
+                          {formatPercent(related.changePercent)}
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
+                </section>
               </div>
-            </section>
 
-            <section>
-              <h2 className="text-[17px] font-semibold text-[#1a1a1a]">Related companies</h2>
-              <div className="mt-4 flex flex-wrap gap-2">
-                {relatedStocks.map((related) => (
-                  <Link
-                    key={related.symbol}
-                    href={`/stocks/${related.symbol}`}
-                    className="inline-flex items-center gap-2 rounded-full border border-[#ebebeb] bg-[#fafafa] px-3 py-2 text-[13px] font-medium text-neutral-800 transition-colors hover:border-neutral-300 hover:bg-white"
-                  >
-                    <span className="font-semibold text-[#1a1a1a]">{related.symbol}</span>
-                    <span className="text-neutral-500">{formatCurrency(related.price)}</span>
-                    <span
-                      className={
-                        related.changePercent >= 0 ? "text-emerald-600" : "text-red-600"
-                      }
-                    >
-                      {formatPercent(related.changePercent)}
-                    </span>
-                  </Link>
-                ))}
-              </div>
-            </section>
-          </div>
-
-          <aside className="xl:sticky xl:top-6">
-            <StockCompanySidebar stock={stock} />
-          </aside>
+              <aside className="xl:sticky xl:top-6">
+                <StockCompanySidebar stock={stock} />
+              </aside>
+            </div>
+          </StockOverviewTabs>
         </div>
       </div>
     </SiteHeader>
