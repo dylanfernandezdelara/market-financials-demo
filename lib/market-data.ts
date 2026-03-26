@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import {
   DashboardData,
+  Holding,
   NewsArticle,
   PortfolioHolding,
   PortfolioSnapshot,
@@ -30,9 +31,45 @@ import {
   watchlistSymbols,
 } from "@/lib/mock-data";
 
+/** In-memory store for holdings added via CSV import. */
+const importedHoldings: Holding[] = [];
+
+export function addImportedHoldings(holdings: Holding[]): void {
+  for (const incoming of holdings) {
+    const existing = importedHoldings.find((h) => h.symbol === incoming.symbol);
+    if (existing) {
+      const totalShares = existing.shares + incoming.shares;
+      existing.averageCost =
+        (existing.averageCost * existing.shares +
+          incoming.averageCost * incoming.shares) /
+        totalShares;
+      existing.shares = totalShares;
+    } else {
+      importedHoldings.push({ ...incoming });
+    }
+  }
+}
+
+function allHoldings(): Holding[] {
+  const merged = [...portfolioHoldings];
+  for (const imported of importedHoldings) {
+    const existing = merged.find((h) => h.symbol === imported.symbol);
+    if (existing) {
+      const totalShares = existing.shares + imported.shares;
+      existing.averageCost =
+        (existing.averageCost * existing.shares +
+          imported.averageCost * imported.shares) /
+        totalShares;
+      existing.shares = totalShares;
+    } else {
+      merged.push({ ...imported });
+    }
+  }
+  return merged;
+}
 
 function portfolioHoldingsWithValues(): PortfolioHolding[] {
-  const enriched = portfolioHoldings
+  const enriched = allHoldings()
     .map((holding) => {
       const stock = stockProfiles.find((profile) => profile.symbol === holding.symbol);
 
