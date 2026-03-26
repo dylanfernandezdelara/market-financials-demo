@@ -5,6 +5,7 @@ export async function GET() {
     theme: "light",
     density: "comfortable",
     defaultTab: "overview",
+    defaultLayoutId: "default",
   });
 }
 

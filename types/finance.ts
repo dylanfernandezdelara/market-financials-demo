@@ -208,6 +208,13 @@ export type MarketMovers = {
   active: ListMover[];
 };
 
+export type SavedLayout = {
+  id: string;
+  name: string;
+  widgets: string[];
+  createdAt: string;
+};
+
 export type DashboardData = {
   sentimentLabel: string;
   sessionLabel: string;
