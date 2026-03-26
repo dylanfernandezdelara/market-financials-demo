@@ -52,12 +52,15 @@ export function PreferencesForm() {
     setSaving(true);
     setSaved(false);
     try {
-      await fetch("/api/user/preferences", {
+      const res = await fetch("/api/user/preferences", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ locale, timezone, density }),
       });
+      if (!res.ok) throw new Error("save failed");
       setSaved(true);
+    } catch {
+      setSaved(false);
     } finally {
       setSaving(false);
     }
