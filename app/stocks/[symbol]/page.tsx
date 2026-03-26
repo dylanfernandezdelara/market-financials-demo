@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Suspense } from "react";
 import { ArrowLeft, ChevronRight } from "lucide-react";
 import { StockChartPanel } from "@/components/stock/stock-chart-panel";
 import { StockCompanySidebar } from "@/components/stock/stock-company-sidebar";
@@ -22,9 +21,6 @@ import {
 } from "@/lib/utils";
 import type { NewsArticle, PricePoint, SearchResult, StockProfile } from "@/types/finance";
 
-/* FDL-615 / SD07 – Re-export typed tab constant for page-level reference */
-export { STOCK_DETAIL_TABS } from "@/components/stock/stock-overview-tabs";
-
 /* FDL-609 / SD18 – Reusable Tailwind class-string constants */
 const SECTION_HEADING = "text-[17px] font-semibold text-heading";
 const CARD_BORDER = "rounded-xl border border-border-card bg-white p-4 shadow-sm";
@@ -42,19 +38,6 @@ function week52RangePercent(stock: StockProfile): number {
   return Math.min(100, Math.max(0, ((stock.price - stock.week52Low) / span) * 100));
 }
 
-/* FDL-632 / SD15 – Loading skeleton for the hero area */
-function HeroSkeleton() {
-  return (
-    <div className="animate-pulse space-y-4">
-      <div className="h-8 w-48 rounded bg-neutral-200" />
-      <div className="h-5 w-64 rounded bg-neutral-100" />
-      <div className="grid gap-4 sm:grid-cols-2">
-        <div className="h-32 rounded-xl bg-neutral-100" />
-        <div className="h-32 rounded-xl bg-neutral-100" />
-      </div>
-    </div>
-  );
-}
 
 type StockPageProps = {
   params: Promise<{
@@ -188,11 +171,9 @@ export default async function StockPage({ params }: StockPageProps) {
           />
         </div>
 
-        {/* FDL-632 / SD15 – Suspense skeleton for price hero */}
+        {/* FDL-632 / SD15 – HeroSkeleton is available for future async boundaries */}
         <div className="mt-6">
-          <Suspense fallback={<HeroSkeleton />}>
-            <StockPriceHero closeTimeLabel={closeTimeLabel} stock={stock} isMarketOpen={isMarketOpen} />
-          </Suspense>
+          <StockPriceHero closeTimeLabel={closeTimeLabel} stock={stock} isMarketOpen={isMarketOpen} />
         </div>
 
         {/* FDL-613 / SD04 – Proportional 52-week range bar */}
