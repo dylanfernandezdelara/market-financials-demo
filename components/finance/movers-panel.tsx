@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { changeTextClass, formatCurrency, formatPercent } from "@/lib/utils";
 import type { ListMover, MarketMovers } from "@/types/finance";
+import { SymbolAvatar } from "@/components/ui/symbol-avatar";
 
 const tabs = [
   { key: "gainers" as const, label: "Gainers" },
@@ -51,9 +52,7 @@ export function MoversPanel({ movers }: MoversPanelProps) {
             className="flex items-center justify-between gap-4 rounded-lg border border-neutral-200 bg-white px-3 py-2.5 shadow-sm transition-shadow hover:shadow-md"
           >
             <div className="flex min-w-0 items-center gap-3">
-              <span className="flex size-9 shrink-0 items-center justify-center rounded-md bg-neutral-100 text-xs font-semibold text-neutral-700">
-                {row.symbol.slice(0, 1)}
-              </span>
+              <SymbolAvatar symbol={row.symbol} size="sm" />
               <div className="min-w-0">
                 <p className="truncate text-[13px] font-semibold text-neutral-900">{row.name}</p>
                 <p className="truncate text-xs text-neutral-500">

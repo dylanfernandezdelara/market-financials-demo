@@ -3,6 +3,7 @@
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
 import type { MarketSummaryBlock } from "@/types/finance";
+import { SourceAvatarStack } from "@/components/ui/source-avatar-stack";
 
 type MarketSummaryAccordionProps = {
   summary: MarketSummaryBlock;
@@ -54,14 +55,7 @@ export function MarketSummaryAccordion({ summary }: MarketSummaryAccordionProps)
           })}
         </div>
         <div className="flex items-center gap-2 border-t border-[#ebebeb] px-4 py-3">
-          <div className="flex -space-x-1">
-            {[0, 1, 2].map((index) => (
-              <span
-                key={index}
-                className="inline-block size-5 rounded-full border border-white bg-gradient-to-br from-neutral-200 to-neutral-300"
-              />
-            ))}
-          </div>
+          <SourceAvatarStack count={3} />
           <span className="rounded-full border border-[#ebebeb] bg-[#fafafa] px-2.5 py-1 text-[11px] font-medium text-neutral-600">
             {summary.sourceCount} sources
           </span>

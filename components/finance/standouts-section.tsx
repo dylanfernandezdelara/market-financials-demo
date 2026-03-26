@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { formatCompactCurrency, formatCompactNumber } from "@/lib/utils";
 import type { StandoutStock } from "@/types/finance";
+import { SymbolAvatar } from "@/components/ui/symbol-avatar";
 
 type StandoutsSectionProps = {
   standouts: StandoutStock[];
@@ -20,9 +21,7 @@ export function StandoutsSection({ standouts }: StandoutsSectionProps) {
             className="grid gap-4 rounded-lg border border-neutral-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md sm:grid-cols-[auto_1fr]"
           >
             <div className="flex gap-3 sm:flex-col sm:items-start">
-              <span className="flex size-10 shrink-0 items-center justify-center rounded-md bg-neutral-100 text-sm font-semibold text-neutral-800">
-                {stock.symbol.slice(0, 1)}
-              </span>
+              <SymbolAvatar symbol={stock.symbol} size="md" />
               <div className="min-w-0 sm:w-full">
                 <p className="truncate text-[15px] font-semibold text-neutral-900">{stock.name}</p>
                 <p className="mt-0.5 text-xs text-neutral-500">

@@ -1,4 +1,5 @@
 import type { NewsArticle } from "@/types/finance";
+import { SourceAvatarStack } from "@/components/ui/source-avatar-stack";
 
 type StockNotableTimelineProps = {
   articles: NewsArticle[];
@@ -31,10 +32,8 @@ export function StockNotableTimeline({ articles }: StockNotableTimelineProps) {
             <p className="mt-2 text-[13px] leading-relaxed text-neutral-600">{article.summary}</p>
             <p className="mt-2 text-[11px] text-neutral-400">{article.source}</p>
             {index === 0 ? (
-              <div className="mt-3 flex gap-1">
-                <span className="size-5 rounded-full bg-neutral-200" />
-                <span className="size-5 rounded-full bg-neutral-300" />
-                <span className="size-5 rounded-full bg-neutral-200" />
+              <div className="mt-3">
+                <SourceAvatarStack count={3} />
               </div>
             ) : null}
           </article>
