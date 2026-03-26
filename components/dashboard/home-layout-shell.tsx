@@ -119,7 +119,7 @@ export function HomeLayoutShell({ sectionMap }: HomeLayoutShellProps) {
       {editing ? (
         <div className="rounded-lg border border-neutral-200 bg-white p-4 shadow-sm">
           <p className="mb-3 text-[13px] font-medium text-neutral-700">
-            Drag sections to reorder or toggle visibility.
+            Use arrows to reorder sections or toggle their visibility.
           </p>
           <div className="flex flex-col gap-1">
             {displaySections.map((section, index) => (
