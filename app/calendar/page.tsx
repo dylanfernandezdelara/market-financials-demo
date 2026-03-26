@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   ChevronLeft,
   ChevronRight,
@@ -85,7 +85,10 @@ function formatDateRange(weekStart: Date, tz: string): string {
 }
 
 function isoDate(date: Date): string {
-  return date.toISOString().slice(0, 10);
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
 }
 
 function formatEventDate(dateStr: string, tz: string): string {
@@ -106,6 +109,7 @@ export default function EarningsCalendarPage() {
   const [layouts, setLayouts] = useState<SavedLayout[]>(INITIAL_LAYOUTS);
   const [renamingId, setRenamingId] = useState<string | null>(null);
   const [renameValue, setRenameValue] = useState("");
+  const renameCancelledRef = useRef(false);
 
   /* ── date navigation ── */
 
@@ -135,13 +139,14 @@ export default function EarningsCalendarPage() {
     setLayouts((prev) => {
       const remaining = prev.filter((l) => l.id !== id);
       if (remaining.length > 0 && !remaining.some((l) => l.isDefault)) {
-        remaining[0].isDefault = true;
+        remaining[0] = { ...remaining[0], isDefault: true };
       }
       return remaining;
     });
   };
 
   const startRename = (layout: SavedLayout) => {
+    renameCancelledRef.current = false;
     setRenamingId(layout.id);
     setRenameValue(layout.name);
   };
@@ -261,10 +266,17 @@ export default function EarningsCalendarPage() {
                     autoFocus
                     value={renameValue}
                     onChange={(e) => setRenameValue(e.target.value)}
-                    onBlur={commitRename}
+                    onBlur={() => {
+                      if (renameCancelledRef.current) {
+                        renameCancelledRef.current = false;
+                        return;
+                      }
+                      commitRename();
+                    }}
                     onKeyDown={(e) => {
                       if (e.key === "Enter") commitRename();
                       if (e.key === "Escape") {
+                        renameCancelledRef.current = true;
                         setRenamingId(null);
                         setRenameValue("");
                       }
