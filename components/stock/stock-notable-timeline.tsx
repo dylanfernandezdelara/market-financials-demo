@@ -33,7 +33,7 @@ export function StockNotableTimeline({ articles }: StockNotableTimelineProps) {
             <p className="mt-2 text-[11px] text-neutral-400">{article.source}</p>
             {index === 0 ? (
               <div className="mt-3">
-                <SourceAvatarStack count={3} />
+                <SourceAvatarStack count={3} variant="spaced" />
               </div>
             ) : null}
           </article>
