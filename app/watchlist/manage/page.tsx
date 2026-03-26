@@ -167,13 +167,12 @@ export default function WatchlistManagePage() {
   }
 
   /* ---- FDL-683: reorder ---- */
-  function moveEntry(listId: string, index: number, direction: "up" | "down") {
+  function swapEntries(listId: string, idxA: number, idxB: number) {
     const updated = lists.map((list) => {
       if (list.id !== listId) return list;
       const syms = [...list.symbols];
-      const swapIdx = direction === "up" ? index - 1 : index + 1;
-      if (swapIdx < 0 || swapIdx >= syms.length) return list;
-      [syms[index], syms[swapIdx]] = [syms[swapIdx], syms[index]];
+      if (idxA < 0 || idxA >= syms.length || idxB < 0 || idxB >= syms.length) return list;
+      [syms[idxA], syms[idxB]] = [syms[idxB], syms[idxA]];
       return { ...list, symbols: syms };
     });
     persist(updated);
@@ -349,15 +348,17 @@ export default function WatchlistManagePage() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-neutral-100">
-                      {visibleEntries.map((entry) => {
+                      {visibleEntries.map((entry, visIdx) => {
                         const originalIdx = entry.originalIndex;
+                        const prevVisibleIdx = visIdx > 0 ? visibleEntries[visIdx - 1].originalIndex : null;
+                        const nextVisibleIdx = visIdx < visibleEntries.length - 1 ? visibleEntries[visIdx + 1].originalIndex : null;
                         const isHighlighted =
                           normalizedSearch.length > 0 &&
                           entry.symbol.toUpperCase() === normalizedSearch;
 
                         return (
                           <tr
-                            key={entry.symbol}
+                            key={entry.originalIndex}
                             className={
                               isHighlighted ? "bg-amber-50" : "bg-white"
                             }
@@ -403,9 +404,9 @@ export default function WatchlistManagePage() {
                                 <button
                                   type="button"
                                   aria-label={`Move ${entry.symbol} up`}
-                                  disabled={originalIdx === 0}
+                                  disabled={prevVisibleIdx === null}
                                   onClick={() =>
-                                    moveEntry(list.id, originalIdx, "up")
+                                    prevVisibleIdx !== null && swapEntries(list.id, originalIdx, prevVisibleIdx)
                                   }
                                   className="rounded p-0.5 text-neutral-400 hover:text-neutral-700 disabled:opacity-30"
                                 >
@@ -414,11 +415,9 @@ export default function WatchlistManagePage() {
                                 <button
                                   type="button"
                                   aria-label={`Move ${entry.symbol} down`}
-                                  disabled={
-                                    originalIdx === list.symbols.length - 1
-                                  }
+                                  disabled={nextVisibleIdx === null}
                                   onClick={() =>
-                                    moveEntry(list.id, originalIdx, "down")
+                                    nextVisibleIdx !== null && swapEntries(list.id, originalIdx, nextVisibleIdx)
                                   }
                                   className="rounded p-0.5 text-neutral-400 hover:text-neutral-700 disabled:opacity-30"
                                 >
