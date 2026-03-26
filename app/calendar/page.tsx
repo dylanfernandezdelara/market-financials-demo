@@ -84,15 +84,18 @@ function formatDateRange(weekStart: Date, tz: string): string {
   return `${fmt.format(weekStart)} \u2013 ${fmt.format(end)}`;
 }
 
-function isoDate(date: Date): string {
-  const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, "0");
-  const d = String(date.getDate()).padStart(2, "0");
-  return `${y}-${m}-${d}`;
+function isoDateInTz(date: Date, tz: string): string {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    timeZone: tz,
+  }).format(date);
+  return parts;
 }
 
 function formatEventDate(dateStr: string, tz: string): string {
-  const d = new Date(dateStr + "T12:00:00");
+  const d = new Date(dateStr + "T12:00:00Z");
   return new Intl.DateTimeFormat("en-US", {
     weekday: "short",
     month: "short",
@@ -120,8 +123,8 @@ export default function EarningsCalendarPage() {
   /* ── filter events to current week ── */
 
   const weekEnd = addDays(weekStart, 6);
-  const weekStartISO = isoDate(weekStart);
-  const weekEndISO = isoDate(weekEnd);
+  const weekStartISO = isoDateInTz(weekStart, timezone);
+  const weekEndISO = isoDateInTz(weekEnd, timezone);
 
   const visibleEvents = EARNINGS_EVENTS.filter(
     (e) => e.date >= weekStartISO && e.date <= weekEndISO,
