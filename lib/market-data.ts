@@ -1,16 +1,20 @@
 import { notFound } from "next/navigation";
 import {
   DashboardData,
+  Filing,
   NewsArticle,
   PortfolioHolding,
   PortfolioSnapshot,
   SearchResult,
   StockProfile,
+  ThirdPartyNote,
+  Transcript,
   WatchlistEntry,
 } from "@/types/finance";
 import {
   cryptoQuotes,
   equitySectorEtfs,
+  filings,
   fixedIncomeRows,
   marketMoversLists,
   marketSummaryBlock,
@@ -24,8 +28,10 @@ import {
   sectorPerformance,
   standouts,
   stockProfiles,
+  thirdPartyNotes,
   topFutures,
   topMovers,
+  transcripts,
   watchlistBarEntries,
   watchlistSymbols,
 } from "@/lib/mock-data";
@@ -235,4 +241,58 @@ export async function getRelatedStocks(symbol: string) {
         profile.sector === stock.sector,
     )
     .slice(0, 3);
+}
+
+export async function getFilings(limit?: number): Promise<Filing[]> {
+  if (limit === undefined || Number.isNaN(limit)) {
+    return filings;
+  }
+
+  if (limit <= 0) {
+    return [];
+  }
+
+  return filings.slice(0, limit);
+}
+
+export async function getFilingsForSymbol(symbol: string): Promise<Filing[]> {
+  return filings.filter(
+    (filing) => filing.symbol.toLowerCase() === symbol.trim().toLowerCase(),
+  );
+}
+
+export async function getTranscripts(limit?: number): Promise<Transcript[]> {
+  if (limit === undefined || Number.isNaN(limit)) {
+    return transcripts;
+  }
+
+  if (limit <= 0) {
+    return [];
+  }
+
+  return transcripts.slice(0, limit);
+}
+
+export async function getTranscriptsForSymbol(symbol: string): Promise<Transcript[]> {
+  return transcripts.filter(
+    (transcript) => transcript.symbol.toLowerCase() === symbol.trim().toLowerCase(),
+  );
+}
+
+export async function getThirdPartyNotes(limit?: number): Promise<ThirdPartyNote[]> {
+  if (limit === undefined || Number.isNaN(limit)) {
+    return thirdPartyNotes;
+  }
+
+  if (limit <= 0) {
+    return [];
+  }
+
+  return thirdPartyNotes.slice(0, limit);
+}
+
+export async function getThirdPartyNotesForSymbol(symbol: string): Promise<ThirdPartyNote[]> {
+  return thirdPartyNotes.filter(
+    (note) => note.symbol.toLowerCase() === symbol.trim().toLowerCase(),
+  );
 }

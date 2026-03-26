@@ -8,6 +8,7 @@ import {
   StockProfile,
   TopMover,
   type CryptoQuote,
+  type Filing,
   type FixedIncomeRow,
   type FuturesAsset,
   type MarketMovers,
@@ -16,6 +17,8 @@ import {
   type RecentDevelopment,
   type SectorEtfRow,
   type StandoutStock,
+  type ThirdPartyNote,
+  type Transcript,
   type WatchlistBarEntry,
 } from "@/types/finance";
 
@@ -1075,4 +1078,199 @@ export const fixedIncomeRows: FixedIncomeRow[] = [
   { name: "Convertibles", symbol: "CWB", price: 91.98, changePercent: -2.26 },
   { name: "High Yield", symbol: "HYG", price: 78.92, changePercent: -0.93 },
   { name: "High Grade", symbol: "LQD", price: 107.85, changePercent: -1.23 },
+];
+
+export const filings: Filing[] = [
+  {
+    id: "filing-1",
+    symbol: "AAPL",
+    type: "10-K",
+    title: "Annual Report for the fiscal year ended September 30, 2025",
+    filedAt: "2025-10-31",
+    periodOfReport: "2025-09-30",
+    url: "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=AAPL&type=10-K",
+  },
+  {
+    id: "filing-2",
+    symbol: "AAPL",
+    type: "10-Q",
+    title: "Quarterly Report for the period ended December 28, 2025",
+    filedAt: "2026-01-31",
+    periodOfReport: "2025-12-28",
+    url: "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=AAPL&type=10-Q",
+  },
+  {
+    id: "filing-3",
+    symbol: "NVDA",
+    type: "10-K",
+    title: "Annual Report for the fiscal year ended January 26, 2025",
+    filedAt: "2025-02-26",
+    periodOfReport: "2025-01-26",
+    url: "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=NVDA&type=10-K",
+  },
+  {
+    id: "filing-4",
+    symbol: "NVDA",
+    type: "8-K",
+    title: "Current Report — Data Center Revenue Exceeds Expectations",
+    filedAt: "2026-02-26",
+    periodOfReport: "2026-02-26",
+    url: "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=NVDA&type=8-K",
+  },
+  {
+    id: "filing-5",
+    symbol: "MSFT",
+    type: "10-Q",
+    title: "Quarterly Report for the period ended December 31, 2025",
+    filedAt: "2026-01-29",
+    periodOfReport: "2025-12-31",
+    url: "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=MSFT&type=10-Q",
+  },
+  {
+    id: "filing-6",
+    symbol: "TSLA",
+    type: "DEF 14A",
+    title: "Proxy Statement for 2026 Annual Meeting of Stockholders",
+    filedAt: "2026-03-15",
+    periodOfReport: "2026-03-15",
+    url: "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=TSLA&type=DEF+14A",
+  },
+];
+
+export const transcripts: Transcript[] = [
+  {
+    id: "transcript-1",
+    symbol: "AAPL",
+    title: "Apple Inc. Q1 FY2026 Earnings Call",
+    date: "2026-01-30",
+    fiscalQuarter: "Q1",
+    fiscalYear: 2026,
+    speakers: [
+      { name: "Tim Cook", role: "CEO" },
+      { name: "Luca Maestri", role: "CFO" },
+    ],
+    summary:
+      "Apple reported record Q1 revenue driven by iPhone and Services growth, with management highlighting strong demand in emerging markets and continued expansion of the installed base.",
+    url: "https://example.com/transcripts/aapl-q1-fy2026",
+  },
+  {
+    id: "transcript-2",
+    symbol: "NVDA",
+    title: "NVIDIA Corp. Q4 FY2025 Earnings Call",
+    date: "2025-02-26",
+    fiscalQuarter: "Q4",
+    fiscalYear: 2025,
+    speakers: [
+      { name: "Jensen Huang", role: "CEO" },
+      { name: "Colette Kress", role: "CFO" },
+    ],
+    summary:
+      "NVIDIA reported a surge in data center revenue, citing unprecedented demand for AI training and inference accelerators from hyperscale customers.",
+    url: "https://example.com/transcripts/nvda-q4-fy2025",
+  },
+  {
+    id: "transcript-3",
+    symbol: "MSFT",
+    title: "Microsoft Corp. Q2 FY2026 Earnings Call",
+    date: "2026-01-28",
+    fiscalQuarter: "Q2",
+    fiscalYear: 2026,
+    speakers: [
+      { name: "Satya Nadella", role: "CEO" },
+      { name: "Amy Hood", role: "CFO" },
+    ],
+    summary:
+      "Microsoft highlighted Azure growth acceleration and Copilot adoption across enterprise customers, while noting stable margins despite increased AI infrastructure investment.",
+    url: "https://example.com/transcripts/msft-q2-fy2026",
+  },
+  {
+    id: "transcript-4",
+    symbol: "TSLA",
+    title: "Tesla Inc. Q4 FY2025 Earnings Call",
+    date: "2026-01-29",
+    fiscalQuarter: "Q4",
+    fiscalYear: 2025,
+    speakers: [
+      { name: "Elon Musk", role: "CEO" },
+      { name: "Vaibhav Taneja", role: "CFO" },
+    ],
+    summary:
+      "Tesla discussed record vehicle deliveries for the full year while acknowledging margin pressure from pricing adjustments, and reiterated its autonomy roadmap timeline.",
+    url: "https://example.com/transcripts/tsla-q4-fy2025",
+  },
+];
+
+export const thirdPartyNotes: ThirdPartyNote[] = [
+  {
+    id: "note-1",
+    symbol: "AAPL",
+    analyst: "Erik Woodring",
+    firm: "Morgan Stanley",
+    title: "Services Momentum Justifies Premium Multiple",
+    publishedAt: "2026-03-18",
+    sentiment: "bullish",
+    summary:
+      "Reiterated Overweight rating, citing durable Services revenue growth and improving capital return trajectory as key drivers for the stock.",
+    priceTarget: 215,
+  },
+  {
+    id: "note-2",
+    symbol: "NVDA",
+    analyst: "Stacy Rasgon",
+    firm: "Bernstein",
+    title: "AI Infrastructure Demand Remains Robust Into 2H",
+    publishedAt: "2026-03-20",
+    sentiment: "bullish",
+    summary:
+      "Maintained Outperform rating. Hyperscaler capex surveys point to continued demand pull for Blackwell architecture through year-end.",
+    priceTarget: 1100,
+  },
+  {
+    id: "note-3",
+    symbol: "TSLA",
+    analyst: "Adam Jonas",
+    firm: "Morgan Stanley",
+    title: "Delivery Miss Clouds Near-Term Outlook",
+    publishedAt: "2026-03-15",
+    sentiment: "neutral",
+    summary:
+      "Maintained Equal-Weight rating as volume growth decelerates. Autonomy optionality remains but execution risk has increased.",
+    priceTarget: 190,
+  },
+  {
+    id: "note-4",
+    symbol: "MSFT",
+    analyst: "Brent Thill",
+    firm: "Jefferies",
+    title: "Azure Reacceleration is the Story",
+    publishedAt: "2026-03-12",
+    sentiment: "bullish",
+    summary:
+      "Raised price target on improving Azure growth trajectory and Copilot monetization signals from enterprise channel checks.",
+    priceTarget: 480,
+  },
+  {
+    id: "note-5",
+    symbol: "AMZN",
+    analyst: "Doug Anmuth",
+    firm: "JPMorgan",
+    title: "Retail Margins Expand While AWS Stabilizes",
+    publishedAt: "2026-03-10",
+    sentiment: "bullish",
+    summary:
+      "Reiterated Overweight. Retail operating margin improvement and AWS demand stabilization support the investment case.",
+    priceTarget: 210,
+  },
+  {
+    id: "note-6",
+    symbol: "GOOGL",
+    analyst: "Justin Post",
+    firm: "Bank of America",
+    title: "Search Resilience Offset by Regulatory Overhang",
+    publishedAt: "2026-03-08",
+    sentiment: "neutral",
+    summary:
+      "Maintained Neutral rating as antitrust uncertainty persists despite solid Search and Cloud fundamentals.",
+    priceTarget: 175,
+  },
 ];

@@ -208,6 +208,49 @@ export type MarketMovers = {
   active: ListMover[];
 };
 
+export type FilingType = "10-K" | "10-Q" | "8-K" | "DEF 14A" | "S-1";
+
+export type Filing = {
+  id: string;
+  symbol: string;
+  type: FilingType;
+  title: string;
+  filedAt: string;
+  periodOfReport: string;
+  url: string;
+};
+
+export type TranscriptSpeaker = {
+  name: string;
+  role: string;
+};
+
+export type Transcript = {
+  id: string;
+  symbol: string;
+  title: string;
+  date: string;
+  fiscalQuarter: string;
+  fiscalYear: number;
+  speakers: TranscriptSpeaker[];
+  summary: string;
+  url: string;
+};
+
+export type ThirdPartyNoteSentiment = "bullish" | "neutral" | "bearish";
+
+export type ThirdPartyNote = {
+  id: string;
+  symbol: string;
+  analyst: string;
+  firm: string;
+  title: string;
+  publishedAt: string;
+  sentiment: ThirdPartyNoteSentiment;
+  summary: string;
+  priceTarget: number | null;
+};
+
 export type DashboardData = {
   sentimentLabel: string;
   sessionLabel: string;
