@@ -22,7 +22,7 @@ const merged = {
   ...S10,
 } as Record<string, (a: number, b: number) => number>;
 
-const samplePairs: [number, number][] = [
+export const samplePairs: [number, number][] = [
   [142.5, 138.2],
   [88.1, 90.4],
   [2100, 2050],
@@ -30,12 +30,12 @@ const samplePairs: [number, number][] = [
   [17.2, 16.9],
 ];
 
-export function runAllInsightMetrics(): { id: string; values: number[] }[] {
+export function runAllInsightMetrics(): { id: string; values: number[]; pairs: [number, number][] }[] {
   const keys = Object.keys(merged).filter((k) => k.startsWith("rollingMetric"));
   keys.sort();
   return keys.map((key) => {
     const fn = merged[key];
     const values = samplePairs.map(([a, b]) => fn(a, b));
-    return { id: key, values };
+    return { id: key, values, pairs: samplePairs };
   });
 }
