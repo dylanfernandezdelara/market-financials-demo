@@ -47,7 +47,7 @@ export default function TeamPage() {
       setInvites((prev) => [
         ...prev,
         {
-          id: data.inviteId as string,
+          id: `${data.inviteId as string}_${Date.now()}`,
           email: email.trim(),
           role,
           status: "pending",
