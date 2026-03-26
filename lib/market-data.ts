@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import {
+  AlertSuggestion,
   DashboardData,
   NewsArticle,
   PortfolioHolding,
@@ -219,6 +220,40 @@ export async function getNewsForSymbol(symbol: string) {
       (relatedSymbol) => relatedSymbol.toLowerCase() === symbol.trim().toLowerCase(),
     ),
   );
+}
+
+const CONCENTRATION_THRESHOLD = 25;
+const FAST_MOVER_THRESHOLD = 3;
+
+export async function getAlertSuggestions(): Promise<AlertSuggestion[]> {
+  const holdings = portfolioHoldingsWithValues();
+  const suggestions: AlertSuggestion[] = [];
+
+  for (const holding of holdings) {
+    if (holding.allocationPercent >= CONCENTRATION_THRESHOLD) {
+      suggestions.push({
+        symbol: holding.symbol,
+        name: holding.name,
+        reason: "concentration",
+        headline: `${holding.symbol} is ${holding.allocationPercent.toFixed(1)}% of your portfolio`,
+        detail: `Consider a rebalance alert — this position exceeds the ${CONCENTRATION_THRESHOLD}% concentration threshold.`,
+      });
+    }
+
+    const stock = stockProfiles.find((p) => p.symbol === holding.symbol);
+    if (stock && Math.abs(stock.changePercent) >= FAST_MOVER_THRESHOLD) {
+      const direction = stock.changePercent > 0 ? "up" : "down";
+      suggestions.push({
+        symbol: holding.symbol,
+        name: holding.name,
+        reason: "fast_mover",
+        headline: `${holding.symbol} moved ${direction} ${Math.abs(stock.changePercent).toFixed(2)}% today`,
+        detail: `Set a trailing-stop or price-cross alert to protect against further ${direction === "down" ? "downside" : "reversal"}.`,
+      });
+    }
+  }
+
+  return suggestions;
 }
 
 export async function getRelatedStocks(symbol: string) {

@@ -208,6 +208,16 @@ export type MarketMovers = {
   active: ListMover[];
 };
 
+export type AlertSuggestionReason = "concentration" | "fast_mover";
+
+export type AlertSuggestion = {
+  symbol: string;
+  name: string;
+  reason: AlertSuggestionReason;
+  headline: string;
+  detail: string;
+};
+
 export type DashboardData = {
   sentimentLabel: string;
   sessionLabel: string;
