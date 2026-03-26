@@ -139,16 +139,19 @@ export default function IntegrationsPage() {
 
         const data: SyncResult = await res.json();
 
-        setProviders((prev) => ({
-          ...prev,
-          [key]: {
-            ...prev[key],
-            syncStatus: data.status,
-            lastSuccess: data.lastSuccess,
-            retryCount: data.retryCount,
-            error: data.error,
-          },
-        }));
+        setProviders((prev) => {
+          if (!prev[key].connected) return prev;
+          return {
+            ...prev,
+            [key]: {
+              ...prev[key],
+              syncStatus: data.status,
+              lastSuccess: data.lastSuccess,
+              retryCount: data.retryCount,
+              error: data.error,
+            },
+          };
+        });
 
         pushActivity(key, data.status, data.error);
       } catch {
