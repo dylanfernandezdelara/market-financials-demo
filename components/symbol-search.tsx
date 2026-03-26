@@ -1,17 +1,20 @@
 "use client";
 
-import { startTransition, useDeferredValue, useState } from "react";
+import { startTransition, useEffect, useDeferredValue, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowRight, Search, Sparkles } from "lucide-react";
+import { ArrowRight, Clock, Search, Sparkles, Star } from "lucide-react";
 import { SearchResult } from "@/types/finance";
 import { ChangePill } from "@/components/ui/change-pill";
+import { formatCurrency, changeTextClass, formatPercent } from "@/lib/utils";
 
 type SymbolSearchProps = {
   options: SearchResult[];
   variant?: "full" | "toolbar" | "header";
+  recentSymbols?: SearchResult[];
+  watchlistShortcuts?: SearchResult[];
 };
 
-export function SymbolSearch({ options, variant = "full" }: SymbolSearchProps) {
+export function SymbolSearch({ options, variant = "full", recentSymbols, watchlistShortcuts }: SymbolSearchProps) {
   const router = useRouter();
   const [query, setQuery] = useState("");
   const deferredQuery = useDeferredValue(query);
@@ -63,30 +66,133 @@ export function SymbolSearch({ options, variant = "full" }: SymbolSearchProps) {
     goToSymbol(target.symbol);
   };
 
+  const [open, setOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const hasShortcuts =
+    (recentSymbols && recentSymbols.length > 0) ||
+    (watchlistShortcuts && watchlistShortcuts.length > 0);
+  const showDropdown = variant === "header" && open && !normalizedQuery && hasShortcuts;
+
   if (variant === "header") {
     return (
-      <form onSubmit={handleSubmit} className="w-full">
-        <div className="flex w-full items-center gap-2 rounded-full border border-[#e5e5e5] bg-[#fafafa] px-3 py-2 shadow-[inset_0_1px_2px_rgba(0,0,0,0.04)]">
-          <Search className="size-4 shrink-0 text-neutral-400" aria-hidden />
-          <input
-            type="search"
-            name="q"
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder="Search for stocks, crypto, and more"
-            autoComplete="off"
-            enterKeyHint="search"
-            className="min-w-0 flex-1 bg-transparent text-[13px] text-[#1a1a1a] outline-none placeholder:text-neutral-400"
-          />
-          <button
-            type="submit"
-            className="flex size-8 shrink-0 items-center justify-center rounded-full bg-neutral-900 text-white transition-colors hover:bg-neutral-800"
-            aria-label="Search"
-          >
-            <ArrowRight className="size-4" strokeWidth={2.25} aria-hidden />
-          </button>
-        </div>
-      </form>
+      <div ref={containerRef} className="relative w-full">
+        <form onSubmit={handleSubmit} className="w-full">
+          <div className="flex w-full items-center gap-2 rounded-full border border-[#e5e5e5] bg-[#fafafa] px-3 py-2 shadow-[inset_0_1px_2px_rgba(0,0,0,0.04)]">
+            <Search className="size-4 shrink-0 text-neutral-400" aria-hidden />
+            <input
+              type="search"
+              name="q"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              onFocus={() => setOpen(true)}
+              placeholder="Search for stocks, crypto, and more"
+              autoComplete="off"
+              enterKeyHint="search"
+              className="min-w-0 flex-1 bg-transparent text-[13px] text-[#1a1a1a] outline-none placeholder:text-neutral-400"
+            />
+            <button
+              type="submit"
+              className="flex size-8 shrink-0 items-center justify-center rounded-full bg-neutral-900 text-white transition-colors hover:bg-neutral-800"
+              aria-label="Search"
+            >
+              <ArrowRight className="size-4" strokeWidth={2.25} aria-hidden />
+            </button>
+          </div>
+        </form>
+
+        {showDropdown ? (
+          <div className="absolute left-0 right-0 top-full z-50 mt-2 overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-lg">
+            {recentSymbols && recentSymbols.length > 0 ? (
+              <div className="border-b border-neutral-100 px-3 py-2.5">
+                <div className="mb-2 flex items-center gap-1.5">
+                  <Clock className="size-3.5 text-neutral-400" />
+                  <span className="text-[11px] font-semibold uppercase tracking-wide text-neutral-400">
+                    Recent
+                  </span>
+                </div>
+                <div className="flex flex-col gap-0.5">
+                  {recentSymbols.map((item) => (
+                    <button
+                      key={item.symbol}
+                      type="button"
+                      onClick={() => {
+                        setOpen(false);
+                        goToSymbol(item.symbol);
+                      }}
+                      className="flex items-center justify-between rounded-lg px-2 py-1.5 text-left transition-colors hover:bg-neutral-50"
+                    >
+                      <div className="min-w-0">
+                        <span className="text-[13px] font-semibold text-neutral-900">
+                          {item.symbol}
+                        </span>
+                        <span className="ml-2 text-[12px] text-neutral-500">
+                          {item.name}
+                        </span>
+                      </div>
+                      <span className={`shrink-0 text-[12px] font-medium tabular-nums ${changeTextClass(item.changePercent)}`}>
+                        {formatPercent(item.changePercent)}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+
+            {watchlistShortcuts && watchlistShortcuts.length > 0 ? (
+              <div className="px-3 py-2.5">
+                <div className="mb-2 flex items-center gap-1.5">
+                  <Star className="size-3.5 text-neutral-400" />
+                  <span className="text-[11px] font-semibold uppercase tracking-wide text-neutral-400">
+                    Watchlist
+                  </span>
+                </div>
+                <div className="flex flex-col gap-0.5">
+                  {watchlistShortcuts.map((item) => (
+                    <button
+                      key={item.symbol}
+                      type="button"
+                      onClick={() => {
+                        setOpen(false);
+                        goToSymbol(item.symbol);
+                      }}
+                      className="flex items-center justify-between rounded-lg px-2 py-1.5 text-left transition-colors hover:bg-neutral-50"
+                    >
+                      <div className="min-w-0">
+                        <span className="text-[13px] font-semibold text-neutral-900">
+                          {item.symbol}
+                        </span>
+                        <span className="ml-2 text-[12px] text-neutral-500">
+                          {item.name}
+                        </span>
+                      </div>
+                      <div className="flex shrink-0 items-center gap-2">
+                        <span className="text-[12px] tabular-nums text-neutral-500">
+                          {formatCurrency(item.price)}
+                        </span>
+                        <span className={`text-[12px] font-medium tabular-nums ${changeTextClass(item.changePercent)}`}>
+                          {formatPercent(item.changePercent)}
+                        </span>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+          </div>
+        ) : null}
+      </div>
     );
   }
 
