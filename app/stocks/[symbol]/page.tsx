@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { StockChartPanel } from "@/components/stock/stock-chart-panel";
 import { StockCompanySidebar } from "@/components/stock/stock-company-sidebar";
-import { StockFollowRow, StockPriceHero } from "@/components/stock/stock-price-hero";
+import { StockAlertShortcuts, StockFollowRow, StockPriceHero } from "@/components/stock/stock-price-hero";
 import { StockKeyStatsGrid } from "@/components/stock/stock-key-stats-grid";
 import { StockNotableTimeline } from "@/components/stock/stock-notable-timeline";
 import { StockOverviewTabs } from "@/components/stock/stock-overview-tabs";
@@ -93,6 +93,10 @@ export default async function StockPage({ params }: StockPageProps) {
 
         <div className="mt-6">
           <StockPriceHero closeTimeLabel={closeTimeLabel} stock={stock} />
+        </div>
+
+        <div className="mt-4">
+          <StockAlertShortcuts stock={stock} />
         </div>
 
         <div className="mt-8 grid gap-8 xl:grid-cols-[1fr_340px] xl:items-start">
