@@ -74,6 +74,8 @@ export function FinanceMarketTabs() {
 
   // ── IntersectionObserver – update active tab on scroll ──────────────
   const visibleSections = useRef(new Set<string>());
+  // Section ids sorted by their position in the DOM (computed once on mount).
+  const domOrderIds = useRef<string[]>([]);
 
   const handleIntersect = useCallback(
     (entries: IntersectionObserverEntry[]) => {
@@ -92,7 +94,7 @@ export function FinanceMarketTabs() {
         setActiveHash("");
       } else {
         // Activate the first visible section in document order.
-        for (const id of sectionIds) {
+        for (const id of domOrderIds.current) {
           if (visibleSections.current.has(id)) {
             setActiveHash(id);
             break;
@@ -111,6 +113,12 @@ export function FinanceMarketTabs() {
       .filter(Boolean) as HTMLElement[];
 
     if (elements.length === 0) return;
+
+    // Sort by DOM position so the topmost visible section wins.
+    elements.sort((a, b) =>
+      a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1,
+    );
+    domOrderIds.current = elements.map((el) => el.id);
 
     const observer = new IntersectionObserver(handleIntersect, {
       rootMargin: "-30% 0px -60% 0px",
