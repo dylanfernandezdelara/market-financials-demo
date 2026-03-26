@@ -29,6 +29,18 @@ class InsightsErrorBoundary extends Component<EBProps, EBState> {
   }
 }
 
+function InsightsTable({ rows }: { rows: Row[] | null }) {
+  return (
+    <div className="mt-6 max-h-96 overflow-auto rounded-lg border border-neutral-200 bg-white text-xs font-mono">
+      {rows?.slice(0, 12).map((r) => (
+        <div key={r.id} className="border-b border-neutral-100 px-2 py-1">
+          {r.id}: {r.values.map((v) => v.toFixed(2)).join(", ")}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default function InsightsExplorerPage() {
   const [rows, setRows] = useState<Row[] | null>(null);
   const [err, setErr] = useState<string | null>(null);
@@ -49,13 +61,7 @@ export default function InsightsExplorerPage() {
         Rows loaded: {rows ? rows.length : "—"}
       </p>
       <InsightsErrorBoundary>
-        <div className="mt-6 max-h-96 overflow-auto rounded-lg border border-neutral-200 bg-white text-xs font-mono">
-          {rows?.slice(0, 12).map((r) => (
-            <div key={r.id} className="border-b border-neutral-100 px-2 py-1">
-              {r.id}: {r.values.map((v) => v.toFixed(2)).join(", ")}
-            </div>
-          ))}
-        </div>
+        <InsightsTable rows={rows} />
       </InsightsErrorBoundary>
     </div>
   );
