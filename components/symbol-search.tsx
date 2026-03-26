@@ -14,6 +14,7 @@ type SymbolSearchProps = {
 export function SymbolSearch({ options, variant = "full" }: SymbolSearchProps) {
   const router = useRouter();
   const [query, setQuery] = useState("");
+  const [unsupportedSymbol, setUnsupportedSymbol] = useState<string | null>(null);
   const deferredQuery = useDeferredValue(query);
   const normalizedQuery = deferredQuery.trim().toLowerCase();
 
@@ -57,9 +58,11 @@ export function SymbolSearch({ options, variant = "full" }: SymbolSearchProps) {
     const target = exactMatch ?? filtered[0];
 
     if (!target) {
+      setUnsupportedSymbol(q.toUpperCase());
       return;
     }
 
+    setUnsupportedSymbol(null);
     goToSymbol(target.symbol);
   };
 
@@ -72,7 +75,10 @@ export function SymbolSearch({ options, variant = "full" }: SymbolSearchProps) {
             type="search"
             name="q"
             value={query}
-            onChange={(event) => setQuery(event.target.value)}
+            onChange={(event) => {
+              setQuery(event.target.value);
+              setUnsupportedSymbol(null);
+            }}
             placeholder="Search for stocks, crypto, and more"
             autoComplete="off"
             enterKeyHint="search"
@@ -86,31 +92,46 @@ export function SymbolSearch({ options, variant = "full" }: SymbolSearchProps) {
             <ArrowRight className="size-4" strokeWidth={2.25} aria-hidden />
           </button>
         </div>
+        {unsupportedSymbol ? (
+          <p className="mt-2 text-xs text-red-600">
+            &ldquo;{unsupportedSymbol}&rdquo; is not in the current coverage universe.
+          </p>
+        ) : null}
       </form>
     );
   }
 
   if (variant === "toolbar") {
     return (
-      <form onSubmit={handleSubmit} className="flex w-full items-center gap-2">
-        <div className="flex min-w-0 flex-1 items-center gap-2 rounded-full border border-neutral-200 bg-neutral-50 px-3 py-2">
-          <Search className="size-4 shrink-0 text-neutral-400" />
-          <input
-            type="text"
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder="Search tickers, companies…"
-            className="w-full bg-transparent text-[13px] text-neutral-900 outline-none placeholder:text-neutral-400"
-          />
-        </div>
-        <button
-          type="submit"
-          className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-neutral-950 px-4 py-2 text-[13px] font-medium text-white transition-colors hover:bg-neutral-800"
-        >
-          <Sparkles className="size-3.5 text-amber-300" />
-          Go
-        </button>
-      </form>
+      <>
+        <form onSubmit={handleSubmit} className="flex w-full items-center gap-2">
+          <div className="flex min-w-0 flex-1 items-center gap-2 rounded-full border border-neutral-200 bg-neutral-50 px-3 py-2">
+            <Search className="size-4 shrink-0 text-neutral-400" />
+            <input
+              type="text"
+              value={query}
+              onChange={(event) => {
+                setQuery(event.target.value);
+                setUnsupportedSymbol(null);
+              }}
+              placeholder="Search tickers, companies…"
+              className="w-full bg-transparent text-[13px] text-neutral-900 outline-none placeholder:text-neutral-400"
+            />
+          </div>
+          <button
+            type="submit"
+            className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-neutral-950 px-4 py-2 text-[13px] font-medium text-white transition-colors hover:bg-neutral-800"
+          >
+            <Sparkles className="size-3.5 text-amber-300" />
+            Go
+          </button>
+        </form>
+        {unsupportedSymbol ? (
+          <p className="mt-2 text-xs text-red-600">
+            &ldquo;{unsupportedSymbol}&rdquo; is not in the current coverage universe.
+          </p>
+        ) : null}
+      </>
     );
   }
 
@@ -125,7 +146,10 @@ export function SymbolSearch({ options, variant = "full" }: SymbolSearchProps) {
           <input
             type="text"
             value={query}
-            onChange={(event) => setQuery(event.target.value)}
+            onChange={(event) => {
+              setQuery(event.target.value);
+              setUnsupportedSymbol(null);
+            }}
             placeholder="Search stocks, ETFs, sectors..."
             className="w-full bg-transparent text-sm text-slate-950 outline-none placeholder:text-slate-400"
           />
@@ -149,24 +173,30 @@ export function SymbolSearch({ options, variant = "full" }: SymbolSearchProps) {
         ))}
       </div>
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
-        {matches.map((option) => (
-          <button
-            key={option.symbol}
-            type="button"
-            onClick={() => goToSymbol(option.symbol)}
-            className="group flex items-center justify-between rounded-[24px] border border-white/70 bg-white/75 px-4 py-3.5 text-left shadow-[0_14px_40px_rgba(15,23,42,0.08)] transition-transform hover:-translate-y-0.5 hover:border-slate-300"
-          >
-            <div>
-              <p className="font-mono text-xs uppercase tracking-[0.22em] text-slate-500">
-                {option.symbol}
-              </p>
-              <p className="text-sm font-medium text-slate-900 group-hover:text-slate-700">
-                {option.name}
-              </p>
-            </div>
-            <ChangePill value={option.changePercent} compact />
-          </button>
-        ))}
+        {matches.length === 0 && normalizedQuery ? (
+          <p className="col-span-full text-center text-sm text-neutral-500">
+            No symbols match &ldquo;{deferredQuery.trim()}&rdquo;. Try another ticker.
+          </p>
+        ) : (
+          matches.map((option) => (
+            <button
+              key={option.symbol}
+              type="button"
+              onClick={() => goToSymbol(option.symbol)}
+              className="group flex items-center justify-between rounded-[24px] border border-white/70 bg-white/75 px-4 py-3.5 text-left shadow-[0_14px_40px_rgba(15,23,42,0.08)] transition-transform hover:-translate-y-0.5 hover:border-slate-300"
+            >
+              <div>
+                <p className="font-mono text-xs uppercase tracking-[0.22em] text-slate-500">
+                  {option.symbol}
+                </p>
+                <p className="text-sm font-medium text-slate-900 group-hover:text-slate-700">
+                  {option.name}
+                </p>
+              </div>
+              <ChangePill value={option.changePercent} compact />
+            </button>
+          ))
+        )}
       </div>
     </div>
   );
