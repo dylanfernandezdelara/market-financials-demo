@@ -1,7 +1,10 @@
+import { cacheLife } from "next/cache";
 import Link from "next/link";
 import { PriceAlertDialog } from "@/components/features/price-alert-dialog";
 
-export default function AlertsPage() {
+export default async function AlertsPage() {
+  "use cache";
+  cacheLife("max");
   return (
     <div className="mx-auto max-w-3xl px-6 py-10">
       <h1 className="text-2xl font-semibold text-neutral-900">Price alerts</h1>

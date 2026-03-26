@@ -1,6 +1,9 @@
+import { cacheLife } from "next/cache";
 import Link from "next/link";
 
-export default function SettingsPage() {
+export default async function SettingsPage() {
+  "use cache";
+  cacheLife("max");
   return (
     <div className="mx-auto max-w-2xl px-6 py-10">
       <h1 className="text-2xl font-semibold text-neutral-900">Account settings</h1>

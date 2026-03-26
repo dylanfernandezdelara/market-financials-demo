@@ -1,3 +1,4 @@
+import { cacheLife } from "next/cache";
 import { CryptoRow } from "@/components/finance/crypto-row";
 import { EquitySectors } from "@/components/finance/equity-sectors";
 import { FinanceShell } from "@/components/finance/finance-shell";
@@ -13,6 +14,8 @@ import { QuickLinksRow } from "@/components/explore/quick-links";
 import { getDashboardData, getSearchUniverse } from "@/lib/market-data";
 
 export default async function Home() {
+  "use cache";
+  cacheLife("seconds");
   const [dashboard, searchOptions] = await Promise.all([
     getDashboardData(),
     getSearchUniverse(),

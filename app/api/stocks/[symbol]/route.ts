@@ -27,9 +27,12 @@ export async function GET(_: Request, { params }: StockRouteProps) {
     getRelatedStocks(stock.symbol),
   ]);
 
-  return NextResponse.json({
-    stock,
-    news,
-    relatedStocks,
-  });
+  return NextResponse.json(
+    { stock, news, relatedStocks },
+    {
+      headers: {
+        "Cache-Control": "public, s-maxage=1, stale-while-revalidate=59",
+      },
+    },
+  );
 }

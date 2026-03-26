@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  return NextResponse.json({
-    ok: true,
-    uptimeSeconds: Math.floor(process.uptime()),
-    version: "0.0.0",
-  });
+  return NextResponse.json(
+    { ok: true, uptimeSeconds: Math.floor(process.uptime()), version: "0.0.0" },
+    {
+      headers: { "Cache-Control": "no-store" },
+    },
+  );
 }

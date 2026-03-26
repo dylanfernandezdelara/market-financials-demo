@@ -1,3 +1,4 @@
+import { cacheLife } from "next/cache";
 import { TrendingUp, Wallet } from "lucide-react";
 import { AllocationDonutChart } from "@/components/charts/allocation-donut-chart";
 import { PortfolioTrendChart } from "@/components/charts/portfolio-trend-chart";
@@ -15,6 +16,8 @@ import {
 } from "@/lib/utils";
 
 export default async function PortfolioPage() {
+  "use cache";
+  cacheLife("seconds");
   const [portfolio, searchOptions] = await Promise.all([
     getPortfolioSnapshot(),
     getSearchUniverse(),

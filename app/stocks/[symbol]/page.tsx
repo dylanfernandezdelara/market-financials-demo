@@ -1,3 +1,4 @@
+import { cacheLife } from "next/cache";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
@@ -38,6 +39,8 @@ export async function generateMetadata({
 }
 
 export default async function StockPage({ params }: StockPageProps) {
+  "use cache";
+  cacheLife("seconds");
   const { symbol } = await params;
   const [stock, news, relatedStocks, searchOptions] = await Promise.all([
     getStockOrThrow(symbol),

@@ -1,6 +1,9 @@
+import { cacheLife } from "next/cache";
 import Link from "next/link";
 
-export default function WatchlistManagePage() {
+export default async function WatchlistManagePage() {
+  "use cache";
+  cacheLife("max");
   return (
     <div className="mx-auto max-w-3xl px-6 py-10">
       <h1 className="text-2xl font-semibold text-neutral-900">Manage watchlists</h1>
