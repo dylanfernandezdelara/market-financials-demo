@@ -14,6 +14,7 @@ import {
   fixedIncomeRows,
   marketMoversLists,
   marketSummaryBlock,
+  politicianTrades,
   popularSpaces,
   recentDevelopments,
   marketIndices,
@@ -152,6 +153,7 @@ export async function getDashboardData(): Promise<DashboardData> {
     sectors: sectorPerformance,
     news: newsArticles,
     portfolio: buildPortfolioSnapshot(),
+    politicianTrades,
   };
 }
 
