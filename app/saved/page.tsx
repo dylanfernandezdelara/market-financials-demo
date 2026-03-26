@@ -96,7 +96,7 @@ export default function SavedLayoutsPage() {
                   Set as default
                 </button>
               )}
-              {layout.id !== "default" && (
+              {layout.id !== "default" && layout.id !== defaultLayoutId && (
                 <button
                   onClick={() => handleDelete(layout.id)}
                   className="text-xs text-red-500 underline hover:text-red-700"
