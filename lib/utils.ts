@@ -100,8 +100,8 @@ export function changeTextClass(value: number) {
   }
 
   if (direction === "down") {
-    return "text-red-600";
+    return "text-rose-600";
   }
 
-  return "text-neutral-500";
+  return "text-slate-500";
 }

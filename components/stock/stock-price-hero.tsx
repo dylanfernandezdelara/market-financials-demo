@@ -27,10 +27,10 @@ export function StockPriceHero({ stock, closeTimeLabel }: StockPriceHeroProps) {
           {formatCurrency(stock.price)}
         </p>
         <div className="mt-1 flex flex-wrap items-baseline gap-2 text-[13px] font-medium">
-          <span className={sessionDown ? "text-red-600" : "text-emerald-600"}>
+          <span className={sessionDown ? "text-rose-600" : "text-emerald-600"}>
             {formatSignedCurrency(stock.change)}
           </span>
-          <span className={sessionDown ? "text-red-600" : "text-emerald-600"}>
+          <span className={sessionDown ? "text-rose-600" : "text-emerald-600"}>
             {formatPercent(stock.changePercent)}
           </span>
         </div>
@@ -44,10 +44,10 @@ export function StockPriceHero({ stock, closeTimeLabel }: StockPriceHeroProps) {
           {formatCurrency(ah.afterHoursPrice)}
         </p>
         <div className="mt-1 flex flex-wrap items-baseline gap-2 text-[13px] font-medium">
-          <span className={ahUp ? "text-emerald-600" : "text-red-600"}>
+          <span className={ahUp ? "text-emerald-600" : "text-rose-600"}>
             {formatSignedCurrency(ah.afterHoursChange)}
           </span>
-          <span className={ahUp ? "text-emerald-600" : "text-red-600"}>
+          <span className={ahUp ? "text-emerald-600" : "text-rose-600"}>
             {formatPercent(ah.afterHoursChangePercent)}
           </span>
         </div>

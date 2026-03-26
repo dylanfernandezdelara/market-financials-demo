@@ -59,7 +59,7 @@ export default async function PortfolioPage() {
                 </div>
                 <p
                   className={`mt-3 text-3xl font-semibold tracking-tight ${
-                    portfolio.dayChange < 0 ? "text-red-600" : "text-emerald-600"
+                    portfolio.dayChange < 0 ? "text-rose-600" : "text-emerald-600"
                   }`}
                 >
                   {formatSignedCurrency(portfolio.dayChange)}

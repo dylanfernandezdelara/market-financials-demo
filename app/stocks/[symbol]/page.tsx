@@ -137,7 +137,7 @@ export default async function StockPage({ params }: StockPageProps) {
                     <span className="text-neutral-500">{formatCurrency(related.price)}</span>
                     <span
                       className={
-                        related.changePercent >= 0 ? "text-emerald-600" : "text-red-600"
+                        related.changePercent >= 0 ? "text-emerald-600" : "text-rose-600"
                       }
                     >
                       {formatPercent(related.changePercent)}
