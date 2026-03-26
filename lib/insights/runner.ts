@@ -22,7 +22,7 @@ const merged = {
   ...S10,
 } as Record<string, (a: number, b: number) => number>;
 
-const samplePairs: [number, number][] = [
+export const samplePairs: [number, number][] = [
   [142.5, 138.2],
   [88.1, 90.4],
   [2100, 2050],

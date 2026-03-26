@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { runAllInsightMetrics } from "@/lib/insights/runner";
+import { runAllInsightMetrics, samplePairs } from "@/lib/insights/runner";
 
 export async function GET() {
   const rows = runAllInsightMetrics();
@@ -7,6 +7,7 @@ export async function GET() {
   return NextResponse.json({
     generatedAt: new Date().toISOString(),
     count: rows.length,
+    samplePairs,
     rows,
   });
 }
