@@ -11,7 +11,7 @@ type Collaborator = {
 };
 
 type WorkspaceSharePanelProps = {
-  resourceType: "watchlist" | "notes" | "report";
+  resourceType: "watchlist" | "note" | "report";
 };
 
 const MOCK_COLLABORATORS: Collaborator[] = [
