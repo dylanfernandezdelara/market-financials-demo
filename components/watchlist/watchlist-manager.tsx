@@ -34,7 +34,6 @@ export function WatchlistManager({
     : [];
 
   const addSymbol = (result: SearchResult) => {
-    if (watchedSymbols.has(result.symbol)) return;
     const entry: WatchlistEntry = {
       symbol: result.symbol,
       name: result.name,
@@ -44,7 +43,10 @@ export function WatchlistManager({
       sector: result.sector,
       alertPrice: result.price * 1.02,
     };
-    setEntries((prev) => [...prev, entry]);
+    setEntries((prev) => {
+      if (prev.some((e) => e.symbol === result.symbol)) return prev;
+      return [...prev, entry];
+    });
     setQuery("");
   };
 
