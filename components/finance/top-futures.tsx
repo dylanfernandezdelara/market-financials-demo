@@ -15,6 +15,24 @@ type TopFuturesProps = {
 };
 
 export function TopFutures({ futures, sentimentLabel }: TopFuturesProps) {
+  if (futures.length === 0) {
+    return (
+      <section aria-labelledby="top-assets-heading">
+        <h2 id="top-assets-heading" className="mb-3 text-[17px] font-semibold text-[#1a1a1a]">
+          Top Assets
+        </h2>
+        <div className="rounded-lg border border-[#ebebeb] bg-white px-6 py-10 text-center shadow-sm">
+          <p className="text-[14px] font-medium text-neutral-500">
+            No futures data available right now
+          </p>
+          <p className="mt-1 text-[12px] text-neutral-400">
+            Check back later for updated market data.
+          </p>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section aria-labelledby="top-assets-heading">
       <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
