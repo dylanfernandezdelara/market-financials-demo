@@ -83,7 +83,7 @@ export function SymbolSearch({ options, variant = "full", recentSymbols, watchli
   const hasShortcuts =
     (recentSymbols && recentSymbols.length > 0) ||
     (watchlistShortcuts && watchlistShortcuts.length > 0);
-  const showDropdown = variant === "header" && open && !normalizedQuery && hasShortcuts;
+  const showDropdown = variant === "header" && open && !query.trim() && hasShortcuts;
 
   if (variant === "header") {
     return (
