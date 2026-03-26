@@ -27,6 +27,8 @@ export default function SettingsPage() {
       });
       if (res.ok) {
         setStatus("Saved");
+      } else {
+        setStatus("Error saving preferences");
       }
     } catch {
       setStatus("Error saving preferences");
