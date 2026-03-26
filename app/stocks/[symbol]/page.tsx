@@ -94,7 +94,19 @@ export default async function StockPage({ params }: StockPageProps) {
       timeZone: "America/New_York",
     }).format(now),
   );
-  const isMarketOpen = estHour >= 9 && estHour < 16;
+  const estMinute = Number(
+    new Intl.DateTimeFormat("en-US", {
+      minute: "numeric",
+      timeZone: "America/New_York",
+    }).format(now),
+  );
+  const dayOfWeek = new Intl.DateTimeFormat("en-US", {
+    weekday: "short",
+    timeZone: "America/New_York",
+  }).format(now);
+  const isWeekday = !["Sat", "Sun"].includes(dayOfWeek);
+  const afterOpen = estHour > 9 || (estHour === 9 && estMinute >= 30);
+  const isMarketOpen = isWeekday && afterOpen && estHour < 16;
   const sessionStatus = isMarketOpen ? "Market open" : "After-hours";
   const closeTimeLabel = `${sessionStatus}: ${new Intl.DateTimeFormat("en-US", {
     month: "short",
