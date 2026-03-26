@@ -1,7 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { PriceHistoryChart } from "@/components/charts/price-history-chart";
+import { useQueryState } from "@/lib/use-query-state";
 import type { PricePoint } from "@/types/finance";
 
 const ranges = ["1D", "5D", "1M", "6M", "YTD", "1Y", "5Y", "MAX"] as const;
@@ -12,7 +13,7 @@ type StockChartPanelProps = {
 };
 
 export function StockChartPanel({ chart, trendUp }: StockChartPanelProps) {
-  const [range, setRange] = useState<(typeof ranges)[number]>("1D");
+  const [range, setRange] = useQueryState<(typeof ranges)[number]>("range", "1D");
   const stroke = trendUp ? "#16a34a" : "#dc2626";
 
   const series = useMemo(() => {

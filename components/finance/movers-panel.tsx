@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
 import { changeTextClass, formatCurrency, formatPercent } from "@/lib/utils";
+import { useQueryState } from "@/lib/use-query-state";
 import type { ListMover, MarketMovers } from "@/types/finance";
 
 const tabs = [
@@ -16,7 +16,7 @@ type MoversPanelProps = {
 };
 
 export function MoversPanel({ movers }: MoversPanelProps) {
-  const [tab, setTab] = useState<(typeof tabs)[number]["key"]>("gainers");
+  const [tab, setTab] = useQueryState<(typeof tabs)[number]["key"]>("movers", "gainers");
 
   const rows: ListMover[] = movers[tab];
 
