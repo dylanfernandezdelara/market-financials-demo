@@ -101,7 +101,7 @@ function buildPortfolioSnapshot(): PortfolioSnapshot {
   };
 }
 
-function buildWatchlist(): WatchlistEntry[] {
+export function buildWatchlist(): WatchlistEntry[] {
   return watchlistSymbols
     .map((symbol) => stockProfiles.find((profile) => profile.symbol === symbol))
     .filter((value): value is StockProfile => Boolean(value))
