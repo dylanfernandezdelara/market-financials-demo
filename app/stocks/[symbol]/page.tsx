@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
@@ -97,7 +98,9 @@ export default async function StockPage({ params }: StockPageProps) {
 
         <div className="mt-8 grid gap-8 xl:grid-cols-[1fr_340px] xl:items-start">
           <div className="space-y-8">
-            <StockChartPanel chart={stock.chart} trendUp={trendUp} />
+            <Suspense fallback={null}>
+              <StockChartPanel chart={stock.chart} trendUp={trendUp} />
+            </Suspense>
             <StockKeyStatsGrid chart={stock.chart} stock={stock} />
             <StockNotableTimeline articles={news} />
 

@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { CryptoRow } from "@/components/finance/crypto-row";
 import { EquitySectors } from "@/components/finance/equity-sectors";
 import { FinanceShell } from "@/components/finance/finance-shell";
@@ -27,7 +28,9 @@ export default async function Home() {
         <PopularSpaces spaces={dashboard.popularSpaces} />
         <StandoutsSection standouts={dashboard.standouts} />
         <WatchlistStrip entries={dashboard.watchlistBar} />
-        <MoversPanel movers={dashboard.movers} />
+        <Suspense fallback={null}>
+          <MoversPanel movers={dashboard.movers} />
+        </Suspense>
         <EquitySectors sectors={dashboard.equitySectors} />
         <CryptoRow quotes={dashboard.cryptocurrencies} />
         <FixedIncomeRow rows={dashboard.fixedIncome} />
