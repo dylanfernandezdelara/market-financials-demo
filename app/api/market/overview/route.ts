@@ -1,10 +1,11 @@
-import { NextResponse } from "next/server";
 import { getDashboardData } from "@/lib/market-data";
+import { MarketOverviewResponseSchema } from "@/lib/schemas";
+import { validatedResponse } from "@/lib/validate";
 
 export async function GET() {
   const dashboard = await getDashboardData();
 
-  return NextResponse.json({
+  return validatedResponse(MarketOverviewResponseSchema, {
     sentimentLabel: dashboard.sentimentLabel,
     riskSentiment: dashboard.sentimentLabel,
     sessionLabel: dashboard.sessionLabel,
