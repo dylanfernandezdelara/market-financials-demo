@@ -46,15 +46,6 @@ export default async function StockPage({ params }: StockPageProps) {
     getSearchUniverse(),
   ]);
 
-  const closeTimeLabel = `At close: ${new Intl.DateTimeFormat("en-US", {
-    month: "short",
-    day: "numeric",
-    hour: "numeric",
-    minute: "2-digit",
-    timeZone: "America/New_York",
-    timeZoneName: "short",
-  }).format(new Date())}`;
-
   const trendUp = stock.changePercent >= 0;
 
   return (
@@ -92,7 +83,7 @@ export default async function StockPage({ params }: StockPageProps) {
         </div>
 
         <div className="mt-6">
-          <StockPriceHero closeTimeLabel={closeTimeLabel} stock={stock} />
+          <StockPriceHero stock={stock} />
         </div>
 
         <div className="mt-8 grid gap-8 xl:grid-cols-[1fr_340px] xl:items-start">
