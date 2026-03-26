@@ -56,7 +56,7 @@ export default function SettingsPage() {
         >
           Save changes
         </button>
-        {status ? <p className="mt-2 text-sm text-emerald-600">{status}</p> : null}
+        {status ? <p className={`mt-2 text-sm ${status === "Saved" ? "text-emerald-600" : "text-red-600"}`}>{status}</p> : null}
       </form>
       <p className="mt-6 text-sm text-neutral-500">
         <Link href="/portfolio" className="text-neutral-900 underline">
