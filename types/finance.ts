@@ -4,6 +4,7 @@ export type PricePoint = {
   label: string;
   price: number;
   volume: number;
+  benchmark?: number;
 };
 
 export type MarketIndex = {
@@ -105,6 +106,7 @@ export type PortfolioHolding = Holding & {
 export type PortfolioTrendPoint = {
   label: string;
   value: number;
+  benchmark?: number;
 };
 
 export type PortfolioSnapshot = {

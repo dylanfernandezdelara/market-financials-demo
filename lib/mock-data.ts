@@ -833,12 +833,12 @@ export const portfolioHoldings: Holding[] = [
 ];
 
 export const portfolioTrend = [
-  { label: "Oct", value: 82_140 },
-  { label: "Nov", value: 89_360 },
-  { label: "Dec", value: 94_820 },
-  { label: "Jan", value: 101_740 },
-  { label: "Feb", value: 108_520 },
-  { label: "Mar", value: 124_320 },
+  { label: "Oct", value: 82_140, benchmark: 80_500 },
+  { label: "Nov", value: 89_360, benchmark: 84_200 },
+  { label: "Dec", value: 94_820, benchmark: 86_900 },
+  { label: "Jan", value: 101_740, benchmark: 89_100 },
+  { label: "Feb", value: 108_520, benchmark: 92_400 },
+  { label: "Mar", value: 124_320, benchmark: 95_800 },
 ];
 
 export const marketPulse: MarketPulse = {

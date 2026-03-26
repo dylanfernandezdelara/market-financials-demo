@@ -4,6 +4,7 @@ import {
   NewsArticle,
   PortfolioHolding,
   PortfolioSnapshot,
+  PricePoint,
   SearchResult,
   StockProfile,
   WatchlistEntry,
@@ -189,6 +190,24 @@ export async function getStockProfile(symbol: string) {
   return stockProfiles.find(
     (stock) => stock.symbol.toLowerCase() === symbol.trim().toLowerCase(),
   );
+}
+
+/** S&P 500 intra-day drift factors used to synthesize a benchmark overlay. */
+const SP500_DRIFT = [0, 0.001, 0.0005, -0.0003, 0.0012, 0.0008, 0.0002, -0.0005, 0.001, 0.0006, 0.0003, 0.0009];
+
+export function enrichChartWithBenchmark(chart: PricePoint[]): PricePoint[] {
+  if (chart.length === 0) return chart;
+  const basePrice = chart[0].price;
+  return chart.map((point, index) => {
+    const cumulativeDrift = SP500_DRIFT.slice(0, (index % SP500_DRIFT.length) + 1).reduce(
+      (sum, d) => sum + d,
+      0,
+    );
+    return {
+      ...point,
+      benchmark: Math.round(basePrice * (1 + cumulativeDrift) * 100) / 100,
+    };
+  });
 }
 
 export async function getStockOrThrow(symbol: string) {

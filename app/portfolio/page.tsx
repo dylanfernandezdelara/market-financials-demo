@@ -80,7 +80,7 @@ export default async function PortfolioPage() {
               description="Trailing balance history across recent months."
             />
             <div className="mt-6 rounded-2xl border border-neutral-200 bg-neutral-50 p-4">
-              <PortfolioTrendChart data={portfolio.trend} />
+              <PortfolioTrendChart data={portfolio.trend} showBenchmark />
             </div>
           </SurfaceCard>
           <SurfaceCard>

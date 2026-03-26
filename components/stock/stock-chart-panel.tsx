@@ -9,9 +9,10 @@ const ranges = ["1D", "5D", "1M", "6M", "YTD", "1Y", "5Y", "MAX"] as const;
 type StockChartPanelProps = {
   chart: PricePoint[];
   trendUp: boolean;
+  showBenchmark?: boolean;
 };
 
-export function StockChartPanel({ chart, trendUp }: StockChartPanelProps) {
+export function StockChartPanel({ chart, trendUp, showBenchmark = false }: StockChartPanelProps) {
   const [range, setRange] = useState<(typeof ranges)[number]>("1D");
   const stroke = trendUp ? "#16a34a" : "#dc2626";
 
@@ -40,7 +41,7 @@ export function StockChartPanel({ chart, trendUp }: StockChartPanelProps) {
         <span className="ml-auto hidden text-[11px] text-neutral-400 sm:inline">{range}</span>
       </div>
       <div className="p-2">
-        <PriceHistoryChart data={series} color={stroke} height={280} />
+        <PriceHistoryChart data={series} color={stroke} height={280} showBenchmark={showBenchmark} />
       </div>
       <p className="px-3 pb-2 text-center text-[11px] text-neutral-400">
         {range} · last session

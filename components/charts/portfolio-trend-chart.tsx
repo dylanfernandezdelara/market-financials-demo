@@ -4,6 +4,8 @@ import {
   Area,
   AreaChart,
   CartesianGrid,
+  Legend,
+  Line,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -14,6 +16,7 @@ import { formatCompactCurrency } from "@/lib/utils";
 
 type PortfolioTrendChartProps = {
   data: PortfolioTrendPoint[];
+  showBenchmark?: boolean;
 };
 
 function toNumericValue(
@@ -34,7 +37,8 @@ function toNumericValue(
   return 0;
 }
 
-export function PortfolioTrendChart({ data }: PortfolioTrendChartProps) {
+export function PortfolioTrendChart({ data, showBenchmark = false }: PortfolioTrendChartProps) {
+  const hasBenchmark = showBenchmark && data.some((point) => point.benchmark != null);
   return (
     <ResponsiveContainer width="100%" height={260}>
       <AreaChart data={data} margin={{ top: 6, right: 6, left: -12, bottom: 0 }}>
@@ -69,18 +73,37 @@ export function PortfolioTrendChart({ data }: PortfolioTrendChartProps) {
             backgroundColor: "#ffffff",
             boxShadow: "0 16px 40px rgba(15, 23, 42, 0.12)",
           }}
-          formatter={(value) => [
+          formatter={(value, name) => [
             formatCompactCurrency(toNumericValue(value)),
-            "Portfolio",
+            name === "benchmark" ? "S&P 500" : "Portfolio",
           ]}
         />
+        {hasBenchmark && (
+          <Legend
+            verticalAlign="top"
+            height={28}
+            formatter={(value: string) => (value === "benchmark" ? "S&P 500" : "Portfolio")}
+          />
+        )}
         <Area
           dataKey="value"
           stroke="#0f172a"
           strokeWidth={3}
           fill="url(#portfolio-fill)"
           type="monotone"
+          name="value"
         />
+        {hasBenchmark && (
+          <Line
+            dataKey="benchmark"
+            stroke="#6366f1"
+            strokeWidth={1.5}
+            strokeDasharray="6 3"
+            dot={false}
+            type="monotone"
+            name="benchmark"
+          />
+        )}
       </AreaChart>
     </ResponsiveContainer>
   );
