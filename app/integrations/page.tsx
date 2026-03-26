@@ -155,15 +155,18 @@ export default function IntegrationsPage() {
 
         pushActivity(key, data.status, data.error);
       } catch {
-        setProviders((prev) => ({
-          ...prev,
-          [key]: {
-            ...prev[key],
-            syncStatus: "failed",
-            error: "Network error",
-            retryCount: prev[key].retryCount + 1,
-          },
-        }));
+        setProviders((prev) => {
+          if (!prev[key].connected) return prev;
+          return {
+            ...prev,
+            [key]: {
+              ...prev[key],
+              syncStatus: "failed",
+              error: "Network error",
+              retryCount: prev[key].retryCount + 1,
+            },
+          };
+        });
         pushActivity(key, "failed", "Network error");
       }
     },
