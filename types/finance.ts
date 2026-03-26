@@ -208,6 +208,34 @@ export type MarketMovers = {
   active: ListMover[];
 };
 
+export type ReportFrequency = "daily" | "weekly" | "monthly" | "quarterly";
+
+export type ReportFormat = "pdf" | "csv" | "html";
+
+export type ReportSchedule = {
+  id: string;
+  name: string;
+  frequency: ReportFrequency;
+  format: ReportFormat;
+  recipients: string[];
+  enabled: boolean;
+  nextRunAt: string;
+  lastRunAt: string | null;
+  createdAt: string;
+};
+
+export type NotificationChannel = "in_app" | "email" | "webhook";
+
+export type NotificationItem = {
+  id: string;
+  channel: NotificationChannel;
+  title: string;
+  body: string;
+  reportScheduleId: string | null;
+  readAt: string | null;
+  createdAt: string;
+};
+
 export type DashboardData = {
   sentimentLabel: string;
   sessionLabel: string;

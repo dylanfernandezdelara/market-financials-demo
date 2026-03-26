@@ -1,9 +1,19 @@
 import { NextResponse } from "next/server";
+import {
+  getNotificationItems,
+  getUnreadNotificationCount,
+} from "@/lib/report-scheduling";
 
 export async function GET() {
-  return NextResponse.json({ unread: 0, items: [] });
+  const items = await getNotificationItems();
+  const unread = await getUnreadNotificationCount();
+
+  return NextResponse.json({ unread, items });
 }
 
 export async function PATCH() {
-  return NextResponse.json({ marked: 0 });
+  const items = await getNotificationItems();
+  const unreadCount = items.filter((item) => item.readAt === null).length;
+
+  return NextResponse.json({ marked: unreadCount });
 }
