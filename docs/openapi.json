@@ -1,0 +1,1195 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Market Financials Demo API",
+    "version": "0.1.0",
+    "description": "Machine-readable documentation of the JSON API routes exposed by the Market Financials Demo application."
+  },
+  "servers": [
+    {
+      "url": "/",
+      "description": "Local development server"
+    }
+  ],
+  "paths": {
+    "/api/health": {
+      "get": {
+        "operationId": "getHealth",
+        "summary": "Health check",
+        "responses": {
+          "200": {
+            "description": "Service health status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": { "type": "boolean" },
+                    "uptimeSeconds": { "type": "integer" },
+                    "version": { "type": "string" }
+                  },
+                  "required": ["ok", "uptimeSeconds", "version"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/stocks": {
+      "get": {
+        "operationId": "listStocks",
+        "summary": "List all stocks in the search universe",
+        "responses": {
+          "200": {
+            "description": "Full list of stocks",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "count": { "type": "integer" },
+                    "data": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/SearchResult" }
+                    }
+                  },
+                  "required": ["count", "data"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/stocks/{symbol}": {
+      "get": {
+        "operationId": "getStockBySymbol",
+        "summary": "Get detailed profile, news, and related stocks for a symbol",
+        "parameters": [
+          {
+            "name": "symbol",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Ticker symbol (e.g. AAPL)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stock profile with related data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "stock": { "$ref": "#/components/schemas/StockProfile" },
+                    "news": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/NewsArticle" }
+                    },
+                    "relatedStocks": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/StockProfile" }
+                    }
+                  },
+                  "required": ["stock", "news", "relatedStocks"]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Symbol not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/search": {
+      "get": {
+        "operationId": "searchSymbols",
+        "summary": "Search for stock symbols",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" },
+            "description": "Search query string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Matching symbols",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "query": { "type": "string" },
+                    "count": { "type": "integer" },
+                    "results": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/SearchResult" }
+                    }
+                  },
+                  "required": ["query", "count", "results"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/portfolio": {
+      "get": {
+        "operationId": "getPortfolio",
+        "summary": "Get the current portfolio snapshot",
+        "responses": {
+          "200": {
+            "description": "Portfolio snapshot with net liquidity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/PortfolioSnapshot" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "netLiquidity": { "type": "number" }
+                      },
+                      "required": ["netLiquidity"]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/market/overview": {
+      "get": {
+        "operationId": "getMarketOverview",
+        "summary": "Get the full market overview / dashboard data",
+        "responses": {
+          "200": {
+            "description": "Aggregated market overview",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "sentimentLabel": { "type": "string" },
+                    "riskSentiment": { "type": "string" },
+                    "sessionLabel": { "type": "string" },
+                    "sessionDetail": { "type": "string" },
+                    "topFutures": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/FuturesAsset" }
+                    },
+                    "marketSummary": { "$ref": "#/components/schemas/MarketSummaryBlock" },
+                    "recentDevelopments": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/RecentDevelopment" }
+                    },
+                    "popularSpaces": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/PopularSpace" }
+                    },
+                    "standouts": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/StandoutStock" }
+                    },
+                    "watchlistBar": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/WatchlistBarEntry" }
+                    },
+                    "movers": { "$ref": "#/components/schemas/MarketMovers" },
+                    "equitySectors": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/SectorEtfRow" }
+                    },
+                    "cryptocurrencies": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/CryptoQuote" }
+                    },
+                    "fixedIncome": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/FixedIncomeRow" }
+                    },
+                    "indices": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/MarketIndex" }
+                    },
+                    "pulse": { "$ref": "#/components/schemas/MarketPulse" },
+                    "featuredStock": { "$ref": "#/components/schemas/StockProfile" },
+                    "topMovers": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/TopMover" }
+                    },
+                    "sectors": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/SectorPerformance" }
+                    }
+                  },
+                  "required": [
+                    "sentimentLabel",
+                    "riskSentiment",
+                    "sessionLabel",
+                    "sessionDetail",
+                    "topFutures",
+                    "marketSummary",
+                    "recentDevelopments",
+                    "popularSpaces",
+                    "standouts",
+                    "watchlistBar",
+                    "movers",
+                    "equitySectors",
+                    "cryptocurrencies",
+                    "fixedIncome",
+                    "indices",
+                    "pulse",
+                    "featuredStock",
+                    "topMovers",
+                    "sectors"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/watchlist": {
+      "get": {
+        "operationId": "getWatchlist",
+        "summary": "Get saved watchlists",
+        "responses": {
+          "200": {
+            "description": "Watchlists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "lists": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": { "type": "string" },
+                          "name": { "type": "string" },
+                          "symbols": {
+                            "type": "array",
+                            "items": { "type": "string" }
+                          }
+                        },
+                        "required": ["id", "name", "symbols"]
+                      }
+                    }
+                  },
+                  "required": ["lists"]
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "updateWatchlist",
+        "summary": "Update a watchlist",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "Watchlist update payload (schema not enforced by the server)"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Acknowledgement",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": { "type": "boolean" }
+                  },
+                  "required": ["ok"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/alerts": {
+      "get": {
+        "operationId": "getAlerts",
+        "summary": "List alert rules",
+        "responses": {
+          "200": {
+            "description": "Alert rules",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "rules": { "type": "array", "items": {} }
+                  },
+                  "required": ["rules"]
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createAlert",
+        "summary": "Create an alert rule",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "Alert rule definition"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created alert",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" }
+                  },
+                  "required": ["id"]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "clearAlerts",
+        "summary": "Clear all alert rules",
+        "responses": {
+          "200": {
+            "description": "Clear status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "cleared": { "type": "boolean" }
+                  },
+                  "required": ["cleared"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/batch-quotes": {
+      "get": {
+        "operationId": "getBatchQuotes",
+        "summary": "Get quotes for multiple symbols at once",
+        "parameters": [
+          {
+            "name": "symbols",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" },
+            "description": "Comma-separated list of ticker symbols (e.g. AAPL,MSFT,GOOG)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Batch quote results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "count": { "type": "integer" },
+                    "quotes": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "symbol": { "type": "string" },
+                          "price": { "type": "number" }
+                        },
+                        "required": ["symbol", "price"]
+                      }
+                    }
+                  },
+                  "required": ["count", "quotes"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/insights": {
+      "get": {
+        "operationId": "getInsights",
+        "summary": "Run all insight metrics and return results",
+        "responses": {
+          "200": {
+            "description": "Generated insight metrics",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "generatedAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "count": { "type": "integer" },
+                    "rows": { "type": "array", "items": {} }
+                  },
+                  "required": ["generatedAt", "count", "rows"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reports": {
+      "get": {
+        "operationId": "getReports",
+        "summary": "List scheduled reports",
+        "responses": {
+          "200": {
+            "description": "Report list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "reports": { "type": "array", "items": {} },
+                    "nextRun": {
+                      "type": ["string", "null"],
+                      "format": "date-time"
+                    }
+                  },
+                  "required": ["reports", "nextRun"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/benchmarks": {
+      "get": {
+        "operationId": "getBenchmarks",
+        "summary": "Get market benchmark indices",
+        "responses": {
+          "200": {
+            "description": "Benchmark data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "benchmarks": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/MarketIndex" }
+                    }
+                  },
+                  "required": ["benchmarks"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/screeners": {
+      "get": {
+        "operationId": "getScreenerResults",
+        "summary": "Run a stock screener",
+        "parameters": [
+          {
+            "name": "sector",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "default": "any" },
+            "description": "Filter results by sector"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Screener results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "sector": { "type": "string" },
+                    "results": { "type": "array", "items": {} },
+                    "total": { "type": "integer" }
+                  },
+                  "required": ["sector", "results", "total"]
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "saveScreener",
+        "summary": "Save a screener configuration",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "Screener configuration payload"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Save status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "saved": { "type": "boolean" }
+                  },
+                  "required": ["saved"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/notifications": {
+      "get": {
+        "operationId": "getNotifications",
+        "summary": "Get notification list",
+        "responses": {
+          "200": {
+            "description": "Notifications",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "unread": { "type": "integer" },
+                    "items": { "type": "array", "items": {} }
+                  },
+                  "required": ["unread", "items"]
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "markNotificationsRead",
+        "summary": "Mark notifications as read",
+        "responses": {
+          "200": {
+            "description": "Result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "marked": { "type": "integer" }
+                  },
+                  "required": ["marked"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/news": {
+      "get": {
+        "operationId": "getNews",
+        "summary": "Get latest news articles",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer" },
+            "description": "Maximum number of articles to return"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "News articles",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/NewsArticle" }
+                    },
+                    "total": { "type": "integer" }
+                  },
+                  "required": ["data", "total"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user/preferences": {
+      "get": {
+        "operationId": "getUserPreferences",
+        "summary": "Get current user preferences",
+        "responses": {
+          "200": {
+            "description": "User preferences",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "theme": { "type": "string" },
+                    "density": { "type": "string" },
+                    "defaultTab": { "type": "string" }
+                  },
+                  "required": ["theme", "density", "defaultTab"]
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "updateUserPreferences",
+        "summary": "Update user preferences",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "Preference fields to update"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Acknowledgement",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": { "type": "boolean" }
+                  },
+                  "required": ["ok"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/export": {
+      "post": {
+        "operationId": "exportData",
+        "summary": "Export data in a given format",
+        "parameters": [
+          {
+            "name": "format",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "default": "csv" },
+            "description": "Export format (e.g. csv). \"pdf\" is not currently supported."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Export ready",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "url": { "type": "string" },
+                    "ready": { "type": "boolean" }
+                  },
+                  "required": ["url", "ready"]
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "Unsupported format",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/research/summary": {
+      "get": {
+        "operationId": "getResearchSummary",
+        "summary": "Get a research summary for a symbol",
+        "parameters": [
+          {
+            "name": "symbol",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" },
+            "description": "Ticker symbol to summarize"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Research summary",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "symbol": { "type": "string" },
+                    "bullets": { "type": "array", "items": { "type": "string" } },
+                    "asOf": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  },
+                  "required": ["symbol", "bullets", "asOf"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/team/invite": {
+      "post": {
+        "operationId": "sendTeamInvite",
+        "summary": "Send a team invitation",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "Invite payload (e.g. email address)"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Invitation sent",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "sent": { "type": "boolean" },
+                    "inviteId": { "type": "string" }
+                  },
+                  "required": ["sent", "inviteId"]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/integrations/sync": {
+      "post": {
+        "operationId": "triggerIntegrationSync",
+        "summary": "Trigger an integration sync",
+        "responses": {
+          "202": {
+            "description": "Sync accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "string" },
+                    "lastSync": {
+                      "type": ["string", "null"],
+                      "format": "date-time"
+                    }
+                  },
+                  "required": ["status", "lastSync"]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": { "type": "string" }
+        },
+        "required": ["error"]
+      },
+      "PricePoint": {
+        "type": "object",
+        "properties": {
+          "label": { "type": "string" },
+          "price": { "type": "number" },
+          "volume": { "type": "number" }
+        },
+        "required": ["label", "price", "volume"]
+      },
+      "MarketIndex": {
+        "type": "object",
+        "properties": {
+          "symbol": { "type": "string" },
+          "name": { "type": "string" },
+          "price": { "type": "number" },
+          "displayValue": { "type": "string" },
+          "change": { "type": "number" },
+          "displayChange": { "type": "string" },
+          "changePercent": { "type": "number" },
+          "sessionRange": { "type": "string" }
+        },
+        "required": ["symbol", "name", "price", "displayValue", "change", "displayChange", "changePercent", "sessionRange"]
+      },
+      "StockProfile": {
+        "type": "object",
+        "properties": {
+          "symbol": { "type": "string" },
+          "name": { "type": "string" },
+          "price": { "type": "number" },
+          "change": { "type": "number" },
+          "changePercent": { "type": "number" },
+          "marketCap": { "type": "number" },
+          "sector": { "type": "string" },
+          "industry": { "type": "string" },
+          "exchange": { "type": "string" },
+          "peRatio": { "type": "number" },
+          "dividendYield": { "type": "number" },
+          "week52Low": { "type": "number" },
+          "week52High": { "type": "number" },
+          "volume": { "type": "number" },
+          "averageVolume": { "type": "number" },
+          "beta": { "type": "number" },
+          "description": { "type": "string" },
+          "thesis": { "type": "string" },
+          "chart": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/PricePoint" }
+          }
+        },
+        "required": ["symbol", "name", "price", "change", "changePercent", "marketCap", "sector", "industry", "exchange", "peRatio", "dividendYield", "week52Low", "week52High", "volume", "averageVolume", "beta", "description", "thesis", "chart"]
+      },
+      "NewsArticle": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "headline": { "type": "string" },
+          "source": { "type": "string" },
+          "publishedAt": { "type": "string" },
+          "summary": { "type": "string" },
+          "url": { "type": "string" },
+          "relatedSymbols": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "sentiment": {
+            "type": "string",
+            "enum": ["positive", "neutral", "negative"]
+          }
+        },
+        "required": ["id", "headline", "source", "publishedAt", "summary", "url", "relatedSymbols", "sentiment"]
+      },
+      "TopMover": {
+        "type": "object",
+        "properties": {
+          "symbol": { "type": "string" },
+          "name": { "type": "string" },
+          "price": { "type": "number" },
+          "changePercent": { "type": "number" },
+          "narrative": { "type": "string" }
+        },
+        "required": ["symbol", "name", "price", "changePercent", "narrative"]
+      },
+      "SectorPerformance": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "changePercent": { "type": "number" },
+          "leaders": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "required": ["name", "changePercent", "leaders"]
+      },
+      "MarketPulse": {
+        "type": "object",
+        "properties": {
+          "marketStatus": { "type": "string" },
+          "advancers": { "type": "number" },
+          "decliners": { "type": "number" },
+          "putCallRatio": { "type": "number" },
+          "fearGreedScore": { "type": "number" }
+        },
+        "required": ["marketStatus", "advancers", "decliners", "putCallRatio", "fearGreedScore"]
+      },
+      "SearchResult": {
+        "type": "object",
+        "properties": {
+          "symbol": { "type": "string" },
+          "name": { "type": "string" },
+          "exchange": { "type": "string" },
+          "sector": { "type": "string" },
+          "price": { "type": "number" },
+          "changePercent": { "type": "number" }
+        },
+        "required": ["symbol", "name", "exchange", "sector", "price", "changePercent"]
+      },
+      "PortfolioHolding": {
+        "type": "object",
+        "properties": {
+          "symbol": { "type": "string" },
+          "shares": { "type": "number" },
+          "averageCost": { "type": "number" },
+          "name": { "type": "string" },
+          "sector": { "type": "string" },
+          "currentPrice": { "type": "number" },
+          "marketValue": { "type": "number" },
+          "gainLoss": { "type": "number" },
+          "gainLossPercent": { "type": "number" },
+          "allocationPercent": { "type": "number" }
+        },
+        "required": ["symbol", "shares", "averageCost", "name", "sector", "currentPrice", "marketValue", "gainLoss", "gainLossPercent", "allocationPercent"]
+      },
+      "PortfolioTrendPoint": {
+        "type": "object",
+        "properties": {
+          "label": { "type": "string" },
+          "value": { "type": "number" }
+        },
+        "required": ["label", "value"]
+      },
+      "PortfolioSnapshot": {
+        "type": "object",
+        "properties": {
+          "totalValue": { "type": "number" },
+          "totalCost": { "type": "number" },
+          "cashBalance": { "type": "number" },
+          "dayChange": { "type": "number" },
+          "dayChangePercent": { "type": "number" },
+          "holdings": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/PortfolioHolding" }
+          },
+          "trend": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/PortfolioTrendPoint" }
+          },
+          "sectorExposure": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "sector": { "type": "string" },
+                "value": { "type": "number" }
+              },
+              "required": ["sector", "value"]
+            }
+          }
+        },
+        "required": ["totalValue", "totalCost", "cashBalance", "dayChange", "dayChangePercent", "holdings", "trend", "sectorExposure"]
+      },
+      "FuturesAsset": {
+        "type": "object",
+        "properties": {
+          "symbol": { "type": "string" },
+          "label": { "type": "string" },
+          "changePercent": { "type": "number" },
+          "price": { "type": "number" },
+          "change": { "type": "number" },
+          "sparkline": {
+            "type": "array",
+            "items": { "type": "number" },
+            "description": "Normalized 0-1 series for mini chart (length >= 2)"
+          }
+        },
+        "required": ["symbol", "label", "changePercent", "price", "change", "sparkline"]
+      },
+      "MarketSummaryBlock": {
+        "type": "object",
+        "properties": {
+          "headline": { "type": "string" },
+          "bullets": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "sourceCount": { "type": "integer" },
+          "updatedLabel": { "type": "string" }
+        },
+        "required": ["headline", "bullets", "sourceCount", "updatedLabel"]
+      },
+      "RecentDevelopment": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "timeAgo": { "type": "string" },
+          "title": { "type": "string" },
+          "excerpt": { "type": "string" }
+        },
+        "required": ["id", "timeAgo", "title", "excerpt"]
+      },
+      "PopularSpace": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "title": { "type": "string" },
+          "description": { "type": "string" },
+          "cta": { "type": "string" },
+          "href": { "type": "string" }
+        },
+        "required": ["id", "title", "description", "cta", "href"]
+      },
+      "StandoutStock": {
+        "type": "object",
+        "properties": {
+          "symbol": { "type": "string" },
+          "name": { "type": "string" },
+          "exchange": { "type": "string" },
+          "volume": { "type": "number" },
+          "marketCap": { "type": "number" },
+          "peRatio": { "type": ["number", "null"] },
+          "dividendYield": { "type": ["number", "null"] },
+          "narrative": { "type": "string" }
+        },
+        "required": ["symbol", "name", "exchange", "volume", "marketCap", "peRatio", "dividendYield", "narrative"]
+      },
+      "WatchlistBarEntry": {
+        "type": "object",
+        "properties": {
+          "symbol": { "type": "string" },
+          "name": { "type": "string" },
+          "price": { "type": "number" },
+          "changePercent": { "type": "number" },
+          "exchange": { "type": "string" }
+        },
+        "required": ["symbol", "name", "price", "changePercent", "exchange"]
+      },
+      "ListMover": {
+        "type": "object",
+        "properties": {
+          "symbol": { "type": "string" },
+          "name": { "type": "string" },
+          "price": { "type": "number" },
+          "changePercent": { "type": "number" },
+          "exchange": { "type": "string" }
+        },
+        "required": ["symbol", "name", "price", "changePercent", "exchange"]
+      },
+      "MarketMovers": {
+        "type": "object",
+        "properties": {
+          "gainers": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/ListMover" }
+          },
+          "losers": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/ListMover" }
+          },
+          "active": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/ListMover" }
+          }
+        },
+        "required": ["gainers", "losers", "active"]
+      },
+      "SectorEtfRow": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "symbol": { "type": "string" },
+          "price": { "type": "number" },
+          "changePercent": { "type": "number" }
+        },
+        "required": ["name", "symbol", "price", "changePercent"]
+      },
+      "CryptoQuote": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "symbol": { "type": "string" },
+          "pairLabel": { "type": "string" },
+          "price": { "type": "number" },
+          "changePercent": { "type": "number" }
+        },
+        "required": ["name", "symbol", "pairLabel", "price", "changePercent"]
+      },
+      "FixedIncomeRow": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "symbol": { "type": "string" },
+          "price": { "type": "number" },
+          "changePercent": { "type": "number" }
+        },
+        "required": ["name", "symbol", "price", "changePercent"]
+      }
+    }
+  }
+}
