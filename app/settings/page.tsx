@@ -44,7 +44,10 @@ export default function SettingsPage() {
   useEffect(() => {
     let cancelled = false;
     fetch("/api/user/preferences")
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to load");
+        return res.json();
+      })
       .then((data: Preferences) => {
         if (cancelled) return;
         setPrefs(data);
@@ -92,7 +95,7 @@ export default function SettingsPage() {
         });
         if (!res.ok) throw new Error("Save failed");
         setStatus("success");
-        setSavedSnapshot({ displayName, prefs: prefs ? { ...prefs } : null });
+        setSavedSnapshot((prev) => ({ displayName, prefs: prev.prefs ? { ...prev.prefs } : null }));
       } catch {
         setStatus("error");
       }
