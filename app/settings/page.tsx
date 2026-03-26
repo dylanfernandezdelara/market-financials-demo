@@ -11,7 +11,7 @@ export default function SettingsPage() {
     fetch("/api/user/preferences")
       .then((r) => r.json())
       .then((data) => {
-        if (data.displayName) setDisplayName(data.displayName);
+        if (data.displayName !== undefined) setDisplayName(data.displayName);
       })
       .catch(() => {});
   }, []);
