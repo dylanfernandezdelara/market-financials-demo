@@ -50,7 +50,7 @@ export async function POST(request: Request) {
     startedAt: now,
     completedAt: now,
     lastSuccess: willSucceed ? now : (existing?.lastSuccess ?? null),
-    retryCount: willSucceed ? 0 : retryCount + (retry ? 0 : 1),
+    retryCount: willSucceed ? 0 : retryCount,
     error: willSucceed ? null : "Upstream provider timeout",
   };
 
