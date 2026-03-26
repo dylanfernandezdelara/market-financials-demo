@@ -5,7 +5,7 @@ export default function ResearchHubPage() {
       <p className="mt-2 text-sm text-neutral-600">
         Filings, transcripts, and third-party notes in one stream.
       </p>
-      <div className="mt-8 h-48 animate-pulse rounded-xl bg-neutral-100" />
+      <div className="mt-8 h-48 animate-pulse motion-reduce:animate-none rounded-xl bg-neutral-100" />
     </div>
   );
 }
