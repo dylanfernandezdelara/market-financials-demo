@@ -5,6 +5,7 @@ import { StockChartPanel } from "@/components/stock/stock-chart-panel";
 import { StockCompanySidebar } from "@/components/stock/stock-company-sidebar";
 import { StockFollowRow, StockPriceHero } from "@/components/stock/stock-price-hero";
 import { StockKeyStatsGrid } from "@/components/stock/stock-key-stats-grid";
+import { StockNoteEditor } from "@/components/stock/stock-note-editor";
 import { StockNotableTimeline } from "@/components/stock/stock-notable-timeline";
 import { StockOverviewTabs } from "@/components/stock/stock-overview-tabs";
 import { SiteHeader } from "@/components/site-header";
@@ -148,8 +149,9 @@ export default async function StockPage({ params }: StockPageProps) {
             </section>
           </div>
 
-          <aside className="xl:sticky xl:top-6">
+          <aside className="space-y-4 xl:sticky xl:top-6">
             <StockCompanySidebar stock={stock} />
+            <StockNoteEditor symbol={stock.symbol} />
           </aside>
         </div>
       </div>

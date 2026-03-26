@@ -208,6 +208,13 @@ export type MarketMovers = {
   active: ListMover[];
 };
 
+export type SymbolNote = {
+  id: string;
+  symbol: string;
+  content: string;
+  createdAt: string;
+};
+
 export type DashboardData = {
   sentimentLabel: string;
   sessionLabel: string;
