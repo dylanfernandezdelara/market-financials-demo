@@ -1076,3 +1076,24 @@ export const fixedIncomeRows: FixedIncomeRow[] = [
   { name: "High Yield", symbol: "HYG", price: 78.92, changePercent: -0.93 },
   { name: "High Grade", symbol: "LQD", price: 107.85, changePercent: -1.23 },
 ];
+
+export const savedCompareSets: { id: string; name: string; description: string; symbols: string[] }[] = [
+  {
+    id: "set-mag7",
+    name: "Magnificent Seven",
+    description: "The mega-cap tech leaders driving market returns.",
+    symbols: ["AAPL", "MSFT", "NVDA", "GOOGL", "AMZN"],
+  },
+  {
+    id: "set-semis",
+    name: "Semiconductor Showdown",
+    description: "Key chipmakers competing in the AI hardware race.",
+    symbols: ["NVDA", "AMD"],
+  },
+  {
+    id: "set-financials",
+    name: "Financials Core",
+    description: "Diversified bank and payments network comparison.",
+    symbols: ["JPM", "V"],
+  },
+];

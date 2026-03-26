@@ -208,6 +208,19 @@ export type MarketMovers = {
   active: ListMover[];
 };
 
+export type CompareSetMember = Pick<
+  StockProfile,
+  "symbol" | "name" | "price" | "changePercent" | "marketCap" | "peRatio" | "sector"
+>;
+
+export type CompareSet = {
+  id: string;
+  name: string;
+  description: string;
+  symbols: string[];
+  members: CompareSetMember[];
+};
+
 export type DashboardData = {
   sentimentLabel: string;
   sessionLabel: string;

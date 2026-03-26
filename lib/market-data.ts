@@ -1,5 +1,7 @@
 import { notFound } from "next/navigation";
 import {
+  CompareSet,
+  CompareSetMember,
   DashboardData,
   NewsArticle,
   PortfolioHolding,
@@ -21,6 +23,7 @@ import {
   newsArticles,
   portfolioHoldings,
   portfolioTrend,
+  savedCompareSets,
   sectorPerformance,
   standouts,
   stockProfiles,
@@ -219,6 +222,36 @@ export async function getNewsForSymbol(symbol: string) {
       (relatedSymbol) => relatedSymbol.toLowerCase() === symbol.trim().toLowerCase(),
     ),
   );
+}
+
+function enrichCompareSet(raw: { id: string; name: string; description: string; symbols: string[] }): CompareSet {
+  const members: CompareSetMember[] = raw.symbols
+    .map((sym) => stockProfiles.find((p) => p.symbol === sym))
+    .filter((p): p is StockProfile => Boolean(p))
+    .map((p) => ({
+      symbol: p.symbol,
+      name: p.name,
+      price: p.price,
+      changePercent: p.changePercent,
+      marketCap: p.marketCap,
+      peRatio: p.peRatio,
+      sector: p.sector,
+    }));
+
+  return { ...raw, members };
+}
+
+export async function getCompareSets(): Promise<{ saved: CompareSet[]; watchlistBasket: CompareSet }> {
+  const saved = savedCompareSets.map(enrichCompareSet);
+
+  const watchlistBasket = enrichCompareSet({
+    id: "set-watchlist",
+    name: "My Watchlist",
+    description: "Compare basket derived from your current watchlist.",
+    symbols: watchlistSymbols,
+  });
+
+  return { saved, watchlistBasket };
 }
 
 export async function getRelatedStocks(symbol: string) {
