@@ -50,6 +50,13 @@ function enforceRateLimit(key: string): {
 
   bucket.timestamps.push(now);
 
+  // Evict stale buckets to prevent unbounded Map growth
+  for (const [k, b] of buckets) {
+    if (k !== key && b.timestamps.every((t) => t <= windowStart)) {
+      buckets.delete(k);
+    }
+  }
+
   return {
     allowed: true,
     info: {
