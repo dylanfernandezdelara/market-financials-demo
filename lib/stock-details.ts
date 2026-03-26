@@ -15,7 +15,7 @@ export function dayRangeFromChart(chart: PricePoint[]): { low: number; high: num
 }
 
 export function epsFromPe(stock: StockProfile): number | null {
-  if (stock.peRatio <= 0) {
+  if (stock.peRatio === 0) {
     return null;
   }
   return stock.price / stock.peRatio;
