@@ -51,7 +51,7 @@ export function addImportedHoldings(holdings: Holding[]): void {
 }
 
 function allHoldings(): Holding[] {
-  const merged = [...portfolioHoldings];
+  const merged = portfolioHoldings.map((h) => ({ ...h }));
   for (const imported of importedHoldings) {
     const existing = merged.find((h) => h.symbol === imported.symbol);
     if (existing) {
