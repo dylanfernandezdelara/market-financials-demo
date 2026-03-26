@@ -12,6 +12,12 @@ export function StandoutsSection({ standouts }: StandoutsSectionProps) {
       <h2 id="standouts-heading" className="mb-3 text-[17px] font-semibold text-neutral-900">
         Standouts
       </h2>
+      {standouts.length === 0 ? (
+        <div className="rounded-lg border border-neutral-200 bg-white p-8 text-center shadow-sm">
+          <p className="text-[15px] font-medium text-neutral-500">No standouts right now</p>
+          <p className="mt-1 text-[13px] text-neutral-400">Check back later for noteworthy movers.</p>
+        </div>
+      ) : (
       <div className="flex flex-col gap-2">
         {standouts.map((stock) => (
           <Link
@@ -60,6 +66,7 @@ export function StandoutsSection({ standouts }: StandoutsSectionProps) {
           </Link>
         ))}
       </div>
+      )}
     </section>
   );
 }
