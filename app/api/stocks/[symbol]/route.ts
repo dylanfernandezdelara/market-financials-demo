@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import {
   getNewsForSymbol,
   getRelatedStocks,
-  getStockProfile,
+  getStockOrThrow,
 } from "@/lib/market-data";
 
 type StockRouteProps = {
@@ -13,14 +13,7 @@ type StockRouteProps = {
 
 export async function GET(_: Request, { params }: StockRouteProps) {
   const { symbol } = await params;
-  const stock = await getStockProfile(symbol);
-
-  if (!stock) {
-    return NextResponse.json(
-      { error: `Unknown symbol: ${symbol}` },
-      { status: 404 },
-    );
-  }
+  const stock = await getStockOrThrow(symbol);
 
   const [news, relatedStocks] = await Promise.all([
     getNewsForSymbol(stock.symbol),
