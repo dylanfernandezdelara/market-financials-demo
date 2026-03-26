@@ -61,6 +61,10 @@ export default function SettingsPage() {
     };
   }, []);
 
+  // Keep a ref to prefs so async callbacks always see latest value
+  const prefsRef = useRef(prefs);
+  prefsRef.current = prefs;
+
   // FDL-734: Warn on unsaved changes before unload
   const isDirtyRef = useRef(isDirty);
   isDirtyRef.current = isDirty;
@@ -95,7 +99,8 @@ export default function SettingsPage() {
         });
         if (!res.ok) throw new Error("Save failed");
         setStatus("success");
-        setSavedSnapshot((prev) => ({ displayName, prefs: prev.prefs ? { ...prev.prefs } : null }));
+        const currentPrefs = prefsRef.current;
+        setSavedSnapshot({ displayName, prefs: currentPrefs ? { ...currentPrefs } : null });
       } catch {
         setStatus("error");
       }
