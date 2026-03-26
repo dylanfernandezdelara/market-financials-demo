@@ -6,6 +6,7 @@ import {
   PortfolioSnapshot,
   SearchResult,
   StockProfile,
+  Transaction,
   WatchlistEntry,
 } from "@/types/finance";
 import {
@@ -26,6 +27,7 @@ import {
   stockProfiles,
   topFutures,
   topMovers,
+  transactionLedger,
   watchlistBarEntries,
   watchlistSymbols,
 } from "@/lib/mock-data";
@@ -235,4 +237,8 @@ export async function getRelatedStocks(symbol: string) {
         profile.sector === stock.sector,
     )
     .slice(0, 3);
+}
+
+export async function getTransactionLedger(): Promise<Transaction[]> {
+  return transactionLedger;
 }

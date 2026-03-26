@@ -6,18 +6,40 @@ import { SectionHeader } from "@/components/ui/section-header";
 import { SurfaceCard } from "@/components/ui/surface-card";
 import { SiteHeader } from "@/components/site-header";
 import { ImportCsvPanel } from "@/components/features/import-csv";
-import { getPortfolioSnapshot, getSearchUniverse } from "@/lib/market-data";
+import {
+  getPortfolioSnapshot,
+  getSearchUniverse,
+  getTransactionLedger,
+} from "@/lib/market-data";
 import {
   formatCompactCurrency,
   formatCurrency,
   formatPercent,
   formatSignedCurrency,
 } from "@/lib/utils";
+import type { TransactionType } from "@/types/finance";
+
+const txnTypeLabels: Record<TransactionType, string> = {
+  buy: "Buy",
+  sell: "Sell",
+  dividend: "Dividend",
+  deposit: "Deposit",
+  withdrawal: "Withdrawal",
+};
+
+const txnTypeBadgeClasses: Record<TransactionType, string> = {
+  buy: "border-emerald-300 bg-emerald-50 text-emerald-700",
+  sell: "border-rose-300 bg-rose-50 text-rose-700",
+  dividend: "border-amber-300 bg-amber-50 text-amber-700",
+  deposit: "border-sky-300 bg-sky-50 text-sky-700",
+  withdrawal: "border-slate-300 bg-slate-100 text-slate-600",
+};
 
 export default async function PortfolioPage() {
-  const [portfolio, searchOptions] = await Promise.all([
+  const [portfolio, searchOptions, transactions] = await Promise.all([
     getPortfolioSnapshot(),
     getSearchUniverse(),
+    getTransactionLedger(),
   ]);
   const allocationData = portfolio.sectorExposure.map((entry) => ({
     label: entry.sector,
@@ -157,6 +179,64 @@ export default async function PortfolioPage() {
                     </td>
                     <td className="px-4 py-4 text-neutral-600">
                       {holding.allocationPercent.toFixed(1)}%
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </SurfaceCard>
+
+        <SurfaceCard>
+          <SectionHeader
+            eyebrow="Ledger"
+            title="Transaction history"
+            description="Full record of buys, sells, dividends, and cash movements for performance and tax reporting."
+          />
+          <div className="mt-5 overflow-hidden rounded-2xl border border-neutral-200">
+            <table className="min-w-full divide-y divide-neutral-200 text-sm">
+              <thead className="bg-neutral-50">
+                <tr className="text-left text-neutral-500">
+                  <th className="px-4 py-3 font-medium">Date</th>
+                  <th className="px-4 py-3 font-medium">Type</th>
+                  <th className="px-4 py-3 font-medium">Symbol</th>
+                  <th className="px-4 py-3 font-medium">Shares</th>
+                  <th className="px-4 py-3 font-medium">Price</th>
+                  <th className="px-4 py-3 font-medium">Total</th>
+                  <th className="px-4 py-3 font-medium">Notes</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-neutral-100 bg-white">
+                {transactions.map((txn) => (
+                  <tr key={txn.id}>
+                    <td className="px-4 py-4 font-mono text-neutral-600">
+                      {txn.date}
+                    </td>
+                    <td className="px-4 py-4">
+                      <span
+                        className={`inline-flex rounded-full border px-2.5 py-1 font-mono text-[11px] font-semibold tracking-[0.08em] ${txnTypeBadgeClasses[txn.type]}`}
+                      >
+                        {txnTypeLabels[txn.type]}
+                      </span>
+                    </td>
+                    <td className="px-4 py-4 font-mono font-semibold text-neutral-900">
+                      {txn.symbol ?? "—"}
+                    </td>
+                    <td className="px-4 py-4 text-neutral-600">
+                      {txn.shares ?? "—"}
+                    </td>
+                    <td className="px-4 py-4 text-neutral-600">
+                      {txn.pricePerShare !== null
+                        ? formatCurrency(txn.pricePerShare)
+                        : "—"}
+                    </td>
+                    <td className="px-4 py-4 font-medium text-neutral-900">
+                      {txn.type === "withdrawal"
+                        ? `−${formatCurrency(txn.totalAmount)}`
+                        : formatCurrency(txn.totalAmount)}
+                    </td>
+                    <td className="px-4 py-4 text-neutral-500">
+                      {txn.notes}
                     </td>
                   </tr>
                 ))}

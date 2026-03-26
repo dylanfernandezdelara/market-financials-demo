@@ -86,6 +86,19 @@ export type SearchResult = Pick<
   "symbol" | "name" | "exchange" | "sector" | "price" | "changePercent"
 >;
 
+export type TransactionType = "buy" | "sell" | "dividend" | "deposit" | "withdrawal";
+
+export type Transaction = {
+  id: string;
+  date: string;
+  type: TransactionType;
+  symbol: string | null;
+  shares: number | null;
+  pricePerShare: number | null;
+  totalAmount: number;
+  notes: string;
+};
+
 export type Holding = {
   symbol: string;
   shares: number;
