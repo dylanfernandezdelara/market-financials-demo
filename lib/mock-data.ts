@@ -1082,7 +1082,7 @@ export const savedCompareSets: { id: string; name: string; description: string; 
     id: "set-mag7",
     name: "Magnificent Seven",
     description: "The mega-cap tech leaders driving market returns.",
-    symbols: ["AAPL", "MSFT", "NVDA", "GOOGL", "AMZN"],
+    symbols: ["AAPL", "MSFT", "NVDA", "GOOGL", "AMZN", "META", "TSLA"],
   },
   {
     id: "set-semis",
