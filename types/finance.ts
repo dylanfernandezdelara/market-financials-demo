@@ -129,6 +129,8 @@ export type FuturesAsset = {
   change: number;
   /** Normalized 0–1 series for mini chart (length ≥ 2). */
   sparkline: number[];
+  /** Optional override destination for macro instruments (e.g. VIX, futures proxies). */
+  fallbackHref?: string;
 };
 
 export type MarketSummaryBlock = {
