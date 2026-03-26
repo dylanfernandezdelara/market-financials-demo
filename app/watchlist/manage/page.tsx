@@ -31,6 +31,7 @@ type StockQuote = {
 
 type EnrichedEntry = StockQuote & {
   hasAlert: boolean;
+  originalIndex: number;
 };
 
 /* ------------------------------------------------------------------ */
@@ -58,7 +59,7 @@ async function fetchAlertRules(): Promise<AlertRule[]> {
 async function fetchQuotes(): Promise<StockQuote[]> {
   const res = await fetch("/api/stocks");
   const data = await res.json();
-  return (data.stocks ?? data) as StockQuote[];
+  return (data.data ?? data.stocks ?? data) as StockQuote[];
 }
 
 async function persistWatchlist(lists: WatchlistList[]): Promise<void> {
@@ -81,7 +82,7 @@ function enrichEntries(
   );
 
   return symbols
-    .map((sym) => {
+    .map((sym, idx) => {
       const quote = quotes.find(
         (q) => q.symbol.toUpperCase() === sym.toUpperCase(),
       );
@@ -89,6 +90,7 @@ function enrichEntries(
       return {
         ...quote,
         hasAlert: alertSymbols.has(sym.toUpperCase()),
+        originalIndex: idx,
       };
     })
     .filter((e): e is EnrichedEntry => e !== null);
@@ -350,7 +352,7 @@ export default function WatchlistManagePage() {
                     </thead>
                     <tbody className="divide-y divide-neutral-100">
                       {visibleEntries.map((entry) => {
-                        const originalIdx = enriched.indexOf(entry);
+                        const originalIdx = entry.originalIndex;
                         const isHighlighted =
                           normalizedSearch.length > 0 &&
                           entry.symbol.toUpperCase() === normalizedSearch;
@@ -415,7 +417,7 @@ export default function WatchlistManagePage() {
                                   type="button"
                                   aria-label={`Move ${entry.symbol} down`}
                                   disabled={
-                                    originalIdx === enriched.length - 1
+                                    originalIdx === list.symbols.length - 1
                                   }
                                   onClick={() =>
                                     moveEntry(list.id, originalIdx, "down")
