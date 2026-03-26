@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
+import { getReports } from "@/lib/market-data";
 
 export async function GET() {
-  return NextResponse.json({ reports: [], nextRun: null });
+  const data = await getReports();
+  return NextResponse.json(data);
 }

@@ -221,6 +221,22 @@ export async function getNewsForSymbol(symbol: string) {
   );
 }
 
+export type Report = {
+  id: string;
+  title: string;
+  type: "monthly-performance" | "tax-lots";
+  createdAt: string;
+};
+
+export type ReportsPayload = {
+  reports: Report[];
+  nextRun: string | null;
+};
+
+export async function getReports(): Promise<ReportsPayload> {
+  return { reports: [], nextRun: null };
+}
+
 export async function getRelatedStocks(symbol: string) {
   const stock = await getStockProfile(symbol);
 
