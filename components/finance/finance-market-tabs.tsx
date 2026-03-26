@@ -79,8 +79,8 @@ export function FinanceMarketTabs() {
 
   const handleIntersect = useCallback(
     (entries: IntersectionObserverEntry[]) => {
-      if (scrollLock.current) return;
-
+      // Always keep the visible-sections set in sync, even while the scroll
+      // lock is active, so the set is accurate when the lock expires.
       for (const entry of entries) {
         if (entry.isIntersecting) {
           visibleSections.current.add(entry.target.id);
@@ -88,6 +88,8 @@ export function FinanceMarketTabs() {
           visibleSections.current.delete(entry.target.id);
         }
       }
+
+      if (scrollLock.current) return;
 
       if (visibleSections.current.size === 0) {
         // No tracked section is in view — fall back to "US Markets".
@@ -127,7 +129,11 @@ export function FinanceMarketTabs() {
 
     for (const el of elements) observer.observe(el);
 
-    return () => observer.disconnect();
+    const sections = visibleSections.current;
+    return () => {
+      observer.disconnect();
+      sections.clear();
+    };
   }, [isHome, handleIntersect]);
 
   // ── Determine which tab is active ───────────────────────────────────
