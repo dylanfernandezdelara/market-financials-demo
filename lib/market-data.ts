@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { cacheLife, cacheTag } from "next/cache";
 import {
   DashboardData,
   NewsArticle,
@@ -130,6 +131,10 @@ function sessionClock(): string {
 }
 
 export async function getDashboardData(): Promise<DashboardData> {
+  "use cache";
+  cacheLife("minutes");
+  cacheTag("dashboard");
+
   return {
     sentimentLabel: "Bearish Sentiment",
     sessionLabel: "After-hours",
@@ -156,10 +161,18 @@ export async function getDashboardData(): Promise<DashboardData> {
 }
 
 export async function getPortfolioSnapshot() {
+  "use cache";
+  cacheLife("minutes");
+  cacheTag("portfolio");
+
   return buildPortfolioSnapshot();
 }
 
 export async function getSearchUniverse(): Promise<SearchResult[]> {
+  "use cache";
+  cacheLife("hours");
+  cacheTag("search-universe");
+
   return stockProfiles.map((stock) => ({
     symbol: stock.symbol,
     name: stock.name,
@@ -171,6 +184,10 @@ export async function getSearchUniverse(): Promise<SearchResult[]> {
 }
 
 export async function searchSymbols(query?: string): Promise<SearchResult[]> {
+  "use cache";
+  cacheLife("hours");
+  cacheTag("search-results");
+
   const universe = await getSearchUniverse();
   const normalizedQuery = query?.trim().toLowerCase();
 
@@ -186,6 +203,10 @@ export async function searchSymbols(query?: string): Promise<SearchResult[]> {
 }
 
 export async function getStockProfile(symbol: string) {
+  "use cache";
+  cacheLife("hours");
+  cacheTag("stock-profile", `stock-${symbol.toLowerCase()}`);
+
   return stockProfiles.find(
     (stock) => stock.symbol.toLowerCase() === symbol.trim().toLowerCase(),
   );
@@ -202,6 +223,10 @@ export async function getStockOrThrow(symbol: string) {
 }
 
 export async function getNews(limit?: number): Promise<NewsArticle[]> {
+  "use cache";
+  cacheLife("minutes");
+  cacheTag("news");
+
   if (limit === undefined || Number.isNaN(limit)) {
     return newsArticles;
   }
@@ -214,6 +239,10 @@ export async function getNews(limit?: number): Promise<NewsArticle[]> {
 }
 
 export async function getNewsForSymbol(symbol: string) {
+  "use cache";
+  cacheLife("minutes");
+  cacheTag("news", `news-${symbol.toLowerCase()}`);
+
   return newsArticles.filter((article) =>
     article.relatedSymbols.some(
       (relatedSymbol) => relatedSymbol.toLowerCase() === symbol.trim().toLowerCase(),
@@ -222,6 +251,10 @@ export async function getNewsForSymbol(symbol: string) {
 }
 
 export async function getRelatedStocks(symbol: string) {
+  "use cache";
+  cacheLife("hours");
+  cacheTag("related-stocks", `related-${symbol.toLowerCase()}`);
+
   const stock = await getStockProfile(symbol);
 
   if (!stock) {
