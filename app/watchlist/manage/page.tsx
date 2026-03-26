@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { WatchlistManager } from "@/components/watchlist/watchlist-manager";
-import { getSearchUniverse } from "@/lib/market-data";
-import { buildWatchlistEntries } from "@/lib/market-data";
+import { buildWatchlistEntries, getSearchUniverse } from "@/lib/market-data";
 
 export default async function WatchlistManagePage() {
   const [searchOptions, watchlistEntries] = await Promise.all([
