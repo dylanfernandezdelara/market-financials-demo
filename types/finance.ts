@@ -37,6 +37,12 @@ export type StockProfile = {
   description: string;
   thesis: string;
   chart: PricePoint[];
+  /** After-hours extended-session price (mock data layer). */
+  afterHoursPrice: number;
+  /** After-hours price change vs close (mock data layer). */
+  afterHoursChange: number;
+  /** After-hours change as a percentage (mock data layer). */
+  afterHoursChangePercent: number;
 };
 
 export type WatchlistEntry = Pick<
