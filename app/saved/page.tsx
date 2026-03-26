@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { SavedLayoutsManager } from "@/components/dashboard/saved-layouts-manager";
 
 export default function SavedLayoutsPage() {
   return (
@@ -7,12 +7,7 @@ export default function SavedLayoutsPage() {
       <p className="mt-2 text-sm text-neutral-600">
         Reuse dashboard arrangements across devices.
       </p>
-      <div className="mt-6 rounded-lg border border-neutral-200 bg-white p-4 text-sm text-neutral-600">
-        Default layout
-      </div>
-      <Link href="/settings" className="mt-6 inline-block text-sm text-neutral-400 underline">
-        Manage in settings
-      </Link>
+      <SavedLayoutsManager />
     </div>
   );
 }

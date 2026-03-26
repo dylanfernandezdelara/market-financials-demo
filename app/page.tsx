@@ -10,7 +10,9 @@ import { StandoutsSection } from "@/components/finance/standouts-section";
 import { TopFutures } from "@/components/finance/top-futures";
 import { WatchlistStrip } from "@/components/finance/watchlist-strip";
 import { QuickLinksRow } from "@/components/explore/quick-links";
+import { HomeLayoutShell } from "@/components/dashboard/home-layout-shell";
 import { getDashboardData, getSearchUniverse } from "@/lib/market-data";
+import type { HomeSectionId } from "@/lib/home-layout";
 
 export default async function Home() {
   const [dashboard, searchOptions] = await Promise.all([
@@ -18,21 +20,23 @@ export default async function Home() {
     getSearchUniverse(),
   ]);
 
+  const sectionMap: Record<HomeSectionId, React.ReactNode> = {
+    "top-futures": <TopFutures futures={dashboard.topFutures} sentimentLabel={dashboard.sentimentLabel} />,
+    "market-summary": <MarketSummaryAccordion summary={dashboard.marketSummary} />,
+    "recent-developments": <RecentDevelopments developments={dashboard.recentDevelopments} />,
+    "popular-spaces": <PopularSpaces spaces={dashboard.popularSpaces} />,
+    standouts: <StandoutsSection standouts={dashboard.standouts} />,
+    watchlist: <WatchlistStrip entries={dashboard.watchlistBar} />,
+    movers: <MoversPanel movers={dashboard.movers} />,
+    "equity-sectors": <EquitySectors sectors={dashboard.equitySectors} />,
+    crypto: <CryptoRow quotes={dashboard.cryptocurrencies} />,
+    "fixed-income": <FixedIncomeRow rows={dashboard.fixedIncome} />,
+    "quick-links": <QuickLinksRow />,
+  };
+
   return (
     <FinanceShell searchOptions={searchOptions}>
-      <div className="space-y-8">
-        <TopFutures futures={dashboard.topFutures} sentimentLabel={dashboard.sentimentLabel} />
-        <MarketSummaryAccordion summary={dashboard.marketSummary} />
-        <RecentDevelopments developments={dashboard.recentDevelopments} />
-        <PopularSpaces spaces={dashboard.popularSpaces} />
-        <StandoutsSection standouts={dashboard.standouts} />
-        <WatchlistStrip entries={dashboard.watchlistBar} />
-        <MoversPanel movers={dashboard.movers} />
-        <EquitySectors sectors={dashboard.equitySectors} />
-        <CryptoRow quotes={dashboard.cryptocurrencies} />
-        <FixedIncomeRow rows={dashboard.fixedIncome} />
-        <QuickLinksRow />
-      </div>
+      <HomeLayoutShell sectionMap={sectionMap} />
     </FinanceShell>
   );
 }
