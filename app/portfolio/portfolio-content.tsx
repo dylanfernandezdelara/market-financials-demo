@@ -30,6 +30,7 @@ type SortDir = "asc" | "desc";
 
 type PortfolioContentProps = {
   portfolio: PortfolioSnapshot;
+  asOfTimestamp: string;
 };
 
 function sortHoldings(
@@ -77,7 +78,7 @@ function SortButton({
   );
 }
 
-export function PortfolioContent({ portfolio }: PortfolioContentProps) {
+export function PortfolioContent({ portfolio, asOfTimestamp }: PortfolioContentProps) {
   const [sortKey, setSortKey] = useState<SortKey>("marketValue");
   const [sortDir, setSortDir] = useState<SortDir>("desc");
   const [hoveredSector, setHoveredSector] = useState<string | null>(null);
@@ -86,16 +87,6 @@ export function PortfolioContent({ portfolio }: PortfolioContentProps) {
   const unrealizedGainLoss = portfolio.totalValue - portfolio.totalCost - portfolio.cashBalance;
   const unrealizedPercent =
     portfolio.totalCost === 0 ? 0 : (unrealizedGainLoss / portfolio.totalCost) * 100;
-
-  const asOfTimestamp = new Intl.DateTimeFormat("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-    hour: "numeric",
-    minute: "2-digit",
-    timeZone: "America/New_York",
-    timeZoneName: "short",
-  }).format(new Date());
 
   const allocationData = portfolio.sectorExposure.map((entry) => ({
     label: entry.sector,
