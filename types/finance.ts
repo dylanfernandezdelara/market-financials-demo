@@ -208,6 +208,18 @@ export type MarketMovers = {
   active: ListMover[];
 };
 
+export type TeamAnnotation = {
+  id: string;
+  workspaceId: string;
+  authorName: string;
+  authorRole: string;
+  entityType: "stock" | "portfolio" | "watchlist" | "sector";
+  entityId: string;
+  body: string;
+  createdAt: string;
+  pinned: boolean;
+};
+
 export type DashboardData = {
   sentimentLabel: string;
   sessionLabel: string;

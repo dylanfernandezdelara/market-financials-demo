@@ -6,6 +6,7 @@ import {
   PortfolioSnapshot,
   SearchResult,
   StockProfile,
+  TeamAnnotation,
   WatchlistEntry,
 } from "@/types/finance";
 import {
@@ -24,6 +25,7 @@ import {
   sectorPerformance,
   standouts,
   stockProfiles,
+  teamAnnotations,
   topFutures,
   topMovers,
   watchlistBarEntries,
@@ -235,4 +237,16 @@ export async function getRelatedStocks(symbol: string) {
         profile.sector === stock.sector,
     )
     .slice(0, 3);
+}
+
+export async function getTeamAnnotations(
+  entityType?: TeamAnnotation["entityType"],
+): Promise<TeamAnnotation[]> {
+  if (entityType) {
+    return teamAnnotations.filter(
+      (annotation) => annotation.entityType === entityType,
+    );
+  }
+
+  return teamAnnotations;
 }

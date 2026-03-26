@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function TeamPage() {
   return (
     <div className="mx-auto max-w-2xl px-6 py-10">
@@ -9,6 +11,17 @@ export default function TeamPage() {
       >
         Invite member
       </button>
+      <div className="mt-8 border-t border-neutral-200 pt-6">
+        <Link
+          href="/team/annotations"
+          className="text-sm font-medium text-neutral-900 underline"
+        >
+          View team annotations
+        </Link>
+        <p className="mt-1 text-xs text-neutral-500">
+          Shared comments and notes tied to stocks, portfolios, watchlists, and sectors.
+        </p>
+      </div>
     </div>
   );
 }
