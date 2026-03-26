@@ -213,6 +213,10 @@ export async function getNews(limit?: number): Promise<NewsArticle[]> {
   return newsArticles.slice(0, limit);
 }
 
+export async function getNewsArticleById(id: string) {
+  return newsArticles.find((article) => article.id === id) ?? null;
+}
+
 export async function getNewsForSymbol(symbol: string) {
   return newsArticles.filter((article) =>
     article.relatedSymbols.some(

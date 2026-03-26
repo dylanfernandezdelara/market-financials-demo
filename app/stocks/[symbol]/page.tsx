@@ -105,9 +105,10 @@ export default async function StockPage({ params }: StockPageProps) {
               <h2 className="text-[17px] font-semibold text-[#1a1a1a]">Stories &amp; analysis</h2>
               <div className="mt-4 grid gap-3 sm:grid-cols-2">
                 {news.slice(0, 4).map((article) => (
-                  <article
+                  <Link
                     key={article.id}
-                    className="rounded-xl border border-[#ebebeb] bg-white p-4 shadow-sm"
+                    href={`/news/${article.id}`}
+                    className="rounded-xl border border-[#ebebeb] bg-white p-4 shadow-sm transition-shadow hover:shadow-md"
                   >
                     <p className="text-[11px] font-medium uppercase tracking-wide text-neutral-400">
                       {article.source}
@@ -119,7 +120,7 @@ export default async function StockPage({ params }: StockPageProps) {
                       {article.summary}
                     </p>
                     <p className="mt-3 text-[11px] text-neutral-400">{article.publishedAt}</p>
-                  </article>
+                  </Link>
                 ))}
               </div>
             </section>

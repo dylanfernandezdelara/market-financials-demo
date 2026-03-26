@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Newspaper } from "lucide-react";
 import { NewsArticle } from "@/types/finance";
 import { SurfaceCard } from "@/components/ui/surface-card";
@@ -32,9 +33,10 @@ export function NewsFeedCard({ news }: NewsFeedCardProps) {
       />
       <div className="mt-5 grid gap-4 xl:grid-cols-[1.05fr_0.95fr]">
         {leadArticle ? (
-          <article
+          <Link
             key={leadArticle.id}
-            className="rounded-[30px] border border-slate-900/10 bg-[linear-gradient(180deg,#0f172a,#1b2c40)] p-6 text-white shadow-[0_18px_48px_rgba(15,23,42,0.24)]"
+            href={`/news/${leadArticle.id}`}
+            className="rounded-[30px] border border-slate-900/10 bg-[linear-gradient(180deg,#0f172a,#1b2c40)] p-6 text-white shadow-[0_18px_48px_rgba(15,23,42,0.24)] transition-shadow hover:shadow-[0_24px_56px_rgba(15,23,42,0.32)]"
           >
             <div className="flex items-start justify-between gap-3">
               <div className="inline-flex items-center gap-2 text-sm text-slate-300">
@@ -66,13 +68,14 @@ export function NewsFeedCard({ news }: NewsFeedCardProps) {
                 ))}
               </div>
             </div>
-          </article>
+          </Link>
         ) : null}
         <div className="grid gap-4">
           {sideArticles.map((article) => (
-            <article
+            <Link
               key={article.id}
-              className="rounded-[24px] border border-white/70 bg-white/78 p-5 shadow-[0_14px_36px_rgba(15,23,42,0.06)]"
+              href={`/news/${article.id}`}
+              className="rounded-[24px] border border-white/70 bg-white/78 p-5 shadow-[0_14px_36px_rgba(15,23,42,0.06)] transition-shadow hover:shadow-[0_18px_44px_rgba(15,23,42,0.1)]"
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="inline-flex items-center gap-2 text-sm text-slate-500">
@@ -102,7 +105,7 @@ export function NewsFeedCard({ news }: NewsFeedCardProps) {
                   ))}
                 </div>
               </div>
-            </article>
+            </Link>
           ))}
         </div>
       </div>
