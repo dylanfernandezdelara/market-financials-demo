@@ -2,13 +2,15 @@
 
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
-import type { MarketSummaryBlock } from "@/types/finance";
+import type { FeedProvenance, MarketSummaryBlock } from "@/types/finance";
+import { FeedProvenanceBadge } from "@/components/ui/feed-provenance-badge";
 
 type MarketSummaryAccordionProps = {
   summary: MarketSummaryBlock;
+  provenance?: FeedProvenance;
 };
 
-export function MarketSummaryAccordion({ summary }: MarketSummaryAccordionProps) {
+export function MarketSummaryAccordion({ summary, provenance }: MarketSummaryAccordionProps) {
   const [openIndex, setOpenIndex] = useState(0);
 
   const items: { title: string; body?: string }[] = [
@@ -19,9 +21,12 @@ export function MarketSummaryAccordion({ summary }: MarketSummaryAccordionProps)
   return (
     <section id="politicians" className="scroll-mt-28" aria-labelledby="market-summary-heading">
       <div className="mb-3 flex flex-wrap items-baseline justify-between gap-3">
-        <h2 id="market-summary-heading" className="text-[17px] font-semibold text-[#1a1a1a]">
-          Market Summary
-        </h2>
+        <div className="flex items-center gap-2">
+          <h2 id="market-summary-heading" className="text-[17px] font-semibold text-[#1a1a1a]">
+            Market Summary
+          </h2>
+          {provenance ? <FeedProvenanceBadge provenance={provenance} /> : null}
+        </div>
         <span className="text-xs text-neutral-500">{summary.updatedLabel}</span>
       </div>
       <div className="overflow-hidden rounded-lg border border-[#ebebeb] bg-white shadow-sm">

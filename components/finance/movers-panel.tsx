@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useState } from "react";
 import { changeTextClass, formatCurrency, formatPercent } from "@/lib/utils";
-import type { ListMover, MarketMovers } from "@/types/finance";
+import type { FeedProvenance, ListMover, MarketMovers } from "@/types/finance";
+import { FeedProvenanceBadge } from "@/components/ui/feed-provenance-badge";
 
 const tabs = [
   { key: "gainers" as const, label: "Gainers" },
@@ -13,9 +14,10 @@ const tabs = [
 
 type MoversPanelProps = {
   movers: MarketMovers;
+  provenance?: FeedProvenance;
 };
 
-export function MoversPanel({ movers }: MoversPanelProps) {
+export function MoversPanel({ movers, provenance }: MoversPanelProps) {
   const [tab, setTab] = useState<(typeof tabs)[number]["key"]>("gainers");
 
   const rows: ListMover[] = movers[tab];
@@ -23,9 +25,12 @@ export function MoversPanel({ movers }: MoversPanelProps) {
   return (
     <section id="screener" className="scroll-mt-28" aria-labelledby="movers-heading">
       <div className="mb-3 flex flex-wrap items-center justify-between gap-4">
-        <h2 id="movers-heading" className="text-[17px] font-semibold text-neutral-900">
-          Movers
-        </h2>
+        <div className="flex items-center gap-2">
+          <h2 id="movers-heading" className="text-[17px] font-semibold text-neutral-900">
+            Movers
+          </h2>
+          {provenance ? <FeedProvenanceBadge provenance={provenance} /> : null}
+        </div>
         <div className="inline-flex rounded-full border border-neutral-200 bg-neutral-100/80 p-0.5">
           {tabs.map((item) => (
             <button

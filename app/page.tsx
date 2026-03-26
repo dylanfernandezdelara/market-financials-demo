@@ -21,13 +21,13 @@ export default async function Home() {
   return (
     <FinanceShell searchOptions={searchOptions}>
       <div className="space-y-8">
-        <TopFutures futures={dashboard.topFutures} sentimentLabel={dashboard.sentimentLabel} />
-        <MarketSummaryAccordion summary={dashboard.marketSummary} />
+        <TopFutures futures={dashboard.topFutures} sentimentLabel={dashboard.sentimentLabel} provenance={dashboard.provenance.futures} />
+        <MarketSummaryAccordion summary={dashboard.marketSummary} provenance={dashboard.provenance.marketSummary} />
         <RecentDevelopments developments={dashboard.recentDevelopments} />
         <PopularSpaces spaces={dashboard.popularSpaces} />
         <StandoutsSection standouts={dashboard.standouts} />
         <WatchlistStrip entries={dashboard.watchlistBar} />
-        <MoversPanel movers={dashboard.movers} />
+        <MoversPanel movers={dashboard.movers} provenance={dashboard.provenance.movers} />
         <EquitySectors sectors={dashboard.equitySectors} />
         <CryptoRow quotes={dashboard.cryptocurrencies} />
         <FixedIncomeRow rows={dashboard.fixedIncome} />

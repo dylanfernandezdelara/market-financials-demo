@@ -7,20 +7,25 @@ import {
   formatPercent,
   formatSignedCurrency,
 } from "@/lib/utils";
-import type { FuturesAsset } from "@/types/finance";
+import type { FeedProvenance, FuturesAsset } from "@/types/finance";
+import { FeedProvenanceBadge } from "@/components/ui/feed-provenance-badge";
 
 type TopFuturesProps = {
   futures: FuturesAsset[];
   sentimentLabel: string;
+  provenance?: FeedProvenance;
 };
 
-export function TopFutures({ futures, sentimentLabel }: TopFuturesProps) {
+export function TopFutures({ futures, sentimentLabel, provenance }: TopFuturesProps) {
   return (
     <section aria-labelledby="top-assets-heading">
       <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
-        <h2 id="top-assets-heading" className="text-[17px] font-semibold text-[#1a1a1a]">
-          Top Assets
-        </h2>
+        <div className="flex items-center gap-2">
+          <h2 id="top-assets-heading" className="text-[17px] font-semibold text-[#1a1a1a]">
+            Top Assets
+          </h2>
+          {provenance ? <FeedProvenanceBadge provenance={provenance} /> : null}
+        </div>
         <div className="flex flex-wrap items-center gap-3">
           <div className="flex items-center gap-2">
             <span className="text-[13px] font-medium text-red-600">{sentimentLabel}</span>

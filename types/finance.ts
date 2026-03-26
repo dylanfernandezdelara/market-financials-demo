@@ -208,6 +208,14 @@ export type MarketMovers = {
   active: ListMover[];
 };
 
+export type FeedSource = "mock" | "integration";
+
+export type FeedProvenance = {
+  source: FeedSource;
+  label: string;
+  updatedAt: string;
+};
+
 export type DashboardData = {
   sentimentLabel: string;
   sessionLabel: string;
@@ -231,4 +239,5 @@ export type DashboardData = {
   sectors: SectorPerformance[];
   news: NewsArticle[];
   portfolio: PortfolioSnapshot;
+  provenance: Record<string, FeedProvenance>;
 };

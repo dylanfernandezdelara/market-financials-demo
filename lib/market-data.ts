@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import {
   DashboardData,
+  FeedProvenance,
   NewsArticle,
   PortfolioHolding,
   PortfolioSnapshot,
@@ -129,6 +130,14 @@ function sessionClock(): string {
   }).format(new Date());
 }
 
+function mockProvenance(label: string): FeedProvenance {
+  return {
+    source: "mock",
+    label,
+    updatedAt: new Date().toISOString(),
+  };
+}
+
 export async function getDashboardData(): Promise<DashboardData> {
   return {
     sentimentLabel: "Bearish Sentiment",
@@ -152,6 +161,17 @@ export async function getDashboardData(): Promise<DashboardData> {
     sectors: sectorPerformance,
     news: newsArticles,
     portfolio: buildPortfolioSnapshot(),
+    provenance: {
+      futures: mockProvenance("Top futures"),
+      marketSummary: mockProvenance("Market summary"),
+      news: mockProvenance("News feed"),
+      movers: mockProvenance("Market movers"),
+      portfolio: mockProvenance("Portfolio"),
+      indices: mockProvenance("Market indices"),
+      pulse: mockProvenance("Market pulse"),
+      watchlist: mockProvenance("Watchlist"),
+      sectors: mockProvenance("Sector performance"),
+    },
   };
 }
 
