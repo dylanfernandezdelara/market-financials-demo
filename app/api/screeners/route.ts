@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
+import { parseString } from "@/lib/query-params";
 
 export async function GET(request: NextRequest) {
-  const sector = request.nextUrl.searchParams.get("sector") ?? "any";
+  const sector = parseString(request, "sector", "any");
   return NextResponse.json({ sector, results: [], total: 0 });
 }
 

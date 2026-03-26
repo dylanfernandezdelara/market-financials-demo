@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
+import { parseString } from "@/lib/query-params";
 
 export async function POST(request: NextRequest) {
-  const fmt = request.nextUrl.searchParams.get("format") ?? "csv";
+  const fmt = parseString(request, "format", "csv");
   if (fmt === "pdf") {
     return NextResponse.json({ error: "unsupported" }, { status: 501 });
   }

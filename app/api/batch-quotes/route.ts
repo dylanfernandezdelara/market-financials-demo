@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSearchUniverse } from "@/lib/market-data";
+import { parseCommaSeparated } from "@/lib/query-params";
 
 export async function GET(request: NextRequest) {
-  const raw = request.nextUrl.searchParams.get("symbols") ?? "";
-  const parts = raw.split(",").map((s) => s.trim()).filter(Boolean);
+  const parts = parseCommaSeparated(request, "symbols");
   const universe = await getSearchUniverse();
   const quotes = parts.map((sym) => {
     const row = universe.find((u) => u.symbol === sym);
