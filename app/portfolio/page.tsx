@@ -232,7 +232,7 @@ export default async function PortfolioPage() {
                     </td>
                     <td className="px-4 py-4 font-medium text-neutral-900">
                       {txn.type === "withdrawal"
-                        ? `−${formatCurrency(txn.totalAmount)}`
+                        ? `-${formatCurrency(txn.totalAmount)}`
                         : formatCurrency(txn.totalAmount)}
                     </td>
                     <td className="px-4 py-4 text-neutral-500">
