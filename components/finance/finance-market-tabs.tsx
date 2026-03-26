@@ -36,6 +36,7 @@ export function FinanceMarketTabs() {
   // (scroll) rather than an explicit hash click. We use this so that a click
   // on a tab immediately wins over scroll-based detection.
   const scrollLock = useRef(false);
+  const scrollLockTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // ── Sync with URL hash (initial load + hashchange) ──────────────────
   useEffect(() => {
@@ -48,10 +49,11 @@ export function FinanceMarketTabs() {
       // detection so the clicked tab stays highlighted while the browser
       // smooth-scrolls to the section.
       scrollLock.current = true;
-      const id = window.setTimeout(() => {
+      if (scrollLockTimer.current !== null) clearTimeout(scrollLockTimer.current);
+      scrollLockTimer.current = window.setTimeout(() => {
         scrollLock.current = false;
+        scrollLockTimer.current = null;
       }, 400);
-      return id;
     };
 
     // Set the initial hash on mount.
@@ -64,7 +66,10 @@ export function FinanceMarketTabs() {
     };
 
     window.addEventListener("hashchange", onHashChange);
-    return () => window.removeEventListener("hashchange", onHashChange);
+    return () => {
+      window.removeEventListener("hashchange", onHashChange);
+      if (scrollLockTimer.current !== null) clearTimeout(scrollLockTimer.current);
+    };
   }, [isHome]);
 
   // ── IntersectionObserver – update active tab on scroll ──────────────
