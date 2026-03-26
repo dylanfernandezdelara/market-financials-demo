@@ -1,3 +1,5 @@
+import { SyncCadenceSelector } from "@/components/features/sync-cadence-selector";
+
 export default function IntegrationsPage() {
   return (
     <div className="mx-auto max-w-3xl px-6 py-10">
@@ -13,6 +15,7 @@ export default function IntegrationsPage() {
           <span className="text-neutral-400">Not connected</span>
         </li>
       </ul>
+      <SyncCadenceSelector />
     </div>
   );
 }

@@ -208,6 +208,15 @@ export type MarketMovers = {
   active: ListMover[];
 };
 
+export type SyncCadence = "15m" | "1h" | "4h" | "1d" | "manual";
+
+export type SyncCadenceSettings = {
+  cadence: SyncCadence;
+  enabled: boolean;
+  lastSync: string | null;
+  nextSync: string | null;
+};
+
 export type DashboardData = {
   sentimentLabel: string;
   sessionLabel: string;
