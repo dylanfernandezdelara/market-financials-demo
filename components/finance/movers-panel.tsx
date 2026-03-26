@@ -13,9 +13,11 @@ const tabs = [
 
 type MoversPanelProps = {
   movers: MarketMovers;
+  /** When false the "See all" link is hidden (e.g. on the dedicated /movers page). */
+  showSeeAll?: boolean;
 };
 
-export function MoversPanel({ movers }: MoversPanelProps) {
+export function MoversPanel({ movers, showSeeAll = true }: MoversPanelProps) {
   const [tab, setTab] = useState<(typeof tabs)[number]["key"]>("gainers");
 
   const rows: ListMover[] = movers[tab];
@@ -67,12 +69,14 @@ export function MoversPanel({ movers }: MoversPanelProps) {
           </Link>
         ))}
       </div>
-      <Link
-        href="/movers"
-        className="mt-3 inline-block text-[13px] font-medium text-emerald-700 hover:text-emerald-800"
-      >
-        See all
-      </Link>
+      {showSeeAll ? (
+        <Link
+          href="/movers"
+          className="mt-3 inline-block text-[13px] font-medium text-emerald-700 hover:text-emerald-800"
+        >
+          See all
+        </Link>
+      ) : null}
     </section>
   );
 }

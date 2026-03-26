@@ -35,7 +35,7 @@ export default async function MoversPage() {
         </p>
 
         <div className="mt-8">
-          <MoversPanel movers={movers} />
+          <MoversPanel movers={movers} showSeeAll={false} />
         </div>
       </div>
     </SiteHeader>
