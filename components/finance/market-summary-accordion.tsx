@@ -17,7 +17,7 @@ export function MarketSummaryAccordion({ summary }: MarketSummaryAccordionProps)
   ];
 
   return (
-    <section id="politicians" className="scroll-mt-28" aria-labelledby="market-summary-heading">
+    <section id="market-summary" className="scroll-mt-28" aria-labelledby="market-summary-heading">
       <div className="mb-3 flex flex-wrap items-baseline justify-between gap-3">
         <h2 id="market-summary-heading" className="text-[17px] font-semibold text-[#1a1a1a]">
           Market Summary

@@ -9,7 +9,7 @@ const tabs = [
   { href: "/#earnings", label: "Earnings" },
   { href: "/#predictions", label: "Predictions" },
   { href: "/#screener", label: "Screener" },
-  { href: "/#politicians", label: "Politicians" },
+  { href: "/#market-summary", label: "Market Summary" },
   { href: "/#watchlist", label: "Watchlist" },
 ] as const;
 
