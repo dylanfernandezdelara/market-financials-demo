@@ -1,12 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getNews } from "@/lib/market-data";
+import { paginate, parsePaginationParams } from "@/lib/pagination";
 
 export async function GET(request: NextRequest) {
-  const limit = Number(request.nextUrl.searchParams.get("limit"));
-  const news = await getNews(Number.isNaN(limit) ? undefined : limit);
+  const news = await getNews();
+  const params = parsePaginationParams(request);
 
-  return NextResponse.json({
-    data: news,
-    total: news.length,
-  });
+  return NextResponse.json(paginate(news, params));
 }

@@ -1,5 +1,7 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { paginate, parsePaginationParams } from "@/lib/pagination";
 
-export async function GET() {
-  return NextResponse.json({ reports: [], nextRun: null });
+export async function GET(request: NextRequest) {
+  const params = parsePaginationParams(request);
+  return NextResponse.json({ nextRun: null, ...paginate([], params) });
 }
