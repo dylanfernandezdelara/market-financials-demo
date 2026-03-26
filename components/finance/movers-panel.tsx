@@ -68,7 +68,7 @@ export function MoversPanel({ movers }: MoversPanelProps) {
         ))}
       </div>
       <Link
-        href="/"
+        href="/movers"
         className="mt-3 inline-block text-[13px] font-medium text-emerald-700 hover:text-emerald-800"
       >
         See all

@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import {
   DashboardData,
+  MarketMovers,
   NewsArticle,
   PortfolioHolding,
   PortfolioSnapshot,
@@ -219,6 +220,10 @@ export async function getNewsForSymbol(symbol: string) {
       (relatedSymbol) => relatedSymbol.toLowerCase() === symbol.trim().toLowerCase(),
     ),
   );
+}
+
+export async function getMarketMovers(): Promise<MarketMovers> {
+  return marketMoversLists;
 }
 
 export async function getRelatedStocks(symbol: string) {
