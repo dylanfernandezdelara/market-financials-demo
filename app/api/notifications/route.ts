@@ -12,8 +12,5 @@ export async function GET() {
 }
 
 export async function PATCH() {
-  const items = await getNotificationItems();
-  const unreadCount = items.filter((item) => item.readAt === null).length;
-
-  return NextResponse.json({ marked: unreadCount });
+  return NextResponse.json({ marked: 0 });
 }
