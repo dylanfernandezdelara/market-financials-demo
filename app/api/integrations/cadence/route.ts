@@ -3,6 +3,14 @@ import type { SyncCadence, SyncCadenceSettings } from "@/types/finance";
 
 const VALID_CADENCES: SyncCadence[] = ["15m", "1h", "4h", "1d", "manual"];
 
+const CADENCE_MS: Record<SyncCadence, number> = {
+  "15m": 900_000,
+  "1h": 3_600_000,
+  "4h": 14_400_000,
+  "1d": 86_400_000,
+  manual: 0,
+};
+
 const defaultSettings: SyncCadenceSettings = {
   cadence: "1h",
   enabled: false,
@@ -32,7 +40,7 @@ export async function PUT(request: NextRequest) {
     lastSync: defaultSettings.lastSync,
     nextSync:
       (enabled ?? defaultSettings.enabled) && (cadence ?? defaultSettings.cadence) !== "manual"
-        ? new Date(Date.now() + 3_600_000).toISOString()
+        ? new Date(Date.now() + CADENCE_MS[cadence ?? defaultSettings.cadence]).toISOString()
         : null,
   };
 

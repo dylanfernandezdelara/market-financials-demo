@@ -20,13 +20,19 @@ export function SyncCadenceSelector() {
   async function handleSave() {
     setSaving(true);
     setSaved(false);
-    await fetch("/api/integrations/cadence", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ cadence, enabled }),
-    });
-    setSaving(false);
-    setSaved(true);
+    try {
+      const res = await fetch("/api/integrations/cadence", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ cadence, enabled }),
+      });
+      if (!res.ok) throw new Error("Save failed");
+      setSaved(true);
+    } catch {
+      // save failed silently — could surface to user in future
+    } finally {
+      setSaving(false);
+    }
   }
 
   return (
