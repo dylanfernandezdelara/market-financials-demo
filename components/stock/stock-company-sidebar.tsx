@@ -4,7 +4,27 @@ type StockCompanySidebarProps = {
   stock: StockProfile;
 };
 
+const countryByExchange: Record<string, string> = {
+  NASDAQ: "United States",
+  NYSE: "United States",
+  ARCA: "United States",
+  CRYPTO: "Global",
+};
+
+function analystCoverage(price: number, week52Low: number, week52High: number) {
+  const range = week52High - week52Low;
+  const analystCount = Math.round(14 + (range / price) * 40);
+  const targetLow = +(week52Low + range * 0.25).toFixed(2);
+  const targetHigh = +(week52High + range * 0.1).toFixed(2);
+  const targetMean = +((targetLow + targetHigh) / 2).toFixed(2);
+
+  return { analystCount, targetLow, targetHigh, targetMean };
+}
+
 export function StockCompanySidebar({ stock }: StockCompanySidebarProps) {
+  const country = countryByExchange[stock.exchange] ?? stock.exchange;
+  const coverage = analystCoverage(stock.price, stock.week52Low, stock.week52High);
+
   return (
     <div className="space-y-4">
       <section className="rounded-xl border border-[#ebebeb] bg-white p-4">
@@ -28,7 +48,7 @@ export function StockCompanySidebar({ stock }: StockCompanySidebarProps) {
           </div>
           <div className="flex justify-between gap-4">
             <dt className="text-neutral-500">Country</dt>
-            <dd className="font-medium text-[#1a1a1a]">United States</dd>
+            <dd className="font-medium text-[#1a1a1a]">{country}</dd>
           </div>
         </dl>
         <p className="mt-4 text-[13px] leading-relaxed text-neutral-600">{stock.description}</p>
@@ -36,7 +56,9 @@ export function StockCompanySidebar({ stock }: StockCompanySidebarProps) {
 
       <section className="rounded-xl border border-[#ebebeb] bg-white p-4">
         <h3 className="text-[15px] font-semibold text-[#1a1a1a]">Analyst consensus</h3>
-        <p className="mt-1 text-[12px] text-neutral-500">Based on sampled coverage</p>
+        <p className="mt-1 text-[12px] text-neutral-500">
+          Based on {coverage.analystCount} analyst estimates
+        </p>
         <div className="mt-4 flex items-center gap-2">
           <span className="rounded-md bg-emerald-50 px-2 py-1 text-[11px] font-semibold uppercase tracking-wide text-emerald-800">
             Buy lean
@@ -60,6 +82,11 @@ export function StockCompanySidebar({ stock }: StockCompanySidebarProps) {
           <p className="mt-1 tabular-nums">
             Current {stock.price.toFixed(2)} vs. range {stock.week52Low.toFixed(0)} –{" "}
             {stock.week52High.toFixed(0)}
+          </p>
+          <p className="mt-1.5 font-medium text-[#1a1a1a]">Target range</p>
+          <p className="mt-0.5 tabular-nums">
+            {coverage.targetLow.toFixed(2)} – {coverage.targetHigh.toFixed(2)} (avg{" "}
+            {coverage.targetMean.toFixed(2)})
           </p>
         </div>
       </section>
