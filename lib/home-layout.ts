@@ -53,21 +53,32 @@ export const DEFAULT_SECTIONS: HomeSectionEntry[] = [
 const STORAGE_KEY = "home-layout";
 const SAVED_LAYOUTS_KEY = "saved-home-layouts";
 
+let cachedLayoutRaw: string | null = null;
+let cachedLayout: HomeSectionEntry[] = DEFAULT_SECTIONS;
+
+let cachedSavedRaw: string | null = null;
+let cachedSaved: HomeLayout[] = [];
+
 export function loadLayout(): HomeSectionEntry[] {
   if (typeof window === "undefined") return DEFAULT_SECTIONS;
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return DEFAULT_SECTIONS;
+    if (raw === cachedLayoutRaw) return cachedLayout;
+    cachedLayoutRaw = raw;
+    if (!raw) {
+      cachedLayout = DEFAULT_SECTIONS;
+      return cachedLayout;
+    }
     const parsed: HomeSectionEntry[] = JSON.parse(raw);
-    // Ensure all section IDs are present (in case new sections were added)
     const knownIds = new Set(parsed.map((s) => s.id));
-    const merged = [
+    cachedLayout = [
       ...parsed.filter((s) => s.id in SECTION_LABELS),
       ...DEFAULT_SECTIONS.filter((s) => !knownIds.has(s.id)),
     ];
-    return merged;
+    return cachedLayout;
   } catch {
-    return DEFAULT_SECTIONS;
+    cachedLayout = DEFAULT_SECTIONS;
+    return cachedLayout;
   }
 }
 
@@ -80,10 +91,17 @@ export function loadSavedLayouts(): HomeLayout[] {
   if (typeof window === "undefined") return [];
   try {
     const raw = localStorage.getItem(SAVED_LAYOUTS_KEY);
-    if (!raw) return [];
-    return JSON.parse(raw);
+    if (raw === cachedSavedRaw) return cachedSaved;
+    cachedSavedRaw = raw;
+    if (!raw) {
+      cachedSaved = [];
+      return cachedSaved;
+    }
+    cachedSaved = JSON.parse(raw);
+    return cachedSaved;
   } catch {
-    return [];
+    cachedSaved = [];
+    return cachedSaved;
   }
 }
 
