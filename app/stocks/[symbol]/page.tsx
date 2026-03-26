@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, StickyNote } from "lucide-react";
 import { StockChartPanel } from "@/components/stock/stock-chart-panel";
 import { StockCompanySidebar } from "@/components/stock/stock-company-sidebar";
 import { StockFollowRow, StockPriceHero } from "@/components/stock/stock-price-hero";
@@ -84,7 +84,16 @@ export default async function StockPage({ params }: StockPageProps) {
               </span>
             </p>
           </div>
-          <StockFollowRow />
+          <div className="flex items-center gap-2">
+            <Link
+              href={`/notes?symbol=${stock.symbol}`}
+              className="inline-flex items-center gap-1.5 rounded-lg border border-[#e5e5e5] bg-white px-3 py-2 text-[13px] font-medium text-neutral-800 shadow-sm transition-colors hover:bg-neutral-50"
+            >
+              <StickyNote className="size-4 text-neutral-500" strokeWidth={1.75} />
+              Add Note
+            </Link>
+            <StockFollowRow />
+          </div>
         </div>
 
         <div className="mt-6">
