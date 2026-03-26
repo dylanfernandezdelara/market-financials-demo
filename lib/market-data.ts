@@ -221,6 +221,12 @@ export async function getNewsForSymbol(symbol: string) {
   );
 }
 
+export async function getScreenerStocks(): Promise<StockProfile[]> {
+  return stockProfiles.filter(
+    (stock) => stock.marketCap > 0,
+  );
+}
+
 export async function getRelatedStocks(symbol: string) {
   const stock = await getStockProfile(symbol);
 

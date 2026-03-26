@@ -8,7 +8,7 @@ const tabs = [
   { href: "/#crypto", label: "Crypto" },
   { href: "/#earnings", label: "Earnings" },
   { href: "/#predictions", label: "Predictions" },
-  { href: "/#screener", label: "Screener" },
+  { href: "/screener", label: "Screener" },
   { href: "/#politicians", label: "Politicians" },
   { href: "/#watchlist", label: "Watchlist" },
 ] as const;
@@ -24,7 +24,8 @@ export function FinanceMarketTabs() {
         aria-label="Markets"
       >
         {tabs.map((tab) => {
-          const active = isHome && tab.href === "/";
+          const active =
+            tab.href === "/" ? isHome : pathname === tab.href;
           return (
             <Link
               key={tab.label}
