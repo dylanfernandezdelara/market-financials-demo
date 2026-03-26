@@ -4,6 +4,7 @@ import {
   getRelatedStocks,
   getStockProfile,
 } from "@/lib/market-data";
+import { errorResponse } from "@/lib/api-error";
 
 type StockRouteProps = {
   params: Promise<{
@@ -16,10 +17,7 @@ export async function GET(_: Request, { params }: StockRouteProps) {
   const stock = await getStockProfile(symbol);
 
   if (!stock) {
-    return NextResponse.json(
-      { error: `Unknown symbol: ${symbol}` },
-      { status: 404 },
-    );
+    return errorResponse(`Unknown symbol: ${symbol}`, 404);
   }
 
   const [news, relatedStocks] = await Promise.all([

@@ -1,3 +1,8 @@
+export type ApiErrorResponse = {
+  error: string;
+  status: number;
+};
+
 export type TrendDirection = "up" | "down" | "flat";
 
 export type PricePoint = {
