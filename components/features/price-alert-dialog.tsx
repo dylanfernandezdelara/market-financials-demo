@@ -32,6 +32,7 @@ export function PriceAlertDialog({ symbol: initialSymbol }: PriceAlertDialogProp
     setTargetPrice("");
     setVolumeThreshold("");
     setKeyword("");
+    setSaving(false);
     setValidationError(null);
     setFeedback(null);
   }, [initialSymbol]);
@@ -112,7 +113,6 @@ export function PriceAlertDialog({ symbol: initialSymbol }: PriceAlertDialogProp
     } catch (err) {
       const message = err instanceof Error ? err.message : "Failed to save alert.";
       setFeedback({ type: "error", message });
-    } finally {
       setSaving(false);
     }
   };
