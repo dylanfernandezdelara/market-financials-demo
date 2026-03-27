@@ -45,7 +45,7 @@ export function TopFutures({ futures, sentimentLabel }: TopFuturesProps) {
           return (
             <Link
               key={item.symbol}
-              href={`/stocks/${item.symbol}`}
+              href={item.fallbackHref ?? `/stocks/${item.symbol}`}
               className="flex flex-col rounded-lg border border-[#ebebeb] bg-white p-3 shadow-sm transition-shadow hover:shadow-md"
             >
               <div className="flex items-start justify-between gap-2">

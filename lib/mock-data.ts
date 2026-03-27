@@ -857,6 +857,7 @@ export const topFutures: FuturesAsset[] = [
     price: 6559.0,
     change: -101.0,
     sparkline: [0.94, 0.91, 0.89, 0.87, 0.85, 0.82, 0.8, 0.78, 0.76, 0.74, 0.72, 0.7],
+    fallbackHref: "/",
   },
   {
     symbol: "NQUSD",
@@ -865,6 +866,7 @@ export const topFutures: FuturesAsset[] = [
     price: 24101.5,
     change: -478.5,
     sparkline: [0.96, 0.92, 0.88, 0.85, 0.82, 0.78, 0.75, 0.72, 0.69, 0.66, 0.64, 0.62],
+    fallbackHref: "/",
   },
   {
     symbol: "YMUSD",
@@ -873,6 +875,7 @@ export const topFutures: FuturesAsset[] = [
     price: 45893.0,
     change: -448.0,
     sparkline: [0.93, 0.9, 0.88, 0.86, 0.84, 0.82, 0.8, 0.78, 0.77, 0.75, 0.74, 0.73],
+    fallbackHref: "/",
   },
   {
     symbol: "VIX",
@@ -881,6 +884,7 @@ export const topFutures: FuturesAsset[] = [
     price: 26.78,
     change: 2.72,
     sparkline: [0.45, 0.5, 0.52, 0.55, 0.58, 0.62, 0.66, 0.7, 0.74, 0.78, 0.82, 0.88],
+    fallbackHref: "/",
   },
 ];
 
