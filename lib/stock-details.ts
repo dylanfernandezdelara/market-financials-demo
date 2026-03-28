@@ -21,22 +21,16 @@ export function epsFromPe(stock: StockProfile): number | null {
   return stock.price / stock.peRatio;
 }
 
-/** Session-style after-hours quote for display (derived, not live). */
+/** After-hours quote sourced from the stock profile's mock data layer. */
 export function sessionExtension(stock: StockProfile): {
   afterHoursPrice: number;
   afterHoursChange: number;
   afterHoursChangePercent: number;
 } {
-  const drift = stock.price * (stock.changePercent >= 0 ? 0.004 : -0.012);
-  const afterHoursPrice = Math.round((stock.price + drift) * 100) / 100;
-  const afterHoursChange = afterHoursPrice - stock.price;
-  const afterHoursChangePercent =
-    stock.price === 0 ? 0 : (afterHoursChange / stock.price) * 100;
-
   return {
-    afterHoursPrice,
-    afterHoursChange,
-    afterHoursChangePercent,
+    afterHoursPrice: stock.afterHoursPrice,
+    afterHoursChange: stock.afterHoursChange,
+    afterHoursChangePercent: stock.afterHoursChangePercent,
   };
 }
 

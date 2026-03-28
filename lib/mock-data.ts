@@ -28,6 +28,28 @@ function series(values: number[]): PricePoint[] {
   }));
 }
 
+/**
+ * Deterministic after-hours drift seeded by the symbol string.
+ * Keeps values varied across the stock universe while remaining
+ * reproducible (no randomness).
+ */
+function afterHoursFields(
+  symbol: string,
+  price: number,
+  changePercent: number,
+): { afterHoursPrice: number; afterHoursChange: number; afterHoursChangePercent: number } {
+  // Simple hash from symbol characters to seed the magnitude.
+  const hash = Array.from(symbol).reduce((sum, ch) => sum + ch.charCodeAt(0), 0);
+  const magnitude = 0.001 + (hash % 17) * 0.001; // 0.1 % – 1.8 %
+  const sign = changePercent >= 0 ? 1 : -1;
+  const drift = price * magnitude * sign;
+  const afterHoursPrice = Math.round((price + drift) * 100) / 100;
+  const afterHoursChange = Math.round((afterHoursPrice - price) * 100) / 100;
+  const afterHoursChangePercent =
+    price === 0 ? 0 : Math.round((afterHoursChange / price) * 10000) / 100;
+  return { afterHoursPrice, afterHoursChange, afterHoursChangePercent };
+}
+
 function quoteStub(
   symbol: string,
   name: string,
@@ -60,6 +82,7 @@ function quoteStub(
     chart: series(
       Array.from({ length: 12 }, (_, index) => price * (1 + (index - 5.5) * 0.0008)),
     ),
+    ...afterHoursFields(symbol, price, changePercent),
   };
 }
 
@@ -165,6 +188,7 @@ export const stockProfiles: StockProfile[] = [
     thesis:
       "Services durability and an ongoing device refresh cycle keep Apple positioned as a steady large-cap compounder.",
     chart: series([184.6, 185.3, 186.1, 187.4, 186.9, 188.2, 189.7, 190.4, 191.1, 191.8, 192.2, 192.4]),
+    ...afterHoursFields("AAPL", 192.4, 1.22),
   },
   {
     symbol: "MSFT",
@@ -188,6 +212,7 @@ export const stockProfiles: StockProfile[] = [
     thesis:
       "Azure growth and Copilot monetization keep Microsoft at the center of enterprise AI spending.",
     chart: series([431.3, 430.8, 430.2, 429.6, 428.9, 429.1, 428.7, 428.5, 428.3, 428.2, 428.1, 428.1]),
+    ...afterHoursFields("MSFT", 428.1, -0.6),
   },
   {
     symbol: "NVDA",
@@ -211,6 +236,7 @@ export const stockProfiles: StockProfile[] = [
     thesis:
       "Investor appetite remains tied to AI infrastructure demand, hyperscaler capex, and gross margin durability.",
     chart: series([872.3, 878.5, 885.8, 891.1, 899.6, 907.8, 915.4, 924.6, 930.2, 936.9, 940.1, 942.7]),
+    ...afterHoursFields("NVDA", 942.7, 4.79),
   },
   {
     symbol: "TSLA",
@@ -234,6 +260,7 @@ export const stockProfiles: StockProfile[] = [
     thesis:
       "Margins, deliveries, and autonomy narrative shifts still dominate the stock's near-term volatility.",
     chart: series([178.9, 178.1, 177.4, 176.6, 175.8, 175.2, 174.4, 173.3, 172.9, 172.4, 171.8, 171.2]),
+    ...afterHoursFields("TSLA", 171.2, -3.1),
   },
   {
     symbol: "AMZN",
@@ -257,6 +284,7 @@ export const stockProfiles: StockProfile[] = [
     thesis:
       "Retail margin improvement plus cloud demand keeps Amazon positioned for operating leverage expansion.",
     chart: series([176.2, 176.9, 177.4, 177.8, 178.6, 179.2, 179.8, 180.1, 180.4, 180.6, 180.9, 181.05]),
+    ...afterHoursFields("AMZN", 181.05, 0.9),
   },
   {
     symbol: "GOOGL",
@@ -280,6 +308,7 @@ export const stockProfiles: StockProfile[] = [
     thesis:
       "Search monetization stability and Gemini commercialization remain the two most watched levers.",
     chart: series([168.3, 168.7, 169.1, 169.5, 170.1, 170.6, 170.9, 171.0, 171.3, 171.5, 171.7, 171.88]),
+    ...afterHoursFields("GOOGL", 171.88, 0.32),
   },
   {
     symbol: "JPM",
@@ -303,6 +332,7 @@ export const stockProfiles: StockProfile[] = [
     thesis:
       "Higher-for-longer rates still help net interest income, but credit quality is the key watch item.",
     chart: series([193.6, 194.1, 194.7, 195.4, 196.2, 196.8, 197.3, 197.6, 197.9, 198.0, 198.2, 198.42]),
+    ...afterHoursFields("JPM", 198.42, 0.87),
   },
   {
     symbol: "V",
@@ -326,6 +356,7 @@ export const stockProfiles: StockProfile[] = [
     thesis:
       "Cross-border volume recovery and steady payment digitization support a durable compounding setup.",
     chart: series([269.6, 270.4, 271.3, 272.1, 273.6, 274.8, 275.9, 276.8, 277.3, 277.9, 278.3, 278.74]),
+    ...afterHoursFields("V", 278.74, 1.04),
   },
   {
     symbol: "AMD",
@@ -349,6 +380,7 @@ export const stockProfiles: StockProfile[] = [
     thesis:
       "Execution against enterprise accelerator demand is the main variable driving multiple expansion.",
     chart: series([173.2, 174.1, 175.5, 176.9, 177.8, 178.9, 180.4, 181.8, 182.6, 183.2, 183.9, 184.27]),
+    ...afterHoursFields("AMD", 184.27, 2.41),
   },
   {
     symbol: "META",
@@ -372,6 +404,7 @@ export const stockProfiles: StockProfile[] = [
     thesis:
       "Advertising efficiency plus AI-powered engagement gains continue to offset ongoing Reality Labs investment.",
     chart: series([484.8, 486.1, 488.2, 490.7, 492.5, 494.3, 496.8, 498.1, 499.4, 500.2, 501.5, 502.16]),
+    ...afterHoursFields("META", 502.16, 1.9),
   },
   {
     symbol: "GOOG",
@@ -395,6 +428,7 @@ export const stockProfiles: StockProfile[] = [
     thesis:
       "Search monetization stability and Gemini commercialization remain the two most watched levers.",
     chart: series([305.2, 304.1, 302.8, 301.5, 300.2, 299.4, 298.9, 298.5, 298.2, 298.0, 298.79, 298.79]),
+    ...afterHoursFields("GOOG", 298.79, -2.27),
   },
   {
     symbol: "SMCI",
@@ -418,6 +452,7 @@ export const stockProfiles: StockProfile[] = [
     thesis:
       "Sentiment is dominated by AI server demand visibility, competitive dynamics, and headline risk around compliance.",
     chart: series([52.6, 49.2, 46.1, 42.8, 40.2, 38.4, 36.9, 35.8, 35.1, 34.6, 34.3, 34.22]),
+    ...afterHoursFields("SMCI", 34.22, -34.96),
   },
   {
     symbol: "WELL",
@@ -441,6 +476,7 @@ export const stockProfiles: StockProfile[] = [
     thesis:
       "Rate sensitivity and operating trends in healthcare real estate drive near-term relative performance.",
     chart: series([186.5, 185.2, 184.1, 182.9, 181.4, 180.2, 179.6, 178.9, 178.5, 178.3, 178.42, 178.42]),
+    ...afterHoursFields("WELL", 178.42, -4.36),
   },
   {
     symbol: "CMS",
@@ -464,6 +500,7 @@ export const stockProfiles: StockProfile[] = [
     thesis:
       "Regulatory outcomes, weather-normalized sales, and capex plans frame the earnings trajectory.",
     chart: series([63.4, 63.1, 62.8, 62.6, 62.4, 62.3, 62.2, 62.19, 62.18, 62.18, 62.18, 62.18]),
+    ...afterHoursFields("CMS", 62.18, -1.95),
   },
   {
     symbol: "VST",
@@ -487,6 +524,7 @@ export const stockProfiles: StockProfile[] = [
     thesis:
       "Power prices, hedging strategy, and balance sheet flexibility remain the key swing factors.",
     chart: series([152.4, 150.1, 148.6, 147.2, 145.8, 144.5, 143.2, 142.9, 142.7, 142.65, 142.6, 142.6]),
+    ...afterHoursFields("VST", 142.6, -6.43),
   },
   {
     symbol: "MOS",
@@ -510,6 +548,7 @@ export const stockProfiles: StockProfile[] = [
     thesis:
       "Crop prices, input costs, and channel inventories drive fertilizer demand and margin cycles.",
     chart: series([30.2, 29.8, 29.4, 29.0, 28.7, 28.5, 28.42, 28.38, 28.36, 28.35, 28.34, 28.34]),
+    ...afterHoursFields("MOS", 28.34, -6.04),
   },
   {
     symbol: "ANNA",
@@ -533,6 +572,7 @@ export const stockProfiles: StockProfile[] = [
     thesis:
       "Catalysts around trial readouts and partnership discussions drive liquidity and volatility.",
     chart: series([3.8, 4.2, 4.9, 5.6, 6.1, 6.4, 6.7, 6.85, 6.95, 7.02, 7.05, 7.07]),
+    ...afterHoursFields("ANNA", 7.07, 86.54),
   },
   {
     symbol: "ROMA",
@@ -556,6 +596,7 @@ export const stockProfiles: StockProfile[] = [
     thesis:
       "Green finance policy tailwinds compete with small-cap liquidity constraints.",
     chart: series([5.12, 5.35, 5.6, 5.85, 6.05, 6.2, 6.45, 6.6, 6.72, 6.8, 6.88, 6.94]),
+    ...afterHoursFields("ROMA", 6.94, 35.55),
   },
   {
     symbol: "CELG-RI",
@@ -579,6 +620,7 @@ export const stockProfiles: StockProfile[] = [
     thesis:
       "Outcome depends on regulatory and clinical milestone timing.",
     chart: series([0.11, 0.112, 0.115, 0.118, 0.122, 0.126, 0.128, 0.132, 0.135, 0.138, 0.139, 0.14]),
+    ...afterHoursFields("CELG-RI", 0.14, 29.0),
   },
   {
     symbol: "ESUSD",
@@ -600,6 +642,7 @@ export const stockProfiles: StockProfile[] = [
     description: "E-mini S&P 500 futures track the S&P 500 index with standardized contract sizing.",
     thesis: "Liquidity and macro catalysts drive session-to-session moves.",
     chart: series([6620, 6610, 6595, 6588, 6575, 6568, 6562, 6559, 6559, 6559, 6559, 6559]),
+    ...afterHoursFields("ESUSD", 6559.0, -1.52),
   },
   {
     symbol: "NQUSD",
@@ -621,6 +664,7 @@ export const stockProfiles: StockProfile[] = [
     description: "E-mini NASDAQ-100 futures provide exposure to the Nasdaq-100 index.",
     thesis: "Tech-heavy positioning amplifies moves versus broad benchmarks.",
     chart: series([24580, 24520, 24440, 24360, 24280, 24200, 24140, 24101.5, 24101.5, 24101.5, 24101.5, 24101.5]),
+    ...afterHoursFields("NQUSD", 24101.5, -1.95),
   },
   {
     symbol: "YMUSD",
@@ -642,6 +686,7 @@ export const stockProfiles: StockProfile[] = [
     description: "E-mini Dow futures track the Dow Jones Industrial Average.",
     thesis: "Price-weighted composition can diverge meaningfully from cap-weighted indices.",
     chart: series([46340, 46280, 46180, 46080, 45980, 45920, 45893, 45893, 45893, 45893, 45893, 45893]),
+    ...afterHoursFields("YMUSD", 45893.0, -0.97),
   },
   {
     symbol: "VIX",
@@ -664,6 +709,7 @@ export const stockProfiles: StockProfile[] = [
       "The VIX index reflects market expectations for near-term volatility implied by S&P 500 index options.",
     thesis: "Spikes often coincide with risk-off episodes and macro uncertainty.",
     chart: series([24.1, 24.4, 24.9, 25.2, 25.6, 26.0, 26.4, 26.78, 26.78, 26.78, 26.78, 26.78]),
+    ...afterHoursFields("VIX", 26.78, 11.31),
   },
   {
     symbol: "CURV",
@@ -687,6 +733,7 @@ export const stockProfiles: StockProfile[] = [
     thesis:
       "Margin recovery and inventory discipline are the main levers investors are watching.",
     chart: series([1.25, 1.28, 1.32, 1.35, 1.38, 1.41, 1.44, 1.47, 1.52, 1.55, 1.58, 1.6]),
+    ...afterHoursFields("CURV", 1.6, 28.0),
   },
   ...listedInstruments(),
 ];
