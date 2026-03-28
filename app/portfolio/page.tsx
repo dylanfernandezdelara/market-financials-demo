@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Briefcase, TrendingUp, Wallet } from "lucide-react";
 import { AllocationDonutChart } from "@/components/charts/allocation-donut-chart";
 import { PortfolioTrendChart } from "@/components/charts/portfolio-trend-chart";
@@ -50,11 +51,23 @@ export const metadata: Metadata = {
 /* FDL-661 -- page-size constant for holdings pagination */
 const HOLDINGS_PAGE_SIZE = 10;
 
-export default async function PortfolioPage({
-  searchParams,
-}: {
+type PortfolioPageProps = {
   searchParams: Promise<{ page?: string }>;
-}) {
+};
+
+export default function PortfolioPage({
+  searchParams,
+}: PortfolioPageProps) {
+  return (
+    <Suspense fallback={<PortfolioPageFallback />}>
+      <PortfolioPageContent searchParams={searchParams} />
+    </Suspense>
+  );
+}
+
+async function PortfolioPageContent({
+  searchParams,
+}: PortfolioPageProps) {
   const [portfolio, searchOptions, resolvedSearchParams] = await Promise.all([
     getPortfolioSnapshot(),
     getSearchUniverse(),
@@ -310,6 +323,14 @@ export default async function PortfolioPage({
           )}
         </SurfaceCard>
       </div>
+    </SiteHeader>
+  );
+}
+
+function PortfolioPageFallback() {
+  return (
+    <SiteHeader searchOptions={[]}>
+      <div className="px-6 py-10 text-sm text-neutral-500">Loading portfolio...</div>
     </SiteHeader>
   );
 }

@@ -215,7 +215,7 @@ export async function getRecentSymbols(): Promise<SearchResult[]> {
 }
 
 export async function getWatchlistShortcuts(): Promise<SearchResult[]> {
-  return watchlistSymbols
+  return getWatchlistSymbols()
     .map((symbol) => stockProfiles.find((profile) => profile.symbol === symbol))
     .filter((value): value is StockProfile => Boolean(value))
     .map((stock) => ({

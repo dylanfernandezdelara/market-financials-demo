@@ -36,7 +36,7 @@ export function FinanceMarketTabs() {
   // (scroll) rather than an explicit hash click. We use this so that a click
   // on a tab immediately wins over scroll-based detection.
   const scrollLock = useRef(false);
-  const scrollLockTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const scrollLockTimer = useRef<number | null>(null);
 
   // ── Sync with URL hash (initial load + hashchange) ──────────────────
   useEffect(() => {
