@@ -210,6 +210,19 @@ export type MarketMovers = {
   active: ListMover[];
 };
 
+export type PoliticianTrade = {
+  id: string;
+  politician: string;
+  party: "D" | "R" | "I";
+  chamber: "Senate" | "House";
+  symbol: string;
+  companyName: string;
+  tradeType: "Buy" | "Sell";
+  estimatedAmount: string;
+  filedDate: string;
+  daysAgo: number;
+};
+
 export type DashboardData = {
   sentimentLabel: string;
   sessionLabel: string;
@@ -233,4 +246,5 @@ export type DashboardData = {
   sectors: SectorPerformance[];
   news: NewsArticle[];
   portfolio: PortfolioSnapshot;
+  politicianTrades: PoliticianTrade[];
 };

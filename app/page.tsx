@@ -4,6 +4,7 @@ import { FinanceShell } from "@/components/finance/finance-shell";
 import { FixedIncomeRow } from "@/components/finance/fixed-income-row";
 import { MarketSummaryAccordion } from "@/components/finance/market-summary-accordion";
 import { MoversPanel } from "@/components/finance/movers-panel";
+import { PoliticiansPanel } from "@/components/finance/politicians-panel";
 import { PopularSpaces } from "@/components/finance/popular-spaces";
 import { RecentDevelopments } from "@/components/finance/recent-developments";
 import { StandoutsSection } from "@/components/finance/standouts-section";
@@ -28,6 +29,7 @@ export default async function Home() {
         <RecentDevelopments developments={dashboard.recentDevelopments} />
         <PopularSpaces spaces={dashboard.popularSpaces} />
         <StandoutsSection standouts={dashboard.standouts} />
+        <PoliticiansPanel trades={dashboard.politicianTrades} />
         <WatchlistStrip entries={dashboard.watchlistBar} />
         <MoversPanel movers={dashboard.movers} />
         <EquitySectors sectors={dashboard.equitySectors} />
