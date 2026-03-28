@@ -1,4 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+/* FDL-883 -- normalised metadata for the settings page */
+export const metadata: Metadata = {
+  title: "Settings",
+  description:
+    "Update your profile details, sessions, and data export preferences.",
+};
 
 export default function SettingsPage() {
   return (

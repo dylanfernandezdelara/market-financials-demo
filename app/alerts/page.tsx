@@ -1,5 +1,13 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { PriceAlertDialog } from "@/components/features/price-alert-dialog";
+
+/* FDL-883 -- normalised metadata for the alerts page */
+export const metadata: Metadata = {
+  title: "Alerts",
+  description:
+    "Create and manage price alerts for crosses, volume spikes, and headline keywords.",
+};
 
 export default function AlertsPage() {
   return (
