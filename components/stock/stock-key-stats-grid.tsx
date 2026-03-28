@@ -10,6 +10,8 @@ import { formatCompactNumber, formatCurrency } from "@/lib/utils";
 type StockKeyStatsGridProps = {
   stock: StockProfile;
   chart: PricePoint[];
+  peApplicable?: boolean;
+  dividendApplicable?: boolean;
 };
 
 function Stat({ label, value }: { label: string; value: string }) {
@@ -21,7 +23,7 @@ function Stat({ label, value }: { label: string; value: string }) {
   );
 }
 
-export function StockKeyStatsGrid({ stock, chart }: StockKeyStatsGridProps) {
+export function StockKeyStatsGrid({ stock, chart, peApplicable = true, dividendApplicable = true }: StockKeyStatsGridProps) {
   const pc = prevClose(stock);
   const { low: dayLow, high: dayHigh } = dayRangeFromChart(chart);
   const eps = epsFromPe(stock);
@@ -32,7 +34,7 @@ export function StockKeyStatsGrid({ stock, chart }: StockKeyStatsGridProps) {
     <div className="grid gap-4 sm:grid-cols-3">
       <dl className="grid gap-0 divide-y divide-[#f0f0f0] rounded-xl border border-[#ebebeb] bg-white px-4 py-1 sm:divide-y-0 sm:py-4">
         <Stat label="Prev close" value={formatCurrency(pc)} />
-        <Stat label="P/E ratio" value={stock.peRatio.toFixed(2)} />
+        <Stat label="P/E ratio" value={peApplicable ? stock.peRatio.toFixed(2) : "N/A"} />
         <Stat
           label="52W range"
           value={`${formatCurrency(stock.week52Low, { maximumFractionDigits: 2 })} – ${formatCurrency(stock.week52High, { maximumFractionDigits: 2 })}`}
@@ -48,7 +50,7 @@ export function StockKeyStatsGrid({ stock, chart }: StockKeyStatsGridProps) {
       </dl>
       <dl className="grid gap-0 divide-y divide-[#f0f0f0] rounded-xl border border-[#ebebeb] bg-white px-4 py-1 sm:divide-y-0 sm:py-4">
         <Stat label="Open" value={formatCurrency(open)} />
-        <Stat label="Dividend yield" value={`${stock.dividendYield.toFixed(2)}%`} />
+        <Stat label="Dividend yield" value={dividendApplicable ? `${stock.dividendYield.toFixed(2)}%` : "N/A"} />
         <Stat label="Volume" value={formatCompactNumber(stock.volume)} />
       </dl>
     </div>

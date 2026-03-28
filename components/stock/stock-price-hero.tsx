@@ -10,9 +10,10 @@ import type { StockProfile } from "@/types/finance";
 type StockPriceHeroProps = {
   stock: StockProfile;
   closeTimeLabel: string;
+  isMarketOpen?: boolean;
 };
 
-export function StockPriceHero({ stock, closeTimeLabel }: StockPriceHeroProps) {
+export function StockPriceHero({ stock, closeTimeLabel, isMarketOpen = false }: StockPriceHeroProps) {
   const ah = sessionExtension(stock);
   const sessionDown = stock.changePercent < 0;
   const ahUp = ah.afterHoursChangePercent >= 0;
@@ -21,7 +22,7 @@ export function StockPriceHero({ stock, closeTimeLabel }: StockPriceHeroProps) {
     <div className="grid gap-4 sm:grid-cols-2">
       <div className="rounded-xl border border-[#ebebeb] bg-[#fafafa] px-4 py-4">
         <p className="text-[11px] font-medium uppercase tracking-wide text-neutral-500">
-          At close
+          {isMarketOpen ? "Live" : "At close"}
         </p>
         <p className="mt-1 text-3xl font-semibold tabular-nums tracking-tight text-[#1a1a1a]">
           {formatCurrency(stock.price)}
