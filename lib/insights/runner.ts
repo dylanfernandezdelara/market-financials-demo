@@ -9,18 +9,18 @@ import * as S08 from "./slice-08";
 import * as S09 from "./slice-09";
 import * as S10 from "./slice-10";
 
-const merged = {
-  ...S01,
-  ...S02,
-  ...S03,
-  ...S04,
-  ...S05,
-  ...S06,
-  ...S07,
-  ...S08,
-  ...S09,
-  ...S10,
-} as Record<string, (a: number, b: number) => number>;
+const slices: { label: string; fns: Record<string, (a: number, b: number) => number> }[] = [
+  { label: "slice-01", fns: S01 as Record<string, (a: number, b: number) => number> },
+  { label: "slice-02", fns: S02 as Record<string, (a: number, b: number) => number> },
+  { label: "slice-03", fns: S03 as Record<string, (a: number, b: number) => number> },
+  { label: "slice-04", fns: S04 as Record<string, (a: number, b: number) => number> },
+  { label: "slice-05", fns: S05 as Record<string, (a: number, b: number) => number> },
+  { label: "slice-06", fns: S06 as Record<string, (a: number, b: number) => number> },
+  { label: "slice-07", fns: S07 as Record<string, (a: number, b: number) => number> },
+  { label: "slice-08", fns: S08 as Record<string, (a: number, b: number) => number> },
+  { label: "slice-09", fns: S09 as Record<string, (a: number, b: number) => number> },
+  { label: "slice-10", fns: S10 as Record<string, (a: number, b: number) => number> },
+];
 
 const samplePairs: [number, number][] = [
   [142.5, 138.2],
@@ -30,12 +30,17 @@ const samplePairs: [number, number][] = [
   [17.2, 16.9],
 ];
 
-export function runAllInsightMetrics(): { id: string; values: number[] }[] {
-  const keys = Object.keys(merged).filter((k) => k.startsWith("rollingMetric"));
-  keys.sort();
-  return keys.map((key) => {
-    const fn = merged[key];
-    const values = samplePairs.map(([a, b]) => fn(a, b));
-    return { id: key, values };
-  });
+export function runAllInsightMetrics(): { id: string; slice: string; values: number[] }[] {
+  const results: { id: string; slice: string; values: number[] }[] = [];
+  for (const { label, fns } of slices) {
+    const keys = Object.keys(fns)
+      .filter((k) => k.startsWith("rollingMetric"))
+      .sort();
+    for (const key of keys) {
+      const fn = fns[key];
+      const values = samplePairs.map(([a, b]) => fn(a, b));
+      results.push({ id: key, slice: label, values });
+    }
+  }
+  return results;
 }
