@@ -4,6 +4,8 @@ import {
   getRelatedStocks,
   getStockOrThrow,
 } from "@/lib/market-data";
+import { StockDetailResponseSchema } from "@/lib/schemas";
+import { validatedResponse } from "@/lib/validate";
 
 type StockRouteProps = {
   params: Promise<{
@@ -20,7 +22,7 @@ export async function GET(_: Request, { params }: StockRouteProps) {
     getRelatedStocks(stock.symbol),
   ]);
 
-  return NextResponse.json({
+  return validatedResponse(StockDetailResponseSchema, {
     stock,
     news,
     relatedStocks,

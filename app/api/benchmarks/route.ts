@@ -1,8 +1,9 @@
-import { NextResponse } from "next/server";
 import { marketIndices } from "@/lib/mock-data";
+import { BenchmarksResponseSchema } from "@/lib/schemas";
+import { validatedResponse } from "@/lib/validate";
 
 export async function GET() {
-  return NextResponse.json({
+  return validatedResponse(BenchmarksResponseSchema, {
     benchmarks: marketIndices,
   });
 }
