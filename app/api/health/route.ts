@@ -1,9 +1,11 @@
 import { NextResponse } from "next/server";
+import pkg from "@/package.json";
 
 export async function GET() {
   return NextResponse.json({
     ok: true,
     uptimeSeconds: Math.floor(process.uptime()),
-    version: "0.0.0",
+    version: pkg.version,
+    dataProvenance: "mock",
   });
 }
