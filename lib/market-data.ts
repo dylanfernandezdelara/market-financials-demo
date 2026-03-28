@@ -30,8 +30,8 @@ import {
   topFutures,
   topMovers,
   watchlistBarEntries,
-  watchlistSymbols,
 } from "@/lib/mock-data";
+import { getWatchlistSymbols } from "@/lib/store";
 
 
 function portfolioHoldingsWithValues(): PortfolioHolding[] {
@@ -100,7 +100,7 @@ export function buildPortfolioSnapshot(): PortfolioSnapshot {
 }
 
 function buildWatchlist(): WatchlistEntry[] {
-  return watchlistSymbols
+  return getWatchlistSymbols()
     .map((symbol) => stockProfiles.find((profile) => profile.symbol === symbol))
     .filter((value): value is StockProfile => Boolean(value))
     .map((stock) => ({
