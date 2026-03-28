@@ -10,6 +10,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import type { ReactNode } from "react";
 import { PricePoint } from "@/types/finance";
 import { formatCurrency, formatCompactNumber } from "@/lib/utils";
 
@@ -17,6 +18,7 @@ type PriceHistoryChartProps = {
   data: PricePoint[];
   color?: string;
   height?: number;
+  tooltipLabelFormatter?: (label: ReactNode) => ReactNode;
 };
 
 function toNumericValue(
@@ -41,6 +43,7 @@ export function PriceHistoryChart({
   data,
   color = "#0f766e",
   height = 320,
+  tooltipLabelFormatter,
 }: PriceHistoryChartProps) {
   const gradientId = useId().replace(/:/g, "");
 
@@ -78,6 +81,7 @@ export function PriceHistoryChart({
             backgroundColor: "#ffffff",
             boxShadow: "0 8px 24px rgba(15, 23, 42, 0.08)",
           }}
+          labelFormatter={tooltipLabelFormatter}
           formatter={(value, name) => {
             const numericValue = toNumericValue(value);
 
