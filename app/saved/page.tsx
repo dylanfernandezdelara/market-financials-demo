@@ -10,7 +10,7 @@ export default function SavedLayoutsPage() {
       <div className="mt-6 rounded-lg border border-neutral-200 bg-white p-4 text-sm text-neutral-600">
         Default layout
       </div>
-      <Link href="/settings" className="mt-6 inline-block text-sm text-neutral-400 underline">
+      <Link href="/settings/layouts" className="mt-6 inline-block text-sm text-neutral-400 underline">
         Manage in settings
       </Link>
     </div>
