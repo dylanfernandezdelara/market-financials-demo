@@ -32,29 +32,24 @@ import {
 
 
 function portfolioHoldingsWithValues(): PortfolioHolding[] {
-  const enriched = portfolioHoldings
-    .map((holding) => {
-      const stock = stockProfiles.find((profile) => profile.symbol === holding.symbol);
+  const enriched = portfolioHoldings.map((holding) => {
+    const stock = stockProfiles.find((profile) => profile.symbol === holding.symbol);
 
-      if (!stock) {
-        return null;
-      }
+    const currentPrice = stock ? stock.price : holding.averageCost;
+    const marketValue = currentPrice * holding.shares;
+    const costBasis = holding.averageCost * holding.shares;
+    const gainLoss = marketValue - costBasis;
 
-      const marketValue = stock.price * holding.shares;
-      const costBasis = holding.averageCost * holding.shares;
-      const gainLoss = marketValue - costBasis;
-
-      return {
-        ...holding,
-        name: stock.name,
-        sector: stock.sector,
-        currentPrice: stock.price,
-        marketValue,
-        gainLoss,
-        gainLossPercent: costBasis === 0 ? 0 : (gainLoss / costBasis) * 100,
-      };
-    })
-    .filter((value): value is Omit<PortfolioHolding, "allocationPercent"> => Boolean(value));
+    return {
+      ...holding,
+      name: stock ? stock.name : holding.symbol,
+      sector: stock ? stock.sector : "Unknown",
+      currentPrice,
+      marketValue,
+      gainLoss,
+      gainLossPercent: costBasis === 0 ? 0 : (gainLoss / costBasis) * 100,
+    };
+  });
 
   const totalMarketValue = enriched.reduce((sum, holding) => sum + holding.marketValue, 0);
 
@@ -64,7 +59,7 @@ function portfolioHoldingsWithValues(): PortfolioHolding[] {
   }));
 }
 
-function buildPortfolioSnapshot(): PortfolioSnapshot {
+export function buildPortfolioSnapshot(): PortfolioSnapshot {
   const holdings = portfolioHoldingsWithValues();
   const totalValue = holdings.reduce((sum, holding) => sum + holding.marketValue, 0);
   const totalCost = holdings.reduce(
@@ -72,10 +67,10 @@ function buildPortfolioSnapshot(): PortfolioSnapshot {
     0,
   );
   const cashBalance = 11_640;
-  const dayChange = holdings.reduce(
-    (sum, holding) => sum + holding.currentPrice * (holding.gainLossPercent / 100) * 0.09,
-    0,
-  );
+  const dayChange = holdings.reduce((sum, holding) => {
+    const stock = stockProfiles.find((p) => p.symbol === holding.symbol);
+    return sum + (stock ? stock.change * holding.shares : 0);
+  }, 0);
   const sectorMap = new Map<string, number>();
 
   holdings.forEach((holding) => {
