@@ -7,9 +7,11 @@ import type { SearchResult } from "@/types/finance";
 
 type FinanceTopBarProps = {
   searchOptions: SearchResult[];
+  recentSymbols?: SearchResult[];
+  watchlistShortcuts?: SearchResult[];
 };
 
-export function FinanceTopBar({ searchOptions }: FinanceTopBarProps) {
+export function FinanceTopBar({ searchOptions, recentSymbols, watchlistShortcuts }: FinanceTopBarProps) {
   return (
     <div className="border-b border-[#ebebeb] bg-white px-4 py-4 sm:px-6">
       <div className="mx-auto flex max-w-[960px] flex-col gap-4 lg:grid lg:grid-cols-[auto_minmax(0,1fr)_auto] lg:items-center lg:gap-6">
@@ -18,7 +20,12 @@ export function FinanceTopBar({ searchOptions }: FinanceTopBarProps) {
         </h1>
         <div className="flex justify-center lg:order-none">
           <div className="w-full max-w-xl">
-            <SymbolSearch options={searchOptions} variant="header" />
+            <SymbolSearch
+              options={searchOptions}
+              variant="header"
+              recentSymbols={recentSymbols}
+              watchlistShortcuts={watchlistShortcuts}
+            />
           </div>
         </div>
         <div className="flex items-center justify-end gap-2 lg:justify-end">

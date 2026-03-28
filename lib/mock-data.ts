@@ -804,6 +804,8 @@ export const newsArticles: NewsArticle[] = [
 
 export const watchlistSymbols = ["AAPL", "MSFT", "NVDA", "JPM", "V", "TSLA"];
 
+export const recentSymbolsList = ["NVDA", "TSLA", "AAPL", "META"];
+
 export const portfolioHoldings: Holding[] = [
   {
     symbol: "AAPL",

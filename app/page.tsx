@@ -10,16 +10,18 @@ import { StandoutsSection } from "@/components/finance/standouts-section";
 import { TopFutures } from "@/components/finance/top-futures";
 import { WatchlistStrip } from "@/components/finance/watchlist-strip";
 import { QuickLinksRow } from "@/components/explore/quick-links";
-import { getDashboardData, getSearchUniverse } from "@/lib/market-data";
+import { getDashboardData, getRecentSymbols, getSearchUniverse, getWatchlistShortcuts } from "@/lib/market-data";
 
 export default async function Home() {
-  const [dashboard, searchOptions] = await Promise.all([
+  const [dashboard, searchOptions, recentSymbols, watchlistShortcuts] = await Promise.all([
     getDashboardData(),
     getSearchUniverse(),
+    getRecentSymbols(),
+    getWatchlistShortcuts(),
   ]);
 
   return (
-    <FinanceShell searchOptions={searchOptions}>
+    <FinanceShell searchOptions={searchOptions} recentSymbols={recentSymbols} watchlistShortcuts={watchlistShortcuts}>
       <div className="space-y-8">
         <TopFutures futures={dashboard.topFutures} sentimentLabel={dashboard.sentimentLabel} />
         <MarketSummaryAccordion summary={dashboard.marketSummary} />

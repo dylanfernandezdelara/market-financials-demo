@@ -16,6 +16,7 @@ import {
   marketSummaryBlock,
   popularSpaces,
   recentDevelopments,
+  recentSymbolsList,
   marketIndices,
   marketPulse,
   newsArticles,
@@ -178,6 +179,34 @@ export async function searchSymbols(query?: string): Promise<SearchResult[]> {
       stock.symbol.toLowerCase().startsWith(normalizedQuery) ||
       stock.name.toLowerCase().includes(normalizedQuery),
   );
+}
+
+export async function getRecentSymbols(): Promise<SearchResult[]> {
+  return recentSymbolsList
+    .map((symbol) => stockProfiles.find((profile) => profile.symbol === symbol))
+    .filter((value): value is StockProfile => Boolean(value))
+    .map((stock) => ({
+      symbol: stock.symbol,
+      name: stock.name,
+      exchange: stock.exchange,
+      sector: stock.sector,
+      price: stock.price,
+      changePercent: stock.changePercent,
+    }));
+}
+
+export async function getWatchlistShortcuts(): Promise<SearchResult[]> {
+  return watchlistSymbols
+    .map((symbol) => stockProfiles.find((profile) => profile.symbol === symbol))
+    .filter((value): value is StockProfile => Boolean(value))
+    .map((stock) => ({
+      symbol: stock.symbol,
+      name: stock.name,
+      exchange: stock.exchange,
+      sector: stock.sector,
+      price: stock.price,
+      changePercent: stock.changePercent,
+    }));
 }
 
 export async function getStockProfile(symbol: string) {
