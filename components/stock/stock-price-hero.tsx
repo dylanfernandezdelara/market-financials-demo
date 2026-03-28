@@ -1,4 +1,5 @@
-import { Star } from "lucide-react";
+import Link from "next/link";
+import { Bell, Star, TrendingDown, TrendingUp } from "lucide-react";
 import {
   formatCurrency,
   formatPercent,
@@ -67,5 +68,45 @@ export function StockFollowRow() {
       <Star className="size-4 text-neutral-500" strokeWidth={1.75} />
       Follow
     </button>
+  );
+}
+
+type StockAlertShortcutsProps = {
+  stock: StockProfile;
+};
+
+export function StockAlertShortcuts({ stock }: StockAlertShortcutsProps) {
+  const shortcuts = [
+    {
+      label: "Price alert",
+      detail: formatCurrency(stock.price),
+      icon: Bell,
+    },
+    {
+      label: "52W high",
+      detail: formatCurrency(stock.week52High),
+      icon: TrendingUp,
+    },
+    {
+      label: "52W low",
+      detail: formatCurrency(stock.week52Low),
+      icon: TrendingDown,
+    },
+  ];
+
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      {shortcuts.map((s) => (
+        <Link
+          key={s.label}
+          href="/alerts"
+          className="inline-flex items-center gap-1.5 rounded-lg border border-[#e5e5e5] bg-white px-3 py-2 text-[13px] font-medium text-neutral-800 shadow-sm transition-colors hover:bg-neutral-50"
+        >
+          <s.icon className="size-4 text-neutral-500" strokeWidth={1.75} />
+          <span>{s.label}</span>
+          <span className="text-neutral-400">{s.detail}</span>
+        </Link>
+      ))}
+    </div>
   );
 }
